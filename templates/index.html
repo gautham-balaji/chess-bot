@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XAI Chess Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── reset & variables ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0c0c0c;
+  --surface:     #161616;
+  --surface2:    #1e1e1e;
+  --surface3:    #252525;
+  --border:      #2a2a2a;
+  --border2:     #333;
+  --gold:        #c9a84c;
+  --gold-dim:    #7a5f28;
+  --gold-glow:   rgba(201,168,76,0.15);
+  --white-sq:    #f0d9b5;
+  --black-sq:    #b58863;
+  --text:        #e2e2e2;
+  --text-dim:    #777;
+  --text-mid:    #aaa;
+  --green:       #52a974;
+  --blue:        #4f8fc0;
+  --red:         #c05050;
+  --sq:          60px;
+  --board-size:  calc(var(--sq) * 8);
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ── layout ──────────────────────────────────────────────────────────────── */
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 36px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(12,12,12,0.9);
+  backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 50;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.logo-icon { font-size: 1.5rem; }
+.logo-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+.logo-sub {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.badge-white { background: #f0d9b5; color: #111; }
+.badge-black { background: #2a2a2a; color: #f0d9b5; border: 1px solid #444; }
+.badge-engine { background: rgba(82,169,116,0.12); color: var(--green); border: 1px solid rgba(82,169,116,0.3); }
+.badge-thinking {
+  background: rgba(79,143,192,0.12); color: var(--blue);
+  border: 1px solid rgba(79,143,192,0.3);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+.btn {
+  padding: 7px 16px;
+  border-radius: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text-mid);
+}
+.btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+.btn-gold {
+  background: var(--gold-glow);
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+.btn-gold:hover { background: rgba(201,168,76,0.25); border-color: var(--gold); }
+
+main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 32px;
+  padding: 28px 36px;
+  align-items: start;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── board column ────────────────────────────────────────────────────────── */
+#board-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#board-container {
+  display: flex;
+  gap: 0;
+}
+
+#rank-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: var(--board-size);
+  padding-right: 6px;
+}
+.rank-lbl {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: right;
+  height: var(--sq);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#board-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+#file-labels {
+  display: flex;
+  padding-left: 0;
+  margin-top: 5px;
+}
+.file-lbl {
+  width: var(--sq);
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(8, var(--sq));
+  grid-template-rows: repeat(8, var(--sq));
+  border: 2px solid #1a1a1a;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px #111,
+    0 20px 60px rgba(0,0,0,0.7),
+    0 4px 16px rgba(0,0,0,0.5);
+  position: relative;
+  user-select: none;
+  /* Prevent touch scroll while interacting with board */
+  touch-action: none;
+}
+
+/* ── squares ─────────────────────────────────────────────────────────────── */
+.sq {
+  width: var(--sq);
+  height: var(--sq);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+.sq.light { background: var(--white-sq); }
+.sq.dark  { background: var(--black-sq); }
+
+.sq.hl-from { background: #aaa23a99 !important; }
+.sq.hl-to   { background: #cdd26a99 !important; }
+.sq.hl-eng-from { background: rgba(79,143,192,0.45) !important; }
+.sq.hl-eng-to   { background: rgba(79,143,192,0.6)  !important; }
+.sq.selected { background: #f6f66acc !important; }
+
+/* legal move dot */
+.sq.legal::after {
+  content: '';
+  position: absolute;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+/* legal capture ring */
+.sq.legal-cap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  border: 5px solid rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+
+/* ── pieces ──────────────────────────────────────────────────────────────── */
+.piece {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  /* Allow events to pass through to the square for drag detection */
+  pointer-events: none;
+  transition: transform 0.08s;
+}
+.piece.white { -webkit-text-stroke: 0.6px rgba(0,0,0,0.5); }
+.piece.black { -webkit-text-stroke: 0.3px rgba(0,0,0,0.8); }
+
+/* drag ghost */
+#ghost {
+  position: fixed;
+  font-size: 52px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+  display: none;
+  -webkit-text-stroke: 0.5px rgba(0,0,0,0.5);
+}
+
+/* ── promotion overlay ───────────────────────────────────────────────────── */
+#promo-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  z-index: 200;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  backdrop-filter: blur(4px);
+}
+#promo-overlay.show { display: flex; }
+#promo-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+#promo-choices { display: flex; gap: 14px; }
+.promo-piece {
+  width: 68px; height: 68px;
+  background: var(--surface2);
+  border: 1px solid var(--gold-dim);
+  border-radius: 8px;
+  font-size: 42px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.promo-piece:hover {
+  background: var(--gold-glow);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* ── move history bar ────────────────────────────────────────────────────── */
+#history-bar {
+  width: var(--board-size);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+  max-height: 68px;
+  overflow-y: auto;
+  letter-spacing: 0.02em;
+}
+#history-bar span.mv { color: var(--text-mid); }
+#history-bar span.num { color: var(--gold-dim); }
+
+/* ── right panel ─────────────────────────────────────────────────────────── */
+#panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 320px;
+  max-width: 380px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+.card-title {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 14px;
+}
+
+/* eval bar */
+#eval-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+#eval-value { color: var(--gold); font-weight: 600; }
+#eval-track {
+  height: 8px;
+  background: #222;
+  border-radius: 4px;
+  overflow: hidden;
+}
+#eval-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--gold);
+  width: 50%;
+  transition: width 0.5s cubic-bezier(.4,0,.2,1), background 0.3s;
+}
+
+/* metrics chips */
+#metrics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 11px;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+.chip b { color: var(--text); font-weight: 500; }
+
+/* top moves */
+.move-entry {
+  display: flex;
+  align-items: stretch;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.move-entry:hover { border-color: var(--border2); }
+.move-entry.active { border-color: var(--gold-dim); background: rgba(201,168,76,0.06); }
+
+.move-entry-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.move-medal { font-size: 1rem; }
+.move-san {
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+.move-uci-small {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+}
+.move-score-box {
+  padding: 10px 12px;
+  text-align: right;
+  border-left: 1px solid var(--border);
+  min-width: 64px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.move-score { font-size: 0.82rem; color: var(--gold); font-weight: 600; }
+.move-cp    { font-size: 0.62rem; color: var(--text-dim); }
+.play-btn {
+  padding: 0 14px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.play-btn:hover { background: var(--gold-glow); color: var(--gold); }
+
+/* explanation */
+#explain-card { display: none; }
+#explain-card.show { display: block; }
+#explain-move-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--gold);
+}
+.reason {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+.reason-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+/* engine last move */
+#engine-card { display: none; }
+#engine-card.show { display: block; }
+.eng-move-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(79,143,192,0.07);
+  border: 1px solid rgba(79,143,192,0.2);
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.eng-move-san {
+  font-size: 1rem;
+  color: var(--blue);
+  font-weight: 500;
+}
+.eng-reason {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-bottom: 6px; line-height: 1.6;
+}
+
+/* engine thinking inline indicator (non-blocking) */
+#engine-thinking-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(79,143,192,0.05);
+  border: 1px solid rgba(79,143,192,0.15);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: var(--blue);
+}
+#engine-thinking-bar.show { display: flex; }
+.thinking-dots span {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--blue);
+  margin: 0 2px;
+  animation: dot-bounce 1.2s ease-in-out infinite;
+}
+.thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dot-bounce { 0%,80%,100% { transform:scale(0.6); opacity:0.4; } 40% { transform:scale(1); opacity:1; } }
+
+/* game over card */
+#gameover-card { display: none; }
+#gameover-card.show {
+  display: block;
+  text-align: center;
+  border-color: var(--gold-dim);
+  background: rgba(201,168,76,0.04);
+}
+#gameover-result {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+#gameover-reason {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── header ── -->
+<header>
+  <div class="logo">
+    <span class="logo-icon">♟</span>
+    <div>
+      <div class="logo-title">XAI Chess Engine</div>
+      <div class="logo-sub">Explainable Hybrid ML · VIT Chennai</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="turn-badge" class="badge badge-white">WHITE TO MOVE</span>
+    <span id="engine-badge" class="badge badge-engine">ENGINE READY</span>
+    <button class="btn" onclick="resetGame()">↺ New Game</button>
+    <button class="btn btn-gold" onclick="analysePosition()">🔍 Analyse</button>
+  </div>
+</header>
+
+<!-- ── main ── -->
+<main>
+
+  <!-- board column -->
+  <div id="board-col">
+    <div id="board-container">
+      <div id="rank-labels">
+        <div class="rank-lbl">8</div><div class="rank-lbl">7</div>
+        <div class="rank-lbl">6</div><div class="rank-lbl">5</div>
+        <div class="rank-lbl">4</div><div class="rank-lbl">3</div>
+        <div class="rank-lbl">2</div><div class="rank-lbl">1</div>
+      </div>
+      <div id="board-wrap">
+        <div id="board">
+          <div id="promo-overlay">
+            <div id="promo-title">Promote Pawn</div>
+            <div id="promo-choices"></div>
+          </div>
+        </div>
+        <div id="file-labels">
+          <div class="file-lbl">a</div><div class="file-lbl">b</div>
+          <div class="file-lbl">c</div><div class="file-lbl">d</div>
+          <div class="file-lbl">e</div><div class="file-lbl">f</div>
+          <div class="file-lbl">g</div><div class="file-lbl">h</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="history-bar">—</div>
+  </div>
+
+  <!-- right panel -->
+  <div id="panel">
+
+    <!-- eval + metrics -->
+    <div class="card">
+      <div class="card-title">Position Evaluation</div>
+      <div id="eval-row">
+        <span>◀ Black</span>
+        <span id="eval-value">0.0 cp</span>
+        <span>White ▶</span>
+      </div>
+      <div id="eval-track"><div id="eval-fill"></div></div>
+    </div>
+
+    <div class="card" id="metrics-card">
+      <div class="card-title">Position Metrics</div>
+      <div id="metrics-row">
+        <div class="chip">Material <b id="m-mat">—</b></div>
+        <div class="chip">Space <b id="m-space">—</b></div>
+        <div class="chip">Center <b id="m-center">—</b></div>
+        <div class="chip">Mobility <b id="m-mob">—</b></div>
+      </div>
+    </div>
+
+    <!-- top moves -->
+    <div class="card" id="top-moves-card">
+      <div class="card-title">Top Moves For You</div>
+      <div id="top-moves-list">
+        <div style="color:var(--text-dim);font-size:0.78rem">Play a move or click Analyse to see recommendations.</div>
+      </div>
+    </div>
+
+    <!-- explanation -->
+    <div class="card" id="explain-card">
+      <div class="card-title">Why play <span id="explain-move-name">—</span>?</div>
+      <div id="explain-body"></div>
+    </div>
+
+    <!-- engine thinking bar (shows while engine computes) -->
+    <div class="card" id="engine-thinking-bar">
+      <span style="color:var(--blue);font-size:1rem">⚙</span>
+      <span>Engine is thinking</span>
+      <div class="thinking-dots" style="margin-left:4px">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- engine last move -->
+    <div class="card" id="engine-card">
+      <div class="card-title">Engine Played</div>
+      <div id="engine-body"></div>
+    </div>
+
+    <!-- game over -->
+    <div class="card" id="gameover-card">
+      <div id="gameover-result">—</div>
+      <div id="gameover-reason">—</div>
+      <button class="btn btn-gold" onclick="resetGame()" style="width:100%;margin-top:12px">↺ Play Again</button>
+    </div>
+
+  </div>
+</main>
+</div>
+
+<!-- drag ghost -->
+<div id="ghost"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════════════════════════════════ -->
+<script>
+// ── state ─────────────────────────────────────────────────────────────────────
+let pieces    = {};   // { "e2": "wP", ... }
+let legalMap  = {};   // { "e2": ["e3","e4"], ... }
+let selected  = null; // currently selected square name
+let topMoves  = [];
+let activeIdx = 0;
+let turn      = 'white';
+let gameOver  = false;
+let busy      = false; // lock while waiting for server
+
+// drag state
+let dragging  = false;
+let dragFrom  = null;
+let dragMoved = false;
+const ghost   = document.getElementById('ghost');
+
+// ── piece unicode ─────────────────────────────────────────────────────────────
+const UNICODE = {
+  wP:'♙', wN:'♘', wB:'♗', wR:'♖', wQ:'♕', wK:'♔',
+  bP:'♟', bN:'♞', bB:'♝', bR:'♜', bQ:'♛', bK:'♚',
+};
+
+// ── build board squares (runs once immediately) ───────────────────────────────
+const FILES   = ['a','b','c','d','e','f','g','h'];
+const RANKS   = ['8','7','6','5','4','3','2','1'];
+const boardEl = document.getElementById('board');
+
+RANKS.forEach((rank, ri) => {
+  FILES.forEach((file, fi) => {
+    const name   = file + rank;
+    const isLight = (fi + ri) % 2 === 0;
+    const sq     = document.createElement('div');
+    sq.className = 'sq ' + (isLight ? 'light' : 'dark');
+    sq.id        = 'sq-' + name;
+    sq.dataset.sq = name;
+    boardEl.appendChild(sq);
+  });
+});
+
+// ── render pieces onto board ──────────────────────────────────────────────────
+function renderPieces() {
+  document.querySelectorAll('.sq').forEach(sq => {
+    // Remove only piece children, keep overlay
+    Array.from(sq.children).forEach(c => {
+      if (c.classList.contains('piece')) c.remove();
+    });
+    sq.onclick      = null;
+    sq.onmousedown  = null;
+    sq.ontouchstart = null;
+  });
+
+  Object.entries(pieces).forEach(([sqName, code]) => {
+    const el = document.getElementById('sq-' + sqName);
+    if (!el) return;
+    const div = document.createElement('div');
+    div.className = 'piece ' + (code[0] === 'w' ? 'white' : 'black');
+    div.textContent = UNICODE[code] || '?';
+    el.appendChild(div);
+  });
+
+  if (!gameOver && !busy) {
+    document.querySelectorAll('.sq').forEach(sq => {
+      sq.onclick      = onSquareClick;
+      sq.onmousedown  = onMouseDown;
+      sq.ontouchstart = onTouchStart;
+    });
+  }
+}
+
+// ── highlight helpers ─────────────────────────────────────────────────────────
+function clearHighlights(keepLastMove = true) {
+  document.querySelectorAll('.sq').forEach(sq => {
+    sq.classList.remove('selected', 'legal', 'legal-cap');
+    if (!keepLastMove) sq.classList.remove('hl-from','hl-to','hl-eng-from','hl-eng-to');
+  });
+}
+
+function highlightLegals(sqName) {
+  (legalMap[sqName] || []).forEach(dest => {
+    const el = document.getElementById('sq-' + dest);
+    if (!el) return;
+    el.classList.add(pieces[dest] ? 'legal-cap' : 'legal');
+  });
+}
+
+function setLastMove(from, to, type = 'player') {
+  document.querySelectorAll('.hl-from,.hl-to,.hl-eng-from,.hl-eng-to').forEach(el => {
+    el.classList.remove('hl-from','hl-to','hl-eng-from','hl-eng-to');
+  });
+  const fromEl = document.getElementById('sq-' + from);
+  const toEl   = document.getElementById('sq-' + to);
+  if (type === 'player') {
+    fromEl && fromEl.classList.add('hl-from');
+    toEl   && toEl.classList.add('hl-to');
+  } else {
+    fromEl && fromEl.classList.add('hl-eng-from');
+    toEl   && toEl.classList.add('hl-eng-to');
+  }
+}
+
+// ── click: select → move ──────────────────────────────────────────────────────
+function onSquareClick(e) {
+  if (gameOver || busy) return;
+  if (dragMoved) { dragMoved = false; return; }
+
+  const name = e.currentTarget.dataset.sq;
+
+  if (selected === name) {
+    clearHighlights();
+    selected = null;
+    return;
+  }
+
+  if (selected && (legalMap[selected] || []).includes(name)) {
+    const from = selected;
+    clearHighlights();
+    selected = null;
+    attemptMove(from, name);
+    return;
+  }
+
+  const isMyPiece = pieces[name] && legalMap[name] !== undefined;
+  clearHighlights();
+  if (isMyPiece) {
+    selected = name;
+    document.getElementById('sq-' + name).classList.add('selected');
+    highlightLegals(name);
+  } else {
+    selected = null;
+  }
+}
+
+// ── mouse drag ────────────────────────────────────────────────────────────────
+function onMouseDown(e) {
+  if (gameOver || busy) return;
+  if (e.button !== 0) return;  // left click only
+  const name = e.currentTarget.dataset.sq;
+  if (!pieces[name] || !legalMap[name]) return;
+
+  dragging = true;
+  dragFrom = name;
+  dragMoved = false;
+
+  clearHighlights();
+  selected = name;
+  document.getElementById('sq-' + name).classList.add('selected');
+  highlightLegals(name);
+
+  ghost.textContent   = UNICODE[pieces[name]] || '';
+  ghost.style.display = 'block';
+  moveGhost(e.clientX, e.clientY);
+
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup',   onMouseUp);
+  e.preventDefault();
+}
+
+function moveGhost(x, y) {
+  ghost.style.left = x + 'px';
+  ghost.style.top  = y + 'px';
+}
+
+function onMouseMove(e) {
+  if (!dragging) return;
+  dragMoved = true;
+  moveGhost(e.clientX, e.clientY);
+}
+
+function onMouseUp(e) {
+  if (!dragging) return;
+  dragging = false;
+  ghost.style.display = 'none';
+  window.removeEventListener('mousemove', onMouseMove);
+  window.removeEventListener('mouseup',   onMouseUp);
+
+  if (!dragMoved) return; // treat as click
+
+  const from = dragFrom;
+  dragFrom   = null;
+
+  ghost.style.display = 'none';
+  const target = document.elementFromPoint(e.clientX, e.clientY);
+  const sqEl   = target ? target.closest('[data-sq]') : null;
+  const to     = sqEl ? sqEl.dataset.sq : null;
+
+  if (to && to !== from && (legalMap[from] || []).includes(to)) {
+    clearHighlights();
+    selected = null;
+    attemptMove(from, to);
+  }
+}
+
+// ── touch drag ────────────────────────────────────────────────────────────────
+function onTouchStart(e) {
+  if (gameOver || busy) return;
+  const name = e.currentTarget.dataset.sq;
+  if (!pieces[name] || !legalMap[name]) return;
+
+  dragging  = true;
+  dragFrom  = name;
+  dragMoved = false;
+
+  clearHighlights();
+  selected = name;
+  document.getElementById('sq-' + name).classList.add('selected');
+  highlightLegals(name);
+
+  const t = e.touches[0];
+  ghost.textContent   = UNICODE[pieces[name]] || '';
+  ghost.style.display = 'block';
+  moveGhost(t.clientX, t.clientY);
+
+  window.addEventListener('touchmove',   onTouchMove,   { passive: false });
+  window.addEventListener('touchend',    onTouchEnd);
+  window.addEventListener('touchcancel', onTouchCancel);
+  e.preventDefault();
+}
+
+function onTouchMove(e) {
+  if (!dragging) return;
+  dragMoved = true;
+  const t = e.touches[0];
+  moveGhost(t.clientX, t.clientY);
+  e.preventDefault();
+}
+
+function onTouchEnd(e) {
+  if (!dragging) return;
+  dragging = false;
+  ghost.style.display = 'none';
+  window.removeEventListener('touchmove',   onTouchMove);
+  window.removeEventListener('touchend',    onTouchEnd);
+  window.removeEventListener('touchcancel', onTouchCancel);
+
+  if (!dragMoved) return;
+
+  const from = dragFrom;
+  dragFrom   = null;
+
+  const t      = e.changedTouches[0];
+  ghost.style.display = 'none';
+  const target = document.elementFromPoint(t.clientX, t.clientY);
+  const sqEl   = target ? target.closest('[data-sq]') : null;
+  const to     = sqEl ? sqEl.dataset.sq : null;
+
+  if (to && to !== from && (legalMap[from] || []).includes(to)) {
+    clearHighlights();
+    selected = null;
+    attemptMove(from, to);
+  }
+}
+
+function onTouchCancel() {
+  dragging = false;
+  ghost.style.display = 'none';
+  dragFrom = null;
+  window.removeEventListener('touchmove',   onTouchMove);
+  window.removeEventListener('touchend',    onTouchEnd);
+  window.removeEventListener('touchcancel', onTouchCancel);
+}
+
+// ── attempt move (checks promotion) ──────────────────────────────────────────
+function attemptMove(from, to) {
+  const piece = pieces[from];
+  if (!piece) return;
+  const isPromo = (piece === 'wP' && to[1] === '8') || (piece === 'bP' && to[1] === '1');
+  if (isPromo) {
+    showPromo(from, to, piece[0] === 'w');
+  } else {
+    sendMove(from + to);
+  }
+}
+
+// ── promotion ─────────────────────────────────────────────────────────────────
+function showPromo(from, to, isWhite) {
+  const overlay = document.getElementById('promo-overlay');
+  const choices = document.getElementById('promo-choices');
+  choices.innerHTML = '';
+  const icons   = isWhite ? ['♕','♖','♗','♘'] : ['♛','♜','♝','♞'];
+  const letters = ['q','r','b','n'];
+  icons.forEach((icon, i) => {
+    const btn = document.createElement('div');
+    btn.className   = 'promo-piece';
+    btn.textContent = icon;
+    btn.onclick = () => {
+      overlay.classList.remove('show');
+      sendMove(from + to + letters[i]);
+    };
+    choices.appendChild(btn);
+  });
+  overlay.classList.add('show');
+}
+
+// ── SPLIT MOVE FLOW ───────────────────────────────────────────────────────────
+// Step 1: apply player move, update board, then trigger engine after delay
+// Step 2: call /engine_move, update board with engine result
+
+async function sendMove(uci) {
+  if (busy) return;
+  busy = true;
+  clearHighlights(false);
+  // Disable board interaction during processing
+  renderPieces();
+
+  // Hide previous engine card, show nothing yet
+  document.getElementById('engine-card').classList.remove('show');
+  document.getElementById('engine-thinking-bar').classList.remove('show');
+
+  try {
+    // ── STEP 1: Player move ──
+    const res1  = await fetch('/move', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uci }),
+    });
+    const data1 = await res1.json();
+
+    if (data1.error) {
+      showError(data1.error);
+      busy = false;
+      renderPieces();
+      return;
+    }
+
+    // Show player move on board immediately
+    setLastMove(data1.player_move.from, data1.player_move.to, 'player');
+    pieces   = data1.pieces;
+    legalMap = data1.legal_map;
+    turn     = data1.turn;
+    gameOver = data1.game_over;
+    renderPieces();
+    updateMetrics(data1.metrics);
+    updateHistory(data1.move_history);
+    updateTurnBadge();
+
+    if (data1.game_over) {
+      renderGameOver(data1.result);
+      busy = false;
+      return;
+    }
+
+    // ── STEP 2: Engine "thinking" delay, then engine move ──
+    // Show thinking indicator
+    document.getElementById('engine-thinking-bar').classList.add('show');
+    setEngineBadge('thinking');
+
+    // Small human-feel delay (engine is actually fast, so we add UX delay)
+    await sleep(600);
+
+    const res2  = await fetch('/engine_move', { method: 'POST' });
+    const data2 = await res2.json();
+
+    document.getElementById('engine-thinking-bar').classList.remove('show');
+
+    if (data2.error) {
+      showError('Engine error: ' + data2.error);
+      setEngineBadge('ready');
+      busy = false;
+      renderPieces();
+      return;
+    }
+
+    const eng = data2.engine;
+
+    // Show engine move
+    setLastMove(eng.from, eng.to, 'engine');
+    pieces   = data2.pieces;
+    legalMap = data2.legal_map;
+    turn     = data2.turn;
+    gameOver = data2.game_over;
+    renderPieces();
+    updateHistory(data2.move_history);
+    updateMetrics(data2.metrics);
+    updateTurnBadge();
+    setEngineBadge('ready');
+
+    renderEngineCard(eng);
+    renderTopMoves(eng.top_moves || []);
+
+    if (data2.game_over) {
+      renderGameOver(data2.result);
+    }
+
+  } catch (err) {
+    showError('Network error: ' + err.message);
+    document.getElementById('engine-thinking-bar').classList.remove('show');
+    setEngineBadge('ready');
+  }
+
+  busy = false;
+  renderPieces(); // re-enable interaction
+}
+
+// ── analyse position ──────────────────────────────────────────────────────────
+async function analysePosition() {
+  if (gameOver || busy) return;
+  busy = true;
+  setEngineBadge('thinking');
+  try {
+    const res  = await fetch('/analyse', { method: 'POST' });
+    const data = await res.json();
+    if (data.error) { showError(data.error); }
+    else {
+      renderTopMoves(data.top_moves || []);
+      updateMetrics(data.metrics);
+    }
+  } catch(e) { showError(e.message); }
+  setEngineBadge('ready');
+  busy = false;
+}
+
+// ── play a top move directly ──────────────────────────────────────────────────
+function playTopMove(uci) {
+  if (gameOver || busy) return;
+  sendMove(uci);
+}
+
+// ── reset ─────────────────────────────────────────────────────────────────────
+async function resetGame() {
+  busy = false; // force-unlock in case of error state
+  const res  = await fetch('/reset', { method: 'POST' });
+  const data = await res.json();
+  pieces   = data.pieces;
+  legalMap = data.legal_map;
+  turn     = data.turn;
+  gameOver = false;
+  topMoves = [];
+  activeIdx = 0;
+  selected  = null;
+
+  document.querySelectorAll('.hl-from,.hl-to,.hl-eng-from,.hl-eng-to').forEach(el =>
+    el.classList.remove('hl-from','hl-to','hl-eng-from','hl-eng-to')
+  );
+
+  renderPieces();
+  updateHistory([]);
+  updateMetrics({});
+  updateTurnBadge();
+  setEngineBadge('ready');
+
+  document.getElementById('top-moves-list').innerHTML =
+    '<div style="color:var(--text-dim);font-size:0.78rem">Play a move or click Analyse to see recommendations.</div>';
+  document.getElementById('explain-card').classList.remove('show');
+  document.getElementById('engine-card').classList.remove('show');
+  document.getElementById('engine-thinking-bar').classList.remove('show');
+  document.getElementById('gameover-card').classList.remove('show');
+}
+
+// ── render helpers ────────────────────────────────────────────────────────────
+function renderTopMoves(moves) {
+  topMoves  = moves;
+  activeIdx = 0;
+  const container = document.getElementById('top-moves-list');
+  if (!moves.length) {
+    container.innerHTML = '<div style="color:var(--text-dim);font-size:0.78rem">No suggestions available.</div>';
+    document.getElementById('explain-card').classList.remove('show');
+    return;
+  }
+
+  const medals = ['🥇','🥈','🥉'];
+  container.innerHTML = '';
+  moves.slice(0, 3).forEach((m, i) => {
+    const entry = document.createElement('div');
+    entry.className = 'move-entry' + (i === 0 ? ' active' : '');
+    entry.id = 'move-entry-' + i;
+    entry.innerHTML = `
+      <div class="move-entry-main" onclick="selectTopMove(${i})">
+        <span class="move-medal">${medals[i]}</span>
+        <span class="move-san">${m.san}</span>
+        <span class="move-uci-small">(${m.uci})</span>
+      </div>
+      <div class="move-score-box" onclick="selectTopMove(${i})">
+        <div class="move-score">${m.score.toFixed(2)}</div>
+        <div class="move-cp">${m.cnn_cp.toFixed(0)} cp</div>
+      </div>
+      <button class="play-btn" onclick="playTopMove('${m.uci}')">▶ Play</button>
+    `;
+    container.appendChild(entry);
+  });
+
+  renderExplanation(0);
+}
+
+function selectTopMove(idx) {
+  document.querySelectorAll('.move-entry').forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  activeIdx = idx;
+  renderExplanation(idx);
+}
+
+function renderExplanation(idx) {
+  const m = topMoves[idx];
+  if (!m) return;
+  const card = document.getElementById('explain-card');
+  document.getElementById('explain-move-name').textContent = m.san;
+  const body = document.getElementById('explain-body');
+  body.innerHTML = '';
+  (m.reasons || []).forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'reason';
+    div.innerHTML = `<div class="reason-dot"></div><div>${r}</div>`;
+    body.appendChild(div);
+  });
+  if (!m.reasons || !m.reasons.length) {
+    body.innerHTML = '<div style="color:var(--text-dim);font-size:0.75rem">No explanation available.</div>';
+  }
+  card.classList.add('show');
+}
+
+function renderEngineCard(eng) {
+  const card = document.getElementById('engine-card');
+  const body = document.getElementById('engine-body');
+  body.innerHTML = `
+    <div class="eng-move-line">
+      <span style="color:var(--blue);font-size:1.1rem">⚙</span>
+      <span class="eng-move-san">${eng.san}</span>
+      <span style="font-size:0.65rem;color:var(--text-dim)">(${eng.uci})</span>
+    </div>
+  `;
+  (eng.explanation || []).forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'eng-reason';
+    div.innerHTML = `<div class="reason-dot" style="background:var(--blue)"></div><div>${r}</div>`;
+    body.appendChild(div);
+  });
+  card.classList.add('show');
+}
+
+function renderGameOver(result) {
+  if (!result) return;
+  document.getElementById('gameover-result').textContent = result.result;
+  document.getElementById('gameover-reason').textContent = result.reason;
+  document.getElementById('gameover-card').classList.add('show');
+  document.getElementById('engine-badge').textContent = 'GAME OVER';
+  document.getElementById('engine-badge').className   = 'badge badge-engine';
+}
+
+function updateMetrics(m) {
+  if (!m || !Object.keys(m).length) return;
+  const fmt = v => (v >= 0 ? '+' : '') + v;
+  document.getElementById('m-mat').textContent    = fmt(m.material  ?? 0);
+  document.getElementById('m-space').textContent  = fmt(m.space     ?? 0);
+  document.getElementById('m-center').textContent = fmt(m.center    ?? 0);
+  document.getElementById('m-mob').textContent    = fmt(m.mobility  ?? 0);
+
+  const cp    = m.cnn_eval ?? 0;
+  const pct   = Math.max(2, Math.min(98, 50 + 50 * Math.tanh(cp / 400)));
+  const label = (cp >= 0 ? '+' : '') + cp.toFixed(1) + ' cp';
+  const color = cp >= 0 ? 'var(--gold)' : 'var(--blue)';
+  document.getElementById('eval-fill').style.width      = pct + '%';
+  document.getElementById('eval-fill').style.background = color;
+  document.getElementById('eval-value').textContent     = label;
+  document.getElementById('eval-value').style.color     = color;
+}
+
+function updateHistory(history) {
+  const bar = document.getElementById('history-bar');
+  if (!history || !history.length) { bar.textContent = '—'; return; }
+  let html = '';
+  for (let i = 0; i < history.length; i += 2) {
+    const num   = Math.floor(i / 2) + 1;
+    const white = history[i];
+    const black = history[i+1] || '…';
+    html += `<span class="num">${num}.</span> <span class="mv">${white}</span>  <span class="mv">${black}</span>  `;
+  }
+  bar.innerHTML = html;
+  bar.scrollLeft = bar.scrollWidth;
+}
+
+function updateTurnBadge() {
+  const badge = document.getElementById('turn-badge');
+  if (gameOver) return;
+  if (turn === 'white') {
+    badge.className   = 'badge badge-white';
+    badge.textContent = 'WHITE TO MOVE';
+  } else {
+    badge.className   = 'badge badge-black';
+    badge.textContent = 'BLACK TO MOVE';
+  }
+}
+
+function setEngineBadge(state) {
+  const eng = document.getElementById('engine-badge');
+  if (state === 'thinking') {
+    eng.className   = 'badge badge-thinking';
+    eng.textContent = '⏳ THINKING…';
+  } else {
+    eng.className   = 'badge badge-engine';
+    eng.textContent = 'ENGINE READY';
+  }
+}
+
+function showError(msg) {
+  const badge = document.getElementById('turn-badge');
+  const orig  = badge.textContent;
+  badge.style.background   = 'rgba(192,80,80,0.15)';
+  badge.style.color        = 'var(--red)';
+  badge.style.borderColor  = 'rgba(192,80,80,0.4)';
+  badge.textContent = '✗ ' + msg;
+  setTimeout(() => {
+    badge.style = '';
+    badge.textContent = orig;
+    updateTurnBadge();
+  }, 2500);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── boot ──────────────────────────────────────────────────────────────────────
+(async () => {
+  try {
+    const res = await fetch('/state');
+
+    // If Flask returned an error page (HTML), surface it clearly
+    if (!res.ok || !res.headers.get('content-type')?.includes('application/json')) {
+      const raw = await res.text();
+      console.error('Server returned non-JSON. Status:', res.status);
+      console.error('Raw response (first 500 chars):', raw.slice(0, 500));
+      document.getElementById('turn-badge').textContent = '✗ Server error – check console (F12)';
+      document.getElementById('turn-badge').style.cssText =
+        'background:rgba(192,80,80,0.15);color:#c05050;border-color:rgba(192,80,80,0.4)';
+      return;
+    }
+
+    const data = await res.json();
+    pieces   = data.pieces    || {};
+    legalMap = data.legal_map || {};
+    turn     = data.turn      || 'white';
+    gameOver = data.game_over || false;
+    renderPieces();
+    updateHistory(data.move_history || []);
+    updateMetrics(data.metrics      || {});
+    updateTurnBadge();
+  } catch(e) {
+    console.error('Boot error:', e);
+    document.getElementById('turn-badge').textContent = '✗ Could not connect to Flask – is it running?';
+    document.getElementById('turn-badge').style.cssText =
+      'background:rgba(192,80,80,0.15);color:#c05050;border-color:rgba(192,80,80,0.4)';
+  }
+})();
+</script>
+</body>
+</html>
