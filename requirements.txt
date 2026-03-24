@@ -10,3 +10,5 @@ tensorflow==2.15.0
 tqdm
 scipy
 streamlit>=1.30.0
+flask
+flask-cors
