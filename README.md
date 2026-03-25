@@ -317,7 +317,7 @@ chess-bot/
 ├── requirements.txt          # Python dependencies
 ├── games.csv                 # Lichess game dataset used for training
 │
-├── models/                   # Serialised model files (not in repo — see below)
+├── models/                   # Serialised model files
 │   ├── cnn_model.keras        # Trained CNN evaluator
 │   ├── rf_model.pkl           # Random Forest space-control predictor
 │   ├── mlp_model.pkl          # MLP game-outcome classifier
@@ -332,9 +332,6 @@ chess-bot/
     └── titlelogo.png
 ```
 
-> **Note:** The `models/` directory is not included in the repository due to file size. Run the training notebook (`chess_model_FINAL.ipynb`) end-to-end to generate all five model files, or download them from the [Releases](https://github.com/your-username/chess-bot/releases) page.
-
----
 
 ## Installation & Local Setup
 
