@@ -17,7 +17,7 @@ trained on Stockfish evaluations and deployed as an interactive web application.
 
 <br/>
 
-[**▶ Play Live**](https://your-deployment-link-here.com) · [Report a Bug](https://github.com/your-username/chess-bot/issues) · [View Notebook](chess_model_FINAL.ipynb)
+[**▶ Play Live**](https://your-deployment-link-here.com) · [Report a Bug](https://github.com/gautham-balaji/chess-bot/issues) · [View Notebook](chess_model_FINAL.ipynb)
 
 </div>
 
