@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify, render_template
 import chess
 import numpy as np
+import os
 
 app = Flask(__name__)
 
 from engine import engine_move, position_metrics, explain_move, cnn_model, board_to_planes
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2" # So TensorFlow logs do not flood the console
 
 # ── global game state ─────────────────────────────────────────────────────────
 board            = chess.Board()
@@ -329,4 +332,5 @@ def reset():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
