@@ -4,7 +4,7 @@ import chess
 from tensorflow.keras.models import load_model
 
 # --- Load all models ---
-cnn_model = load_model("models/cnn_model.keras")
+cnn_model = load_model("models/cnn_model.keras", compile=False)
 
 with open("models/rf_model.pkl", "rb") as f:
     rf = pickle.load(f)
