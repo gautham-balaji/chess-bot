@@ -14,6 +14,7 @@ captured_black   = []          # pieces captured FROM black (i.e. black's pieces
 
 # running metric snapshots for end-of-game stats
 metric_snapshots = []          # list of dicts, one per half-move
+forfeited        = False       # set True on resignation
 
 PIECE_NAMES = {
     chess.PAWN: 'P', chess.KNIGHT: 'N', chess.BISHOP: 'B',
@@ -160,26 +161,32 @@ def do_engine_move():
         except Exception:
             pass
 
+        # Compute top moves for WHITE's next turn (board is now White's turn)
         top_moves_out = []
-        for m in top3:
-            mv = m["move"]
+        if not board.is_game_over():
             try:
-                mv_san = board.san(mv) if mv in board.legal_moves else mv.uci()
+                _, _, white_top3 = engine_move(board)
+                for m in white_top3:
+                    mv = m["move"]
+                    try:
+                        mv_san = board.san(mv) if mv in board.legal_moves else mv.uci()
+                    except Exception:
+                        mv_san = mv.uci()
+                    try:
+                        reasons = explain_move(board, mv, m)
+                    except Exception:
+                        reasons = []
+                    top_moves_out.append({
+                        "uci":      mv.uci(),
+                        "san":      mv_san,
+                        "score":    round(float(m["score"]), 3),
+                        "cnn_cp":   round(float(m["cnn_cp"]), 1),
+                        "material": m["material"],
+                        "space":    m["space"],
+                        "reasons":  reasons,
+                    })
             except Exception:
-                mv_san = mv.uci()
-            try:
-                reasons = explain_move(board, mv, m)
-            except Exception:
-                reasons = []
-            top_moves_out.append({
-                "uci":      mv.uci(),
-                "san":      mv_san,
-                "score":    round(float(m["score"]), 3),
-                "cnn_cp":   round(float(m["cnn_cp"]), 1),
-                "material": m["material"],
-                "space":    m["space"],
-                "reasons":  reasons,
-            })
+                pass
 
         return jsonify({
             "engine": {
@@ -231,17 +238,13 @@ def analyse():
 
 @app.route("/forfeit", methods=["POST"])
 def forfeit():
-    """Player resigns. Engine wins."""
-    global board, move_history
-    # We mark game over by pushing the board into a resigned state via outcome hack:
-    # Instead, we use a flag — return a synthetic game_over response.
-    # The cleanest approach: just return a fake game-over state so the frontend
-    # can show the result without corrupting board state.
-    return jsonify({
-        "forfeited": True,
-        "result":    {"result": "0-1", "reason": "Resignation"},
-        **get_state(),
-    })
+    """Player resigns — frontend will call /game_stats after this."""
+    global forfeited
+    forfeited = True
+    state = get_state()
+    state["game_over"] = True
+    state["result"]    = {"result": "0-1", "reason": "Resignation"}
+    return jsonify({"forfeited": True, **state})
 
 
 @app.route("/game_stats", methods=["POST"])
@@ -315,12 +318,13 @@ def game_stats():
 
 @app.route("/reset", methods=["POST"])
 def reset():
-    global board, move_history, captured_white, captured_black, metric_snapshots
+    global board, move_history, captured_white, captured_black, metric_snapshots, forfeited
     board            = chess.Board()
     move_history     = []
     captured_white   = []
     captured_black   = []
     metric_snapshots = []
+    forfeited        = False
     return jsonify(get_state())
 
 

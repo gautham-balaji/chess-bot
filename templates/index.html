@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XAI Chess Engine</title>
+<title>ExplainMate</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='titlelogo.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<div class="gold-bg"></div>
 
 <style>
 /* ── reset & variables ───────────────────────────────────────────────────── */
@@ -67,7 +70,7 @@ header {
 }
 .logo { display: flex; align-items: baseline; gap: 12px; }
 .logo-icon { font-size: 1.4rem; }
-.logo-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--gold); letter-spacing: -0.01em; }
+.logo-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); letter-spacing: -0.01em; text-shadow: 0 0 8px rgba(255, 215, 0, 0.25) }
 .logo-sub { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.18em; text-transform: uppercase; }
 .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
@@ -266,6 +269,42 @@ main {
   font-size: 0.67rem; color: var(--text-dim);
   position: relative; cursor: default;
 }
+
+.logo-icon {
+  height: 40px;   /* controls size */
+  width: auto;    /* keeps aspect ratio */
+  object-fit: contain;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between logo and text */
+}
+.gold-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+
+  background: radial-gradient(circle at 20% 30%, rgba(200, 169, 90, 0.12), transparent 40%),
+              radial-gradient(circle at 80% 70%, rgba(200, 169, 90, 0.12), transparent 40%),
+              radial-gradient(circle at 50% 50%, rgba(200, 169, 90, 0.08), transparent 60%);
+
+  animation: moveGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes moveGlow {
+  0% {
+    background-position: 20% 30%, 80% 70%, 50% 50%;
+  }
+  100% {
+    background-position: 30% 40%, 70% 60%, 60% 55%;
+  }
+}
+
 .chip b { color: var(--text); font-weight: 500; }
 .chip:hover { border-color: var(--border2); }
 .chip .tooltip {
@@ -376,8 +415,9 @@ main {
   display: block; text-align: center;
   border-color: var(--gold-dim); background: rgba(201,168,76,0.04);
 }
-#gameover-result { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 4px; }
-#gameover-reason { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 14px; }
+#gameover-winner { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
+#gameover-result { font-size: 1rem; color: var(--text-mid); margin-bottom: 3px; }
+#gameover-reason { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
 
 /* ── end-game stats modal ────────────────────────────────────────────────── */
 #stats-modal {
@@ -412,6 +452,12 @@ main {
 .stat-box-label { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
 .stat-box-value { font-size: 1.1rem; color: var(--text); font-weight: 500; }
 .stat-box-sub   { font-size: 0.65rem; color: var(--text-dim); margin-top: 2px; }
+#stats-winner-banner {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 600;
+  color: var(--gold); text-align: center;
+  margin-bottom: 4px; letter-spacing: -0.02em;
+}
 
 /* captured pieces in stats */
 .cap-row { margin-bottom: 14px; }
@@ -443,10 +489,10 @@ main {
 <!-- ── header ── -->
 <header>
   <div class="logo">
-    <span class="logo-icon">♟</span>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-icon">
     <div>
-      <div class="logo-title">XAI Chess Engine</div>
-      <div class="logo-sub">Explainable Hybrid ML · VIT Chennai</div>
+      <div class="logo-title">ExplainMate</div>
+      <div class="logo-sub">Interactive Chess Engine · Heuristic Intelligence</div>
     </div>
   </div>
   <div class="header-right">
@@ -553,8 +599,9 @@ main {
     </div>
 
     <div class="card" id="gameover-card">
-      <div id="gameover-result">—</div>
-      <div id="gameover-reason">—</div>
+      <div id="gameover-winner"></div>
+      <div id="gameover-result"></div>
+      <div id="gameover-reason"></div>
       <div style="display:flex;gap:8px;margin-top:14px">
         <button class="btn btn-gold" onclick="resetGame()" style="flex:1">↺ Play Again</button>
         <button class="btn" onclick="showStats()" style="flex:1">📊 Game Stats</button>
@@ -571,6 +618,7 @@ main {
 <!-- ── end-game stats modal ── -->
 <div id="stats-modal">
   <div id="stats-inner">
+    <div id="stats-winner-banner"></div>
     <h2>📊 Game Statistics</h2>
     <div class="stats-grid" id="stats-grid"></div>
     <div class="cap-row">
@@ -941,9 +989,12 @@ async function sendMove(uci) {
     updateCaptured(data2.captured_white, data2.captured_black);
 
     renderEngineCard(eng);
+    busy = false;          // unlock BEFORE renderTopMoves so ▶ Play works immediately
+    renderPieces();
     renderTopMoves(eng.top_moves || []);
 
     if (data2.game_over) renderGameOver(data2.result);
+    return;  // already set busy=false above
 
   } catch(err) {
     showError('Network error: ' + err.message);
@@ -958,6 +1009,7 @@ async function sendMove(uci) {
 async function analysePosition() {
   if (gameOver || busy) return;
   busy = true;
+  setEngineBadge('thinking');
   try {
     const res  = await fetch('/analyse', { method: 'POST' });
     const data = await res.json();
@@ -966,6 +1018,7 @@ async function analysePosition() {
       updateMetrics(data.metrics);
     }
   } catch(e) { showError(e.message); }
+  setEngineBadge('ready');
   busy = false;
 }
 
@@ -984,8 +1037,12 @@ async function forfeitGame() {
   const res  = await fetch('/forfeit', { method: 'POST' });
   const data = await res.json();
   gameOver = true;
+  pieces   = data.pieces   || pieces;
+  legalMap = {};  // no legal moves after resign
+  updateCaptured(data.captured_white || [], data.captured_black || []);
+  updateHistory(data.move_history || []);
+  renderPieces();
   renderGameOver({ result: '0-1', reason: 'Resignation' });
-  updateCaptured(data.captured_white, data.captured_black);
 }
 
 // ── reset ─────────────────────────────────────────────────────────────────────
@@ -1015,32 +1072,71 @@ async function resetGame() {
 // ── game stats modal ──────────────────────────────────────────────────────────
 async function showStats() {
   document.getElementById('stats-modal').classList.add('show');
+
+  // Show winner banner from gameover state
+  const winnerBanner = document.getElementById('stats-winner-banner');
+  const goWinner = document.getElementById('gameover-winner');
+  winnerBanner.textContent = goWinner ? goWinner.textContent : '';
+
   const res  = await fetch('/game_stats', { method: 'POST' });
   const data = await res.json();
 
   // Stats grid
   const grid = document.getElementById('stats-grid');
+  const fmtSign = v => (v > 0 ? '+' : '') + v;
   grid.innerHTML = `
-    <div class="stat-box"><div class="stat-box-label">Total Moves</div><div class="stat-box-value">${data.total_moves}</div></div>
-    <div class="stat-box"><div class="stat-box-label">White Moves</div><div class="stat-box-value">${data.white_moves}</div></div>
-    <div class="stat-box"><div class="stat-box-label">Avg Material Advantage</div><div class="stat-box-value">${data.avg_material > 0 ? '+' : ''}${data.avg_material}</div><div class="stat-box-sub">Positive = White ahead on avg</div></div>
-    <div class="stat-box"><div class="stat-box-label">Avg Space Control</div><div class="stat-box-value">${data.avg_space > 0 ? '+' : ''}${data.avg_space}</div><div class="stat-box-sub">Squares attacked diff</div></div>
-    <div class="stat-box"><div class="stat-box-label">Pieces Lost (White)</div><div class="stat-box-value">${(data.captured_white || []).length}</div></div>
-    <div class="stat-box"><div class="stat-box-label">Pieces Lost (Black)</div><div class="stat-box-value">${(data.captured_black || []).length}</div></div>
+    <div class="stat-box">
+      <div class="stat-box-label">Total Half-Moves</div>
+      <div class="stat-box-value">${data.total_moves}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-label">White Moves</div>
+      <div class="stat-box-value">${data.white_moves}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-label">Black Moves</div>
+      <div class="stat-box-value">${data.black_moves}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-label">Avg Material Δ</div>
+      <div class="stat-box-value">${fmtSign(data.avg_material)}</div>
+      <div class="stat-box-sub">+ = White ahead avg</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-label">Avg Space Δ</div>
+      <div class="stat-box-value">${fmtSign(data.avg_space)}</div>
+      <div class="stat-box-sub">Squares attacked diff</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-label">Avg Center Δ</div>
+      <div class="stat-box-value">${fmtSign(data.avg_center)}</div>
+      <div class="stat-box-sub">Center control diff</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-label">White Pieces Lost</div>
+      <div class="stat-box-value">${(data.captured_white || []).length}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-box-label">Black Pieces Lost</div>
+      <div class="stat-box-value">${(data.captured_black || []).length}</div>
+    </div>
   `;
 
   // Captured pieces
   document.getElementById('stats-cap-white').innerHTML =
-    (data.captured_white || []).map(c => `<span title="${c}">${UNICODE[c] || c}</span>`).join('') || '<span style="color:var(--text-dim);font-size:0.7rem">none</span>';
+    (data.captured_white || []).map(c => `<span title="${c}">${UNICODE[c] || c}</span>`).join('')
+    || '<span style="color:var(--text-dim);font-size:0.7rem">none</span>';
   document.getElementById('stats-cap-black').innerHTML =
-    (data.captured_black || []).map(c => `<span title="${c}">${UNICODE[c] || c}</span>`).join('') || '<span style="color:var(--text-dim);font-size:0.7rem">none</span>';
+    (data.captured_black || []).map(c => `<span title="${c}">${UNICODE[c] || c}</span>`).join('')
+    || '<span style="color:var(--text-dim);font-size:0.7rem">none</span>';
 
   // Saliency heatmap
+  const saliencySection = document.getElementById('saliency-section');
   if (data.saliency) {
+    saliencySection.style.display = 'block';
     drawSaliency(data.saliency);
   } else {
-    document.getElementById('saliency-section').innerHTML +=
-      '<p style="color:var(--red);font-size:0.7rem">Saliency map unavailable.</p>';
+    saliencySection.innerHTML = '<p style="color:var(--text-dim);font-size:0.72rem;margin-top:8px">Saliency map unavailable (game too short or model error).</p>';
   }
 }
 
@@ -1184,11 +1280,21 @@ function renderEngineCard(eng) {
 
 function renderGameOver(result) {
   if (!result) return;
-  document.getElementById('gameover-result').textContent = result.result;
+  // Winner banner
+  const winnerEl = document.getElementById('gameover-winner');
+  const r = result.result;
+  let winnerText = '';
+  if (r === '1-0')      winnerText = '⚪ White Wins!';
+  else if (r === '0-1') winnerText = '⚫ Black Wins!';
+  else                  winnerText = '½ Draw';
+  winnerEl.textContent = winnerText;
+  document.getElementById('gameover-result').textContent = r;
   document.getElementById('gameover-reason').textContent = result.reason;
   document.getElementById('gameover-card').classList.add('show');
   document.getElementById('engine-badge').textContent = 'GAME OVER';
   document.getElementById('engine-badge').className   = 'badge badge-engine';
+  // Auto-load stats modal after short delay
+  setTimeout(showStats, 800);
 }
 
 function updateMetrics(m) {
