@@ -349,7 +349,7 @@ chess-bot/
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/chess-bot.git
+git clone https://github.com/gautham-balaji/chess-bot.git
 cd chess-bot
 ```
 
@@ -473,19 +473,6 @@ The CNN's 0.506 correlation with Stockfish is meaningful for a lightweight model
 The dataset contains real online chess games with player ratings, move sequences in SAN notation, and game outcomes. Features were extracted at move 10, 15, and 20 for each game to study how early positional factors predict late-game outcomes.
 
 Stockfish (depth 8) was used to generate centipawn labels for ~50,000 board positions sampled from this dataset for CNN training.
-
----
-
-## Academic Context
-
-This project was developed as part of the **Explainable AI (XAI)** course at **VIT Chennai**. It extends a prior semester's study on *Space Control in Chess across ELO ranges* with the following new contributions:
-
-1. CNN-based board evaluation trained on Stockfish centipawn scores
-2. Engine-supervised learning using real Stockfish evaluations
-3. A fully explainable move reranking system with per-move natural language justifications
-4. Quantitative comparison with Stockfish (Pearson correlation, centipawn error)
-5. Post-game Integrated Gradients saliency analysis for CNN interpretability
-6. A deployed interactive web interface making the XAI components accessible to non-technical users
 
 ---
 
