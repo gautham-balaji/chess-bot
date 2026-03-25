@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="static/logo.png" alt="XAI Chess Engine" width="100"/>
+<img src="static/logo.png" alt="XAI Chess Engine" width="180"/>
 
 <br/>
 
