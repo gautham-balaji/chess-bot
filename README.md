@@ -478,6 +478,7 @@ Stockfish (depth 8) was used to generate centipawn labels for ~50,000 board posi
 
 <div align="center">
 
-Gautham Balaji · Naren Kumar
+Gautham Balaji · Naren Kumar  
+<span style="font-size:0.75em; color:gray;">2026</span>
 
 </div>
