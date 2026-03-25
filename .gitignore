@@ -1,0 +1,8 @@
+__pycache__/
+venv/
+games.csv
+lichess_data_analysis.ipynb
+ogapp.py
+check_strucutre.py
+chess_model.ipynb
+
