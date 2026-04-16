@@ -481,6 +481,49 @@ main {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ── dev panel modal ──────────────────────────────────────────────────────── */
+#dev-modal {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.75); backdrop-filter:blur(4px);
+  align-items:center; justify-content:center;
+}
+#dev-modal.show { display:flex; }
+.dev-panel {
+  background:var(--surface); border:1px solid var(--border2);
+  border-radius:10px; padding:28px 32px; max-width:640px; width:95%;
+  max-height:80vh; overflow-y:auto; position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,0.7);
+}
+.dev-panel h2 { font-family:'Playfair Display',serif; color:var(--gold); font-size:1.1rem; margin-bottom:16px; }
+.dev-close { position:absolute; top:14px; right:18px; background:none; border:none;
+  color:var(--text-dim); cursor:pointer; font-size:1.2rem; }
+.dev-close:hover { color:var(--text); }
+.dev-table { width:100%; border-collapse:collapse; font-size:0.7rem; }
+.dev-table th { text-align:left; color:var(--text-dim); padding:4px 8px; border-bottom:1px solid var(--border); }
+.dev-table td { padding:5px 8px; border-bottom:1px solid var(--border); font-family:'JetBrains Mono',monospace; }
+.dev-table tr:last-child td { border-bottom:none; }
+.dev-kv { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.dev-kv-item { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px 14px; }
+.dev-kv-label { font-size:0.6rem; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:4px; }
+.dev-kv-value { font-size:1rem; color:var(--gold); font-weight:600; }
+.dev-spinner { text-align:center; padding:32px; color:var(--text-dim); font-size:0.8rem; }
+.dev-error { color:var(--red); padding:16px; font-size:0.75rem; }
+.dev-agreement-yes { color:var(--green); font-weight:700; }
+.dev-agreement-no  { color:var(--red);   font-weight:700; }
+
+.metric-img{
+  width:100%;
+  border-radius:8px;
+  cursor:pointer;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-img:hover{
+  transform:scale(1.03);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+
 </style>
 </head>
 <body>
@@ -500,7 +543,10 @@ main {
     <span id="engine-badge" class="badge badge-engine">ENGINE READY</span>
     <button class="btn" onclick="resetGame()">↺ New Game</button>
     <button class="btn btn-gold" onclick="analysePosition()">🔍 Analyse</button>
+    <button class="btn" onclick="showModelInfo()" title="CNN architecture info">⚙ Model Info</button>
+    <button class="btn" onclick="showBenchmark()" title="Benchmark vs Stockfish">⚡ Benchmark</button>
     <button class="btn btn-red" onclick="forfeitGame()">⚑ Forfeit</button>
+    <button class="btn" onclick="openMetrics()">📊 Metrics</button>
   </div>
 </header>
 
@@ -1403,5 +1449,217 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   }
 })();
 </script>
+
+<!-- ── Dev Panel Modal ───────────────────────────────────────────────────── -->
+<div id="dev-modal">
+  <div class="dev-panel">
+    <button class="dev-close" onclick="document.getElementById('dev-modal').classList.remove('show')">✕</button>
+    <h2 id="dev-modal-title">Loading…</h2>
+    <div id="dev-modal-body"><div class="dev-spinner">⏳ Fetching data…</div></div>
+  </div>
+</div>
+
+<script>
+// ── Model Info panel ─────────────────────────────────────────────────────────
+async function showModelInfo() {
+  const modal = document.getElementById('dev-modal');
+  const title = document.getElementById('dev-modal-title');
+  const body  = document.getElementById('dev-modal-body');
+  title.textContent = '⚙ CNN Architecture';
+  body.innerHTML = '<div class="dev-spinner">⏳ Loading model info…</div>';
+  modal.classList.add('show');
+  try {
+    const res  = await fetch('/model_info');
+    const data = await res.json();
+    if (data.error) { body.innerHTML = `<div class="dev-error">Error: ${data.error}</div>`; return; }
+    const t = data.training || {};
+    body.innerHTML = `
+      <div class="dev-kv">
+        <div class="dev-kv-item"><div class="dev-kv-label">Architecture</div><div class="dev-kv-value" style="font-size:0.8rem">${data.architecture}</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Input Shape</div><div class="dev-kv-value">${JSON.stringify(data.input_shape)}</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Total Params</div><div class="dev-kv-value">${data.total_params.toLocaleString()}</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Est. Size</div><div class="dev-kv-value">${data.estimated_size_mb} MB</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Dataset</div><div class="dev-kv-value" style="font-size:0.75rem">${t.dataset_size || '—'}</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Correlation vs SF</div><div class="dev-kv-value">${t.correlation_vs_stockfish || '—'}</div></div>
+      </div>
+      <table class="dev-table">
+        <thead><tr><th>#</th><th>Layer</th><th>Type</th><th>Output Shape</th><th>Params</th></tr></thead>
+        <tbody>
+          ${(data.layers || []).map(l => `<tr>
+            <td>${l.index}</td>
+            <td style="color:var(--gold)">${l.name}</td>
+            <td style="color:var(--blue)">${l.type}</td>
+            <td>${l.output_shape}</td>
+            <td>${l.params.toLocaleString()}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:0.65rem;color:var(--text-dim)">Framework: ${t.framework || 'TensorFlow/Keras'} · Target: ${t.target || 'Stockfish evaluations'}</div>
+    `;
+  } catch(e) { body.innerHTML = `<div class="dev-error">Fetch failed: ${e.message}</div>`; }
+}
+
+// ── Benchmark panel ──────────────────────────────────────────────────────────
+async function showBenchmark() {
+  const modal = document.getElementById('dev-modal');
+  const title = document.getElementById('dev-modal-title');
+  const body  = document.getElementById('dev-modal-body');
+  title.textContent = '⚡ Benchmark: Hybrid vs Stockfish';
+  body.innerHTML = '<div class="dev-spinner">⏳ Running benchmark on current position…</div>';
+  modal.classList.add('show');
+  try {
+    const res  = await fetch('/benchmark', { method: 'POST' });
+    const data = await res.json();
+    if (data.error) { body.innerHTML = `<div class="dev-error">Error: ${data.error}</div>`; return; }
+    const h = data.hybrid   || {};
+    const s = data.stockfish || {};
+    const c = data.comparison || {};
+    const sfAvail = s.available !== false && s.time_ms != null;
+    const top3html = (h.top_3 || []).map((m,i) =>
+      `<tr><td>${i+1}</td><td style="color:var(--gold)">${m.san}</td><td>${m.score}</td></tr>`
+    ).join('');
+    body.innerHTML = `
+      <div class="dev-kv">
+        <div class="dev-kv-item"><div class="dev-kv-label">Hybrid Move</div><div class="dev-kv-value">${h.san || h.move || '—'}</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Hybrid Time</div><div class="dev-kv-value">${h.time_ms != null ? h.time_ms + ' ms' : '—'}</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Hybrid Eval</div><div class="dev-kv-value">${h.eval_cp != null ? h.eval_cp + ' cp' : '—'}</div></div>
+        ${sfAvail ? `
+        <div class="dev-kv-item"><div class="dev-kv-label">Stockfish Move</div><div class="dev-kv-value">${s.san || s.move || '—'}</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Stockfish Time</div><div class="dev-kv-value">${s.time_ms} ms</div></div>
+        <div class="dev-kv-item"><div class="dev-kv-label">Stockfish Eval</div><div class="dev-kv-value">${s.eval_cp} cp</div></div>
+        ` : `<div class="dev-kv-item" style="grid-column:span 3"><div class="dev-kv-label">Stockfish</div><div class="dev-kv-value" style="font-size:0.75rem;color:var(--text-dim)">Not installed</div></div>`}
+      </div>
+      ${sfAvail ? `
+      <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center">
+          <div class="dev-kv-label">Agreement</div>
+          <div style="font-size:1.1rem;margin-top:4px" class="${c.agreement ? 'dev-agreement-yes' : 'dev-agreement-no'}">${c.agreement ? '✅ YES' : '❌ NO'}</div>
+        </div>
+        <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center">
+          <div class="dev-kv-label">Speedup</div>
+          <div style="font-size:1.1rem;color:var(--green);font-weight:700;margin-top:4px">${c.speedup || '—'}×</div>
+        </div>
+        <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center">
+          <div class="dev-kv-label">Time Saved</div>
+          <div style="font-size:1rem;color:var(--gold);font-weight:700;margin-top:4px">${c.time_saved_ms != null ? c.time_saved_ms + ' ms' : '—'}</div>
+        </div>
+      </div>` : ''}
+      ${top3html ? `
+      <div style="font-size:0.65rem;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.08em;text-transform:uppercase">Hybrid Top 3 Moves</div>
+      <table class="dev-table"><thead><tr><th>#</th><th>Move</th><th>Score</th></tr></thead><tbody>${top3html}</tbody></table>
+      ` : ''}
+    `;
+  } catch(e) { body.innerHTML = `<div class="dev-error">Fetch failed: ${e.message}</div>`; }
+}
+</script>
+
+// ── Metrics panel ──────────────────────────────────────────────────────────
+<div id="metrics-modal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  z-index:300;
+  align-items:center;
+  justify-content:center;
+">
+
+  <div style="
+    background:#161616;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:24px;
+    max-width:900px;
+    width:90%;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.8);
+  ">
+
+    <button onclick="closeMetrics()" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      background:none;
+      border:none;
+      font-size:1.4rem;
+      color:#aaa;
+      cursor:pointer;
+    ">✕</button>
+
+    <h2 style="margin-bottom:18px;color:#c9a84c;">📊 Model Metrics</h2>
+
+    <div style="
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+      margin-top: 10px;
+    ">
+      <img src="/static/accuracy_metrics.png" class="metric-img">
+      <img src="/static/architecture_breakdown.png" class="metric-img">
+      <img src="/static/performance_comparison.png" class="metric-img">
+      <img src="/static/training_progress.png" class="metric-img">
+    </div>
+
+  </div>
+</div>
+
+<script>
+function openMetrics(){
+  document.getElementById("metrics-modal").style.display="flex";
+}
+
+function closeMetrics(){
+  document.getElementById("metrics-modal").style.display="none";
+}
+
+</script>
+
+<!-- fullscreen image viewer -->
+<div id="img-viewer" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  z-index:500;
+  align-items:center;
+  justify-content:center;
+">
+
+  <img id="viewer-img" style="
+    max-width:90%;
+    max-height:90%;
+    border-radius:10px;
+    box-shadow:0 20px 80px rgba(0,0,0,0.9);
+  ">
+
+</div>
+    <!-- Image viewer script -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const viewer = document.getElementById("img-viewer");
+      const vimg = document.getElementById("viewer-img");
+
+      document.querySelectorAll(".metric-img").forEach(img => {
+        img.addEventListener("click", () => {
+          vimg.src = img.src;
+          viewer.style.display = "flex";
+        });
+      });
+
+      viewer.addEventListener("click", () => {
+        viewer.style.display = "none";
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if(e.key === "Escape"){
+          viewer.style.display = "none";
+        }
+      });
+
+    });
+    </script>
+
+
 </body>
 </html>

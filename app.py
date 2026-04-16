@@ -331,6 +331,150 @@ def reset():
     return jsonify(get_state())
 
 
+@app.route("/benchmark", methods=["POST"])
+def benchmark():
+    """
+    Benchmark current position: compare hybrid engine vs Stockfish.
+    Returns timing and evaluation comparison.
+    """
+    import time
+    
+    if board.is_game_over():
+        return jsonify({"error": "Game is over"}), 400
+    
+    results = {
+        "fen": board.fen(),
+        "hybrid": {},
+        "stockfish": {},
+        "comparison": {}
+    }
+    
+    # Benchmark hybrid engine
+    hybrid_time = 0.0
+    hybrid_eval = 0.0
+    start = time.perf_counter()
+    try:
+        move, explanation, top3 = engine_move(board)
+        hybrid_time = (time.perf_counter() - start) * 1000  # ms
+        try:
+            hybrid_eval = float(position_metrics(board).get("cnn_eval", 0))
+        except Exception:
+            hybrid_eval = 0.0
+
+        results["hybrid"] = {
+            "move": move.uci() if move else None,
+            "san": board_to_san(board, move) if move else None,
+            "time_ms": round(hybrid_time, 2),
+            "eval_cp": round(hybrid_eval, 1),
+            "top_3": [
+                {
+                    "san": board_to_san(board, m["move"]),
+                    "score": round(float(m["score"]), 3)
+                } for m in top3
+            ]
+        }
+    except Exception as e:
+        hybrid_time = (time.perf_counter() - start) * 1000
+        results["hybrid"] = {"error": str(e), "time_ms": round(hybrid_time, 2)}
+    
+    # Try Stockfish benchmark (optional - will fail gracefully if not installed)
+    try:
+        import chess.engine
+        STOCKFISH_PATH = r"C:\Users\vsriv\Downloads\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2.exe"
+        STOCKFISH_DEPTH = 8
+        
+        with chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH) as engine:
+            start = time.perf_counter()
+            result = engine.play(board, chess.engine.Limit(depth=STOCKFISH_DEPTH))
+            stockfish_time = (time.perf_counter() - start) * 1000  # ms
+            
+            # Get evaluation
+            info = engine.analyse(board, chess.engine.Limit(depth=STOCKFISH_DEPTH))
+            stockfish_eval = 0
+            if info["score"].relative:
+                stockfish_eval = info["score"].relative.score(mate_score=10000)
+            
+            results["stockfish"] = {
+                "move": result.move.uci() if result.move else None,
+                "san": board.san(result.move) if result.move else None,
+                "time_ms": round(stockfish_time, 2),
+                "eval_cp": stockfish_eval or 0,
+                "depth": STOCKFISH_DEPTH
+            }
+            
+            # Comparison metrics
+            if results["hybrid"].get("move") and results["stockfish"].get("move"):
+                results["comparison"] = {
+                    "agreement": results["hybrid"]["move"] == results["stockfish"]["move"],
+                    "speedup": round(stockfish_time / hybrid_time, 2) if hybrid_time > 0 else 0,
+                    "time_saved_ms": round(stockfish_time - hybrid_time, 2),
+                    "eval_diff_cp": abs(hybrid_eval - stockfish_eval)
+                }
+    except (FileNotFoundError, Exception) as e:
+        results["stockfish"] = {"available": False, "note": "Stockfish not installed or not found"}
+        results["comparison"] = {"note": "Stockfish comparison unavailable"}
+    
+    return jsonify(results)
+
+
+@app.route("/model_info", methods=["GET"])
+def model_info():
+    """
+    Return Deep Learning model architecture information.
+    """
+    import tensorflow as tf
+
+    try:
+        # Build the model by running a dummy forward pass so that
+        # layer output shapes are populated (required in Keras 3 / TF 2.16+)
+        dummy = np.zeros((1, 8, 8, 12), dtype=np.float32)
+        cnn_model.predict(dummy, verbose=0)
+
+        model_config = {
+            "architecture": "Convolutional Neural Network",
+            "input_shape": [8, 8, 12],
+            "layers": [],
+            "total_params": 0,
+            "trainable_params": 0
+        }
+
+        for i, layer in enumerate(cnn_model.layers):
+            # output_shape may still be unavailable on some layers (e.g. InputLayer)
+            try:
+                out_shape = str(layer.output_shape)
+            except AttributeError:
+                try:
+                    out_shape = str(layer.output.shape)
+                except Exception:
+                    out_shape = "N/A"
+
+            layer_info = {
+                "index": i,
+                "name": layer.name,
+                "type": layer.__class__.__name__,
+                "output_shape": out_shape,
+                "params": layer.count_params()
+            }
+            model_config["layers"].append(layer_info)
+            model_config["total_params"] += layer.count_params()
+
+        model_config["trainable_params"] = int(cnn_model.trainable_weights.__len__() and
+                                                sum(tf.size(w).numpy() for w in cnn_model.trainable_weights))
+        model_config["total_params"]     = int(model_config["total_params"])
+        model_config["estimated_size_mb"] = round(model_config["total_params"] * 4 / (1024 * 1024), 2)
+
+        model_config["training"] = {
+            "framework": "TensorFlow/Keras",
+            "target": "Stockfish centipawn evaluations (depth 8)",
+            "dataset_size": "~50,000 positions",
+            "correlation_vs_stockfish": 0.506
+        }
+
+        return jsonify(model_config)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
