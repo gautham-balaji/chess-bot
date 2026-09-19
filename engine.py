@@ -169,10 +169,23 @@ def rerank_moves(board):
             score = 0.5*cnn_norm + 0.25*mat + 0.15*space + 0.08*center + 0.02*mob
         board.pop()
 
-        score += development_bonus(board, mv)
-        score += pawn_push_penalty(board, mv)
-        score += opening_center_bonus(board, mv)
-        score += tactical_move_bonus(board, mv)
+        # C1 fix: apply the heuristic bonuses in the direction that is BETTER for
+        # the side to move.
+        #
+        # The weighted score above is on a White-positive scale, and the sort at
+        # the end of this function is descending for White but ascending for
+        # Black (lower is better for Black). The bonuses were previously added
+        # with a fixed positive sign, so for Black a "good move" bonus pushed the
+        # move DOWN Black's own preference list. The app only ever lets the
+        # engine play Black, so this was active in every game.
+        #
+        # Multiplying by 1.0 is exact in IEEE 754 and the addition order is
+        # unchanged, so White's scores remain bit-identical.
+        bonus_sign = 1.0 if board.turn == chess.WHITE else -1.0
+        score += bonus_sign * development_bonus(board, mv)
+        score += bonus_sign * pawn_push_penalty(board, mv)
+        score += bonus_sign * opening_center_bonus(board, mv)
+        score += bonus_sign * tactical_move_bonus(board, mv)
 
         move_scores.append({
             "move": mv,

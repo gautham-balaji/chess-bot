@@ -151,20 +151,31 @@ def test_both_sides_are_handled(engine_mod, request, fen_key):
     assert len(top3) > 0
 
 
-# ==================================================================== known gap C1
+# ==================================================================== C1 (FIXED)
 #
-# The heuristic bonuses are added with a fixed positive sign (engine.py:172-175)
-# while the final sort direction flips by side (engine.py:207). For White, where
-# higher scores rank first, a positive bonus correctly improves a move. For Black,
-# where LOWER scores rank first, the same positive bonus pushes the move DOWN
-# Black's own preference list.
+# The heuristic bonuses used to be added with a fixed positive sign while the
+# final sort direction flips by side (engine.py). For White, where higher scores
+# rank first, a positive bonus correctly improves a move. For Black, where LOWER
+# scores rank first, the same positive bonus pushed the move DOWN Black's own
+# preference list - and app.py only ever lets the engine play Black.
 #
-# The contract below - "a positive heuristic bonus must not make a move rank
-# worse for the side to move" - is asserted identically for both colours. It
-# PASSES for White and FAILS for Black, which is what makes this a defect in the
-# engine rather than a quirk of the test.
+# Phase 4A fixed this by applying the bonuses with a side-dependent sign. The
+# contract below is asserted identically for both colours and must now pass for
+# both. It previously passed for White and failed for Black.
 #
-# This matters in production: app.py only ever lets the engine play Black.
+# The applied bonus is measured directly, by re-running rerank_moves with the
+# four bonus helpers stubbed to zero and differencing the scores. Everything else
+# (the weighted term, the 1-ply lookahead adjustment) is deterministic and
+# identical between the two calls, so the difference IS the signed bonus
+# contribution. This avoids re-deriving any engine arithmetic in the test.
+
+BONUS_HELPERS = (
+    "development_bonus",
+    "pawn_push_penalty",
+    "opening_center_bonus",
+    "tactical_move_bonus",
+)
+
 
 def _ranking_direction_is_lower_is_better(ranked):
     """Derive the sort direction from the engine's own output rather than
@@ -172,51 +183,84 @@ def _ranking_direction_is_lower_is_better(ranked):
     return ranked[0]["score"] < ranked[-1]["score"]
 
 
+def _scores_by_uci(ranked):
+    return {e["move"].uci(): e["score"] for e in ranked}
+
+
 @pytest.mark.parametrize(
-    "board_fixture",
-    [
-        "white_to_move_board",
-        pytest.param(
-            "black_to_move_board",
-            marks=[
-                pytest.mark.deferred,
-                pytest.mark.xfail(
-                    strict=True,
-                    reason="DEFERRED (Phase 4, C1): heuristic bonuses are added with a "
-                           "fixed positive sign while Black's ranking sorts ascending, "
-                           "so a positive bonus makes a move rank WORSE for Black. The "
-                           "identical assertion passes for White.",
-                ),
-            ],
-        ),
-    ],
+    "board_fixture", ["white_to_move_board", "black_to_move_board"]
 )
 def test_positive_bonus_must_not_worsen_a_move_for_the_side_to_move(
-    engine_mod, request, board_fixture
+    engine_mod, request, monkeypatch, board_fixture
 ):
     board = request.getfixturevalue(board_fixture)
-    ranked = engine_mod.rerank_moves(board)
+
+    ranked = engine_mod.rerank_moves(board.copy())
     lower_is_better = _ranking_direction_is_lower_is_better(ranked)
+    with_bonus = _scores_by_uci(ranked)
+
+    # Raw bonuses MUST be captured before the helpers are stubbed out.
+    raw = {e["move"].uci(): bonus_sum(engine_mod, board, e["move"]) for e in ranked}
+
+    for name in BONUS_HELPERS:
+        monkeypatch.setattr(engine_mod, name, lambda b, m: 0.0)
+    without_bonus = _scores_by_uci(engine_mod.rerank_moves(board.copy()))
 
     checked = 0
-    for entry in ranked:
-        bonus = bonus_sum(engine_mod, board, entry["move"])
-        if bonus <= 0:
+    for uci, raw_bonus in raw.items():
+        if raw_bonus <= 0:
             continue
         checked += 1
-        score_with_bonus = entry["score"]
-        score_without_bonus = entry["score"] - bonus
+        applied = with_bonus[uci] - without_bonus[uci]
 
         if lower_is_better:
-            assert score_with_bonus <= score_without_bonus, (
-                f"{entry['move'].uci()}: bonus {bonus:+.3f} raised the score to "
-                f"{score_with_bonus:.3f} from {score_without_bonus:.3f}, but lower "
-                f"scores rank better for this side - the bonus made the move worse"
+            assert applied <= 0, (
+                f"{uci}: raw bonus {raw_bonus:+.3f} was applied as {applied:+.3f}, "
+                f"raising the score, but LOWER scores rank better for this side - "
+                f"the bonus made the move worse"
             )
         else:
-            assert score_with_bonus >= score_without_bonus, (
-                f"{entry['move'].uci()}: bonus {bonus:+.3f} did not improve the score"
+            assert applied >= 0, (
+                f"{uci}: raw bonus {raw_bonus:+.3f} was applied as {applied:+.3f}, "
+                f"but HIGHER scores rank better for this side"
             )
+
+    assert checked > 0, "no bonused move found - test position is unsuitable"
+
+
+@pytest.mark.parametrize(
+    "board_fixture,expect_negated",
+    [("white_to_move_board", False), ("black_to_move_board", True)],
+)
+def test_bonus_magnitude_is_preserved_and_only_the_sign_changes(
+    engine_mod, request, monkeypatch, board_fixture, expect_negated
+):
+    """The C1 fix must flip the bonus SIGN for Black, not rescale it.
+
+    Guards against a future 'fix' that clamps, halves or drops the bonuses, and
+    pins White's behaviour as unchanged.
+    """
+    board = request.getfixturevalue(board_fixture)
+    ranked = engine_mod.rerank_moves(board.copy())
+    with_bonus = _scores_by_uci(ranked)
+    raw = {e["move"].uci(): bonus_sum(engine_mod, board, e["move"]) for e in ranked}
+
+    for name in BONUS_HELPERS:
+        monkeypatch.setattr(engine_mod, name, lambda b, m: 0.0)
+    without_bonus = _scores_by_uci(engine_mod.rerank_moves(board.copy()))
+
+    checked = 0
+    for uci, raw_bonus in raw.items():
+        if raw_bonus == 0:
+            continue
+        checked += 1
+        applied = with_bonus[uci] - without_bonus[uci]
+        expected = -raw_bonus if expect_negated else raw_bonus
+        # rerank_moves rounds scores to 3 decimals, hence the tolerance.
+        assert applied == pytest.approx(expected, abs=2e-3), (
+            f"{uci}: raw bonus {raw_bonus:+.3f} applied as {applied:+.3f}, "
+            f"expected {expected:+.3f}"
+        )
 
     assert checked > 0, "no bonused move found - test position is unsuitable"
 
