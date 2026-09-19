@@ -17,3 +17,7 @@ chess_model.ipynb
 # Generated training dataset artifacts (regenerable via training/build_dataset.py;
 # checksum recorded in the accompanying .manifest.json, which IS committed)
 training/artifacts/*.jsonl
+
+# Experimental training runs (models, predictions, per-run evaluation output).
+# Regenerable via training/train.py; metadata.json is the audit record.
+training/experiments/
