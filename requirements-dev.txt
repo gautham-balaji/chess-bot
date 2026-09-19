@@ -1,0 +1,9 @@
+# Test-only dependencies. Deliberately kept out of requirements.txt so the
+# production runtime install stays minimal.
+#
+#     pip install -r requirements.txt -r requirements-dev.txt
+#
+# Version pinned to what the Phase 2 suite was verified against.
+# See docs/TESTING.md.
+
+pytest==9.1.1

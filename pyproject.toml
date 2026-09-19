@@ -1,0 +1,25 @@
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+
+# Put the repository root on sys.path. This project is a flat script layout, not
+# an installed package, so without this `import engine` only works when pytest
+# happens to be invoked from the repo root.
+pythonpath = ["."]
+
+addopts = [
+    "--strict-markers",
+    "-ra",
+]
+
+markers = [
+    "slow: tests that run the full 52-position baseline suite (~40s). Deselect with -m 'not slow'.",
+    "needs_stockfish: requires a resolvable Stockfish binary; skipped automatically when absent.",
+    "deferred: documents a known defect that Phase 4 is expected to fix.",
+]
+
+filterwarnings = [
+    # scikit-learn 1.7.1 pickles loaded under 1.8.0. Documented and deliberately
+    # not suppressed in production; silenced here only to keep test output readable.
+    "ignore::sklearn.exceptions.InconsistentVersionWarning",
+]
