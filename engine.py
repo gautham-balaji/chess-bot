@@ -210,13 +210,34 @@ def rerank_moves(board):
 
     if opp_tensors:
         opp_scores = cnn_model.predict(np.array(opp_tensors), verbose=0).flatten()
+
+        # C2 fix: make this an actual minimax step.
+        #
+        # The CNN is a WHITE-POSITIVE evaluator and the candidate score is on the
+        # same White-positive scale, with no sign transform in between. So the
+        # opponent picks the reply that is best for THEM on that scale:
+        #   - we are White  -> the opponent is Black -> they MINIMISE
+        #   - we are Black  -> the opponent is White -> they MAXIMISE
+        # The previous code always took the maximum, which selected the reply most
+        # favourable to White regardless of who was actually replying.
+        #
+        # The resulting value is then blended in POSITIVELY, because the sort
+        # below already encodes direction (descending for White, ascending for
+        # Black). The previous code subtracted it, which inverted the term for
+        # both sides: a reply that is good for White made White's move look worse
+        # and Black's move look better.
+        opponent_maximises = (board.turn == chess.BLACK)
         opp_best = {}
         for idx, sc in zip(opp_move_map, opp_scores):
-            if idx not in opp_best or sc > opp_best[idx]:
+            if idx not in opp_best:
                 opp_best[idx] = sc
+            elif opponent_maximises:
+                opp_best[idx] = max(opp_best[idx], sc)
+            else:
+                opp_best[idx] = min(opp_best[idx], sc)
         for i, entry in enumerate(move_scores):
             if i in opp_best:
-                entry["score"] -= 0.5 * np.tanh(opp_best[i] / 200)
+                entry["score"] += 0.5 * np.tanh(opp_best[i] / 200)
 
     move_scores.sort(key=lambda x: x["score"], reverse=(board.turn == chess.WHITE))
     return move_scores

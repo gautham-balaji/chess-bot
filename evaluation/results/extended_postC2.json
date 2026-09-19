@@ -1,0 +1,5232 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-09-19T08:08:01+00:00",
+    "git_commit": "863cd8afa387d335bd68ec94de06aae0ab882b3b",
+    "git_branch": "main",
+    "git_dirty": true,
+    "python_version": "3.12.10",
+    "platform": "Windows 11 AMD64",
+    "processor": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+    "cpu_count": 12,
+    "stockfish_version": "Stockfish 17.1",
+    "stockfish_path": "C:\\Users\\vsriv\\Downloads\\stockfish-windows-x86-64-avx2\\stockfish\\stockfish-windows-x86-64-avx2.exe",
+    "stockfish_depth": 8,
+    "stockfish_threads": 1,
+    "stockfish_hash_mb": 16,
+    "stockfish_multipv_agreement": 3,
+    "stockfish_multipv_ranking": 8,
+    "stockfish_clear_hash_per_position": true,
+    "wall_clock_seconds": 570.2
+  },
+  "dataset": {
+    "name": "extended",
+    "source_file": "evaluation/positions/extended.json",
+    "count": 160
+  },
+  "pov_convention": "All evaluations are expressed from the perspective of the side to move in the ORIGINAL position (the player choosing the move). Positive centipawns are good for that player.",
+  "regret_definition": "move_regret_cp = eval_after_stockfish_move - eval_after_engine_move, both produced by the same Stockfish configuration and both converted to the mover's POV. Positive means the engine gave up that many centipawns. Negative values are retained, not clamped.",
+  "metrics": {
+    "legality_rate": {
+      "numerator": 160,
+      "denominator": 160,
+      "rate": 1.0,
+      "percent": 100.0
+    },
+    "top1_agreement": {
+      "numerator": 29,
+      "denominator": 160,
+      "rate": 0.1812,
+      "percent": 18.12
+    },
+    "top3_containment": {
+      "numerator": 54,
+      "denominator": 160,
+      "rate": 0.3375,
+      "percent": 33.75
+    },
+    "random_move_baseline": {
+      "top1": 0.0431,
+      "top3": 0.1293,
+      "method": "mean over positions of min(N, legal_moves)/legal_moves"
+    },
+    "move_regret_cp": {
+      "n": 152,
+      "min": -84,
+      "median": 25.0,
+      "mean": 144.07,
+      "p95": 533,
+      "max": 676
+    },
+    "regret_coverage": {
+      "numerator": 152,
+      "denominator": 160,
+      "rate": 0.95,
+      "percent": 95.0
+    },
+    "blunder_rate": {
+      "blunders": 37,
+      "denominator": 152,
+      "rate": 0.2434,
+      "threshold_cp": 300,
+      "denominator_note": "positions with a defined centipawn regret; mate-involved positions are excluded"
+    },
+    "mate_status_counts": {
+      "none": 152,
+      "missed_forced_mate": 4,
+      "engine_move_allows_forced_mate": 4
+    },
+    "spearman_rho_vs_stockfish_topk": {
+      "n": 160,
+      "min": -1.0,
+      "median": 0.3,
+      "mean": 0.22,
+      "p95": 0.77,
+      "max": 0.95
+    },
+    "engine_latency_ms": {
+      "n": 160,
+      "min": 414.67,
+      "median": 1189.85,
+      "mean": 1724.85,
+      "p95": 4663.28,
+      "max": 9777.37
+    },
+    "stockfish_latency_ms": {
+      "n": 160,
+      "min": 1.93,
+      "median": 11.34,
+      "mean": 23.76,
+      "p95": 51.26,
+      "max": 741.72
+    }
+  },
+  "breakdowns": {
+    "by_category": {
+      "defensive": {
+        "n": 5,
+        "top1_agreement": {
+          "numerator": 3,
+          "denominator": 5,
+          "rate": 0.6,
+          "percent": 60.0
+        },
+        "top3_containment": {
+          "numerator": 3,
+          "denominator": 5,
+          "rate": 0.6,
+          "percent": 60.0
+        },
+        "regret_cp": {
+          "n": 3,
+          "min": 0,
+          "median": 0,
+          "mean": 0.0,
+          "p95": 0,
+          "max": 0
+        }
+      },
+      "endgame": {
+        "n": 21,
+        "top1_agreement": {
+          "numerator": 11,
+          "denominator": 21,
+          "rate": 0.5238,
+          "percent": 52.38
+        },
+        "top3_containment": {
+          "numerator": 12,
+          "denominator": 21,
+          "rate": 0.5714,
+          "percent": 57.14
+        },
+        "regret_cp": {
+          "n": 21,
+          "min": -8,
+          "median": 0,
+          "mean": 39.71,
+          "p95": 152,
+          "max": 504
+        }
+      },
+      "middlegame": {
+        "n": 64,
+        "top1_agreement": {
+          "numerator": 8,
+          "denominator": 64,
+          "rate": 0.125,
+          "percent": 12.5
+        },
+        "top3_containment": {
+          "numerator": 15,
+          "denominator": 64,
+          "rate": 0.2344,
+          "percent": 23.44
+        },
+        "regret_cp": {
+          "n": 64,
+          "min": -33,
+          "median": 39.5,
+          "mean": 185.3,
+          "p95": 575,
+          "max": 671
+        }
+      },
+      "opening": {
+        "n": 60,
+        "top1_agreement": {
+          "numerator": 7,
+          "denominator": 60,
+          "rate": 0.1167,
+          "percent": 11.67
+        },
+        "top3_containment": {
+          "numerator": 24,
+          "denominator": 60,
+          "rate": 0.4,
+          "percent": 40.0
+        },
+        "regret_cp": {
+          "n": 60,
+          "min": -84,
+          "median": 33.0,
+          "mean": 145.3,
+          "p95": 529,
+          "max": 676
+        }
+      },
+      "tactical": {
+        "n": 10,
+        "top1_agreement": {
+          "numerator": 0,
+          "denominator": 10,
+          "rate": 0.0,
+          "percent": 0.0
+        },
+        "top3_containment": {
+          "numerator": 0,
+          "denominator": 10,
+          "rate": 0.0,
+          "percent": 0.0
+        },
+        "regret_cp": {
+          "n": 4,
+          "min": -27,
+          "median": 6.0,
+          "mean": 122.0,
+          "p95": 503,
+          "max": 503
+        }
+      }
+    },
+    "by_side_to_move": {
+      "black": {
+        "n": 75,
+        "top1_agreement": {
+          "numerator": 14,
+          "denominator": 75,
+          "rate": 0.1867,
+          "percent": 18.67
+        },
+        "top3_containment": {
+          "numerator": 27,
+          "denominator": 75,
+          "rate": 0.36,
+          "percent": 36.0
+        },
+        "regret_cp": {
+          "n": 71,
+          "min": -84,
+          "median": 29,
+          "mean": 132.01,
+          "p95": 528,
+          "max": 671
+        }
+      },
+      "white": {
+        "n": 85,
+        "top1_agreement": {
+          "numerator": 15,
+          "denominator": 85,
+          "rate": 0.1765,
+          "percent": 17.65
+        },
+        "top3_containment": {
+          "numerator": 27,
+          "denominator": 85,
+          "rate": 0.3176,
+          "percent": 31.76
+        },
+        "regret_cp": {
+          "n": 81,
+          "min": -33,
+          "median": 19,
+          "mean": 154.64,
+          "p95": 580,
+          "max": 676
+        }
+      }
+    }
+  },
+  "per_position": [
+    {
+      "id": "X01P06",
+      "fen": "r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 32,
+      "engine_move": "b5c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 395.4977722167969,
+      "engine_latency_ms": 1946.68,
+      "stockfish_best_move": "b5a4",
+      "stockfish_top3": [
+        "b5c6",
+        "b5a4",
+        "b5c4"
+      ],
+      "stockfish_latency_ms": 7.49,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 27,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 34,
+        "mate_in": null
+      },
+      "move_regret_cp": 7,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.119
+    },
+    {
+      "id": "X01P07",
+      "fen": "r1bqkbnr/1ppp1ppp/p1n5/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "c6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -143.47152709960938,
+      "engine_latency_ms": 510.39,
+      "stockfish_best_move": "g8f6",
+      "stockfish_top3": [
+        "g8f6",
+        "b7b5",
+        "f8e7"
+      ],
+      "stockfish_latency_ms": 13.4,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -147,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -41,
+        "mate_in": null
+      },
+      "move_regret_cp": 106,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0476
+    },
+    {
+      "id": "X01P11",
+      "fen": "r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQR1K1 b kq - 5 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "c6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -29.543622970581055,
+      "engine_latency_ms": 414.67,
+      "stockfish_best_move": "b7b5",
+      "stockfish_top3": [
+        "b7b5",
+        "d7d6",
+        "f6g4"
+      ],
+      "stockfish_latency_ms": 6.69,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -189,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -19,
+        "mate_in": null
+      },
+      "move_regret_cp": 170,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.1905
+    },
+    {
+      "id": "X01P12",
+      "fen": "r1bqk2r/2ppbppp/p1n2n2/1p2p3/B3P3/5N2/PPPP1PPP/RNBQR1K1 w kq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 25,
+      "engine_move": "a4b5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 331.6715393066406,
+      "engine_latency_ms": 492.56,
+      "stockfish_best_move": "a4b3",
+      "stockfish_top3": [
+        "a4b3",
+        "d2d4",
+        "f3e5"
+      ],
+      "stockfish_latency_ms": 8.69,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -356,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 50,
+        "mate_in": null
+      },
+      "move_regret_cp": 406,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.119
+    },
+    {
+      "id": "X02P06",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 32,
+      "engine_move": "b5c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 367.0623474121094,
+      "engine_latency_ms": 923.7,
+      "stockfish_best_move": "e1g1",
+      "stockfish_top3": [
+        "d2d3",
+        "e1g1",
+        "b1c3"
+      ],
+      "stockfish_latency_ms": 10.61,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -9,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 53,
+        "mate_in": null
+      },
+      "move_regret_cp": 62,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2857
+    },
+    {
+      "id": "X02P07",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 5 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 28,
+      "engine_move": "c6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -187.01611328125,
+      "engine_latency_ms": 487.45,
+      "stockfish_best_move": "f8c5",
+      "stockfish_top3": [
+        "f8c5",
+        "f6e4",
+        "a7a6"
+      ],
+      "stockfish_latency_ms": 6.91,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -108,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -51,
+        "mate_in": null
+      },
+      "move_regret_cp": 57,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.6429
+    },
+    {
+      "id": "X02P11",
+      "fen": "r1bqkb1r/pppp1ppp/2Bn4/4p3/3P4/5N2/PPP2PPP/RNBQ1RK1 b kq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 26,
+      "engine_move": "d7c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 0.3912470042705536,
+      "engine_latency_ms": 657.62,
+      "stockfish_best_move": "d7c6",
+      "stockfish_top3": [
+        "d7c6",
+        "b7c6",
+        "e5e4"
+      ],
+      "stockfish_latency_ms": 4.43,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -47,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -47,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.5714
+    },
+    {
+      "id": "X02P12",
+      "fen": "r1bqkb1r/ppp2ppp/2pn4/4p3/3P4/5N2/PPP2PPP/RNBQ1RK1 w kq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 31,
+      "engine_move": "d4e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 262.39251708984375,
+      "engine_latency_ms": 629.48,
+      "stockfish_best_move": "d4e5",
+      "stockfish_top3": [
+        "d4e5",
+        "c1g5",
+        "f3e5"
+      ],
+      "stockfish_latency_ms": 5.48,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 21,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 21,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4762
+    },
+    {
+      "id": "X03P06",
+      "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "f3e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 261.85516357421875,
+      "engine_latency_ms": 641.49,
+      "stockfish_best_move": "c2c3",
+      "stockfish_top3": [
+        "c2c3",
+        "d2d3",
+        "d2d4"
+      ],
+      "stockfish_latency_ms": 17.64,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -319,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 77,
+        "mate_in": null
+      },
+      "move_regret_cp": 396,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.6429
+    },
+    {
+      "id": "X03P07",
+      "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 36,
+      "engine_move": "g8f6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 5.865870952606201,
+      "engine_latency_ms": 642.3,
+      "stockfish_best_move": "g8f6",
+      "stockfish_top3": [
+        "g8f6",
+        "c5b6",
+        "d7d6"
+      ],
+      "stockfish_latency_ms": 8.79,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -43,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -43,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.9286
+    },
+    {
+      "id": "X03P11",
+      "fen": "r1bqk2r/ppp2ppp/2np1n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQ1RK1 b kq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 40,
+      "engine_move": "c8g4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -37.657470703125,
+      "engine_latency_ms": 740.39,
+      "stockfish_best_move": "a7a5",
+      "stockfish_top3": [
+        "a7a6",
+        "h7h6",
+        "a7a5"
+      ],
+      "stockfish_latency_ms": 7.31,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -40,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -26,
+        "mate_in": null
+      },
+      "move_regret_cp": 14,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.3571
+    },
+    {
+      "id": "X03P12",
+      "fen": "r1bq1rk1/ppp2ppp/2np1n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQ1RK1 w - - 2 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 36,
+      "engine_move": "f3e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 226.18112182617188,
+      "engine_latency_ms": 717.87,
+      "stockfish_best_move": "h2h3",
+      "stockfish_top3": [
+        "c1g5",
+        "a2a4",
+        "b1d2"
+      ],
+      "stockfish_latency_ms": 16.12,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -455,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -15,
+        "mate_in": null
+      },
+      "move_regret_cp": 440,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0238
+    },
+    {
+      "id": "X04P06",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "f3e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 245.4410858154297,
+      "engine_latency_ms": 596.12,
+      "stockfish_best_move": "d2d3",
+      "stockfish_top3": [
+        "f3g5",
+        "d2d3",
+        "b1c3"
+      ],
+      "stockfish_latency_ms": 26.68,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -409,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 10,
+        "mate_in": null
+      },
+      "move_regret_cp": 419,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0952
+    },
+    {
+      "id": "X04P07",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p1N1/2B1P3/8/PPPP1PPP/RNBQK2R b KQkq - 5 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 28,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -283.7994079589844,
+      "engine_latency_ms": 693.25,
+      "stockfish_best_move": "d7d5",
+      "stockfish_top3": [
+        "d7d5",
+        "f6e4",
+        "f8c5"
+      ],
+      "stockfish_latency_ms": 14.09,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -151,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 14,
+        "mate_in": null
+      },
+      "move_regret_cp": 165,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4048
+    },
+    {
+      "id": "X04P11",
+      "fen": "r1bqkb1r/ppp2ppp/5n2/nB1Pp1N1/8/8/PPPP1PPP/RNBQK2R b KQkq - 2 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 6,
+      "engine_move": "c7c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 174.86907958984375,
+      "engine_latency_ms": 664.39,
+      "stockfish_best_move": "c8d7",
+      "stockfish_top3": [
+        "c8d7",
+        "c7c6",
+        "f6d7"
+      ],
+      "stockfish_latency_ms": 10.49,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -32,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -23,
+        "mate_in": null
+      },
+      "move_regret_cp": 9,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7714
+    },
+    {
+      "id": "X04P12",
+      "fen": "r1bqkb1r/pp3ppp/2p2n2/nB1Pp1N1/8/8/PPPP1PPP/RNBQK2R w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 40,
+      "engine_move": "g5f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 371.5413513183594,
+      "engine_latency_ms": 1069.72,
+      "stockfish_best_move": "d5c6",
+      "stockfish_top3": [
+        "d5c6",
+        "b5e2",
+        "b5d3"
+      ],
+      "stockfish_latency_ms": 11.36,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -321,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 58,
+        "mate_in": null
+      },
+      "move_regret_cp": 379,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.4048
+    },
+    {
+      "id": "X05P06",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 37,
+      "engine_move": "d1d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 299.24078369140625,
+      "engine_latency_ms": 989.48,
+      "stockfish_best_move": "f3d4",
+      "stockfish_top3": [
+        "f3d4",
+        "f1c4",
+        "c2c3"
+      ],
+      "stockfish_latency_ms": 10.39,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -546,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 48,
+        "mate_in": null
+      },
+      "move_regret_cp": 594,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.3571
+    },
+    {
+      "id": "X05P07",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "c6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -370.2740783691406,
+      "engine_latency_ms": 1889.48,
+      "stockfish_best_move": "g8f6",
+      "stockfish_top3": [
+        "f8c5",
+        "f8b4",
+        "g8f6"
+      ],
+      "stockfish_latency_ms": 13.82,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -129,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -28,
+        "mate_in": null
+      },
+      "move_regret_cp": 101,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0238
+    },
+    {
+      "id": "X05P11",
+      "fen": "r1b1k1nr/pppp1ppp/2n2q2/2b5/3NP3/2P1B3/PP3PPP/RN1QKB1R b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 44,
+      "engine_move": "f6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -345.2890930175781,
+      "engine_latency_ms": 1798.97,
+      "stockfish_best_move": "g8e7",
+      "stockfish_top3": [
+        "g8e7",
+        "d7d6",
+        "c5b6"
+      ],
+      "stockfish_latency_ms": 10.7,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -566,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -37,
+        "mate_in": null
+      },
+      "move_regret_cp": 529,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.8333
+    },
+    {
+      "id": "X05P12",
+      "fen": "r1b1k2r/ppppnppp/2n2q2/2b5/3NP3/2P1B3/PP3PPP/RN1QKB1R w KQkq - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 45,
+      "engine_move": "d1g4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 311.2764587402344,
+      "engine_latency_ms": 3569.57,
+      "stockfish_best_move": "f1b5",
+      "stockfish_top3": [
+        "f1b5",
+        "d1d2",
+        "f1d3"
+      ],
+      "stockfish_latency_ms": 11.0,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -136,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 2,
+        "mate_in": null
+      },
+      "move_regret_cp": 138,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.119
+    },
+    {
+      "id": "X06P06",
+      "fen": "rnbqkb1r/ppp2ppp/3p1n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 35,
+      "engine_move": "e5f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 391.8387145996094,
+      "engine_latency_ms": 1451.35,
+      "stockfish_best_move": "e5f3",
+      "stockfish_top3": [
+        "e5f3",
+        "e5d3",
+        "e5c4"
+      ],
+      "stockfish_latency_ms": 9.05,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -127,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 107,
+        "mate_in": null
+      },
+      "move_regret_cp": 234,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.4048
+    },
+    {
+      "id": "X06P07",
+      "fen": "rnbqkb1r/ppp2ppp/3p1n2/8/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "c8g4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 174.2100372314453,
+      "engine_latency_ms": 2595.04,
+      "stockfish_best_move": "f6e4",
+      "stockfish_top3": [
+        "f6e4",
+        "f8e7",
+        "c7c6"
+      ],
+      "stockfish_latency_ms": 7.3,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -199,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -25,
+        "mate_in": null
+      },
+      "move_regret_cp": 174,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.5714
+    },
+    {
+      "id": "X06P11",
+      "fen": "rnbqkb1r/ppp2ppp/8/3p4/3Pn3/3B1N2/PPP2PPP/RNBQK2R b KQkq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 42,
+      "engine_move": "c8f5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 92.59290313720703,
+      "engine_latency_ms": 3348.43,
+      "stockfish_best_move": "f8e7",
+      "stockfish_top3": [
+        "c8f5",
+        "f8d6",
+        "f8e7"
+      ],
+      "stockfish_latency_ms": 741.72,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -60,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -59,
+        "mate_in": null
+      },
+      "move_regret_cp": 1,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.2619
+    },
+    {
+      "id": "X06P12",
+      "fen": "r1bqkb1r/ppp2ppp/2n5/3p4/3Pn3/3B1N2/PPP2PPP/RNBQK2R w KQkq - 2 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 36,
+      "engine_move": "d3e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 343.30279541015625,
+      "engine_latency_ms": 5816.48,
+      "stockfish_best_move": "e1g1",
+      "stockfish_top3": [
+        "e1g1",
+        "b1c3",
+        "c2c3"
+      ],
+      "stockfish_latency_ms": 8.54,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -169,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 59,
+        "mate_in": null
+      },
+      "move_regret_cp": 228,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X07P06",
+      "fen": "rnbqkbnr/pp2pppp/3p4/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 37,
+      "engine_move": "d1d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 321.61627197265625,
+      "engine_latency_ms": 1984.33,
+      "stockfish_best_move": "f3d4",
+      "stockfish_top3": [
+        "f3d4",
+        "d1d4",
+        "c2c3"
+      ],
+      "stockfish_latency_ms": 25.24,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 23,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 27,
+        "mate_in": null
+      },
+      "move_regret_cp": 4,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.2143
+    },
+    {
+      "id": "X07P07",
+      "fen": "rnbqkbnr/pp2pppp/3p4/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 28,
+      "engine_move": "c8g4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -35.00400161743164,
+      "engine_latency_ms": 1835.05,
+      "stockfish_best_move": "a7a6",
+      "stockfish_top3": [
+        "a7a6",
+        "g7g6",
+        "g8f6"
+      ],
+      "stockfish_latency_ms": 22.79,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -570,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -42,
+        "mate_in": null
+      },
+      "move_regret_cp": 528,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.0714
+    },
+    {
+      "id": "X07P11",
+      "fen": "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N1B3/PPP2PPP/R2QKB1R b KQkq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -15.922330856323242,
+      "engine_latency_ms": 5401.46,
+      "stockfish_best_move": "e7e5",
+      "stockfish_top3": [
+        "e7e5",
+        "b8c6",
+        "c8d7"
+      ],
+      "stockfish_latency_ms": 9.98,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -390,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -23,
+        "mate_in": null
+      },
+      "move_regret_cp": 367,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2143
+    },
+    {
+      "id": "X07P12",
+      "fen": "rnbqkb1r/1p3ppp/p2p1n2/4p3/3NP3/2N1B3/PPP2PPP/R2QKB1R w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 45,
+      "engine_move": "c3d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 202.947021484375,
+      "engine_latency_ms": 3193.19,
+      "stockfish_best_move": "d4b3",
+      "stockfish_top3": [
+        "d4e2",
+        "d4b3",
+        "d4f3"
+      ],
+      "stockfish_latency_ms": 6.68,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -247,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 22,
+        "mate_in": null
+      },
+      "move_regret_cp": 269,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.6667
+    },
+    {
+      "id": "X08P11",
+      "fen": "rnbqkb1r/pp2pp1p/3p1np1/8/3NP3/2N1B3/PPP2PPP/R2QKB1R b KQkq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -211.3205108642578,
+      "engine_latency_ms": 1718.75,
+      "stockfish_best_move": "c8d7",
+      "stockfish_top3": [
+        "f8g7",
+        "b8c6",
+        "c8d7"
+      ],
+      "stockfish_latency_ms": 12.21,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -442,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -85,
+        "mate_in": null
+      },
+      "move_regret_cp": 357,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4762
+    },
+    {
+      "id": "X08P12",
+      "fen": "rnbqk2r/pp2ppbp/3p1np1/8/3NP3/2N1B3/PPP2PPP/R2QKB1R w KQkq - 2 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 46,
+      "engine_move": "d4e6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 174.96432495117188,
+      "engine_latency_ms": 1645.12,
+      "stockfish_best_move": "f2f3",
+      "stockfish_top3": [
+        "f2f3",
+        "d1d2",
+        "f1e2"
+      ],
+      "stockfish_latency_ms": 15.63,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -536,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 63,
+        "mate_in": null
+      },
+      "move_regret_cp": 599,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5
+    },
+    {
+      "id": "X09P06",
+      "fen": "r1bqkbnr/pp1ppppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 37,
+      "engine_move": "d1d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 204.14450073242188,
+      "engine_latency_ms": 1820.8,
+      "stockfish_best_move": "f3d4",
+      "stockfish_top3": [
+        "f3d4",
+        "c2c3",
+        "f1c4"
+      ],
+      "stockfish_latency_ms": 24.14,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -473,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 37,
+        "mate_in": null
+      },
+      "move_regret_cp": 510,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4762
+    },
+    {
+      "id": "X09P07",
+      "fen": "r1bqkbnr/pp1ppppp/2n5/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 25,
+      "engine_move": "c6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -392.0605773925781,
+      "engine_latency_ms": 1055.82,
+      "stockfish_best_move": "g7g6",
+      "stockfish_top3": [
+        "g7g6",
+        "g8f6",
+        "d7d6"
+      ],
+      "stockfish_latency_ms": 14.97,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -104,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -34,
+        "mate_in": null
+      },
+      "move_regret_cp": 70,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4286
+    },
+    {
+      "id": "X09P11",
+      "fen": "r1bqkb1r/pp1p1ppp/2n2n2/1N2p3/4P3/2N5/PPP2PPP/R1BQKB1R b KQkq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -66.8998794555664,
+      "engine_latency_ms": 1480.64,
+      "stockfish_best_move": "d7d6",
+      "stockfish_top3": [
+        "d7d6",
+        "f8b4",
+        "f8c5"
+      ],
+      "stockfish_latency_ms": 5.87,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -262,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -46,
+        "mate_in": null
+      },
+      "move_regret_cp": 216,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4762
+    },
+    {
+      "id": "X09P12",
+      "fen": "r1bqkb1r/pp3ppp/2np1n2/1N2p3/4P3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 40,
+      "engine_move": "d1d6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 319.16400146484375,
+      "engine_latency_ms": 1109.26,
+      "stockfish_best_move": "c3d5",
+      "stockfish_top3": [
+        "c1g5",
+        "c3d5",
+        "b5a3"
+      ],
+      "stockfish_latency_ms": 8.65,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -510,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 23,
+        "mate_in": null
+      },
+      "move_regret_cp": 533,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5
+    },
+    {
+      "id": "X10P06",
+      "fen": "rnbqkbnr/pp1p1ppp/4p3/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 37,
+      "engine_move": "d1d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 334.65838623046875,
+      "engine_latency_ms": 1105.27,
+      "stockfish_best_move": "f3d4",
+      "stockfish_top3": [
+        "d1d4",
+        "f3d4",
+        "a2a3"
+      ],
+      "stockfish_latency_ms": 20.42,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 26,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 29,
+        "mate_in": null
+      },
+      "move_regret_cp": 3,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4762
+    },
+    {
+      "id": "X10P07",
+      "fen": "rnbqkbnr/pp1p1ppp/4p3/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "b8c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 64.52472686767578,
+      "engine_latency_ms": 1426.37,
+      "stockfish_best_move": "g8f6",
+      "stockfish_top3": [
+        "b8c6",
+        "g8f6",
+        "d7d6"
+      ],
+      "stockfish_latency_ms": 51.26,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -25,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -25,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4286
+    },
+    {
+      "id": "X10P11",
+      "fen": "r1b1kbnr/ppqp1ppp/2n1p3/8/3NP3/2N1B3/PPP2PPP/R2QKB1R b KQkq - 4 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 40,
+      "engine_move": "c6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -126.42566680908203,
+      "engine_latency_ms": 4142.78,
+      "stockfish_best_move": "a7a6",
+      "stockfish_top3": [
+        "a7a6",
+        "g8f6",
+        "d7d6"
+      ],
+      "stockfish_latency_ms": 15.04,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -107,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -66,
+        "mate_in": null
+      },
+      "move_regret_cp": 41,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5714
+    },
+    {
+      "id": "X10P12",
+      "fen": "r1b1kbnr/1pqp1ppp/p1n1p3/8/3NP3/2N1B3/PPP2PPP/R2QKB1R w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 46,
+      "engine_move": "d4e6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 354.2593688964844,
+      "engine_latency_ms": 7197.11,
+      "stockfish_best_move": "d4c6",
+      "stockfish_top3": [
+        "d4c6",
+        "g2g3",
+        "d1d2"
+      ],
+      "stockfish_latency_ms": 14.91,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -345,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 57,
+        "mate_in": null
+      },
+      "move_regret_cp": 402,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2381
+    },
+    {
+      "id": "X11P06",
+      "fen": "rnbqk1nr/ppp2ppp/4p3/3p4/1b1PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "d1g4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 302.9284973144531,
+      "engine_latency_ms": 3388.87,
+      "stockfish_best_move": "e4e5",
+      "stockfish_top3": [
+        "e4e5",
+        "e4d5",
+        "g1e2"
+      ],
+      "stockfish_latency_ms": 16.91,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 25,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 51,
+        "mate_in": null
+      },
+      "move_regret_cp": 26,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.119
+    },
+    {
+      "id": "X11P07",
+      "fen": "rnbqk1nr/ppp2ppp/4p3/3pP3/1b1P4/2N5/PPP2PPP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 35,
+      "engine_move": "b4c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -146.314453125,
+      "engine_latency_ms": 1182.88,
+      "stockfish_best_move": "c7c5",
+      "stockfish_top3": [
+        "c7c5",
+        "g8e7",
+        "b4f8"
+      ],
+      "stockfish_latency_ms": 11.84,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -111,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -51,
+        "mate_in": null
+      },
+      "move_regret_cp": 60,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.3571
+    },
+    {
+      "id": "X11P11",
+      "fen": "rnbqk1nr/pp3ppp/4p3/2ppP3/3P4/P1P5/2P2PPP/R1BQKBNR b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "c5d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -140.39617919921875,
+      "engine_latency_ms": 1074.22,
+      "stockfish_best_move": "g8e7",
+      "stockfish_top3": [
+        "d8a5",
+        "g8e7",
+        "b8c6"
+      ],
+      "stockfish_latency_ms": 18.78,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -87,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -67,
+        "mate_in": null
+      },
+      "move_regret_cp": 20,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.0476
+    },
+    {
+      "id": "X11P12",
+      "fen": "rnbqk2r/pp2nppp/4p3/2ppP3/3P4/P1P5/2P2PPP/R1BQKBNR w KQkq - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "f1d3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 108.8425521850586,
+      "engine_latency_ms": 1938.98,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "d1g4",
+        "a3a4",
+        "h2h4"
+      ],
+      "stockfish_latency_ms": 8.84,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 49,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 48,
+        "mate_in": null
+      },
+      "move_regret_cp": -1,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2143
+    },
+    {
+      "id": "X12P06",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3PP3/8/PPPN1PPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 32,
+      "engine_move": "c2c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 218.05641174316406,
+      "engine_latency_ms": 2951.99,
+      "stockfish_best_move": "e4e5",
+      "stockfish_top3": [
+        "e4e5",
+        "f1d3",
+        "f1b5"
+      ],
+      "stockfish_latency_ms": 10.29,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -66,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 63,
+        "mate_in": null
+      },
+      "move_regret_cp": 129,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2857
+    },
+    {
+      "id": "X12P07",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3pP3/3P4/8/PPPN1PPP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 37.79444122314453,
+      "engine_latency_ms": 3198.43,
+      "stockfish_best_move": "f6d7",
+      "stockfish_top3": [
+        "f6d7",
+        "f6e4",
+        "f6g8"
+      ],
+      "stockfish_latency_ms": 7.97,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -77,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -57,
+        "mate_in": null
+      },
+      "move_regret_cp": 20,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4286
+    },
+    {
+      "id": "X12P11",
+      "fen": "rnbqkb1r/pp1n1ppp/4p3/2ppP3/3P4/2PB4/PP1N1PPP/R1BQK1NR b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 28,
+      "engine_move": "c5d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -68.63628387451172,
+      "engine_latency_ms": 1136.26,
+      "stockfish_best_move": "c5d4",
+      "stockfish_top3": [
+        "b8c6",
+        "c5d4",
+        "d8b6"
+      ],
+      "stockfish_latency_ms": 5.31,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -80,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -80,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.1429
+    },
+    {
+      "id": "X12P12",
+      "fen": "r1bqkb1r/pp1n1ppp/2n1p3/2ppP3/3P4/2PB4/PP1N1PPP/R1BQK1NR w KQkq - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 42,
+      "engine_move": "g1f3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 172.50193786621094,
+      "engine_latency_ms": 2399.84,
+      "stockfish_best_move": "d2f3",
+      "stockfish_top3": [
+        "g1e2",
+        "d2f3",
+        "d1g4"
+      ],
+      "stockfish_latency_ms": 4.06,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 16,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 54,
+        "mate_in": null
+      },
+      "move_regret_cp": 38,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.6429
+    },
+    {
+      "id": "X13P06",
+      "fen": "rnbqkbnr/pp2pppp/2p5/8/3Pp3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 39,
+      "engine_move": "c3e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 203.1341094970703,
+      "engine_latency_ms": 2664.04,
+      "stockfish_best_move": "c3e4",
+      "stockfish_top3": [
+        "c3e4",
+        "h2h3",
+        "f2f3"
+      ],
+      "stockfish_latency_ms": 11.25,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 33,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 33,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X13P07",
+      "fen": "rnbqkbnr/pp2pppp/2p5/8/3PN3/8/PPP2PPP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "g8f6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 64.00936126708984,
+      "engine_latency_ms": 1819.43,
+      "stockfish_best_move": "c8f5",
+      "stockfish_top3": [
+        "g8f6",
+        "b8d7",
+        "g7g6"
+      ],
+      "stockfish_latency_ms": 25.6,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -25,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -109,
+        "mate_in": null
+      },
+      "move_regret_cp": -84,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.9524
+    },
+    {
+      "id": "X13P11",
+      "fen": "rn1qkbnr/pp2pppp/2p3b1/8/3P3P/6N1/PPP2PP1/R1BQKBNR b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 29,
+      "engine_move": "g6c2",
+      "engine_move_is_legal": true,
+      "engine_top_score": -180.65802001953125,
+      "engine_latency_ms": 3056.63,
+      "stockfish_best_move": "h7h6",
+      "stockfish_top3": [
+        "h7h6",
+        "h7h5",
+        "f7f6"
+      ],
+      "stockfish_latency_ms": 7.98,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -513,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -46,
+        "mate_in": null
+      },
+      "move_regret_cp": 467,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.7619
+    },
+    {
+      "id": "X13P12",
+      "fen": "rn1qkbnr/pp2ppp1/2p3bp/8/3P3P/6N1/PPP2PP1/R1BQKBNR w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 38,
+      "engine_move": "g3e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 249.21546936035156,
+      "engine_latency_ms": 1202.78,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "g1f3",
+        "c1d2",
+        "f1d3"
+      ],
+      "stockfish_latency_ms": 20.33,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -529,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 46,
+        "mate_in": null
+      },
+      "move_regret_cp": 575,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5238
+    },
+    {
+      "id": "X14P06",
+      "fen": "rn1qkbnr/pp2pppp/2p5/3pPb2/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 37,
+      "engine_move": "d1e2",
+      "engine_move_is_legal": true,
+      "engine_top_score": 255.90182495117188,
+      "engine_latency_ms": 1075.54,
+      "stockfish_best_move": "c1g5",
+      "stockfish_top3": [
+        "f1e2",
+        "g1f3",
+        "a2a3"
+      ],
+      "stockfish_latency_ms": 362.62,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -18,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -12,
+        "mate_in": null
+      },
+      "move_regret_cp": 6,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0714
+    },
+    {
+      "id": "X14P07",
+      "fen": "rn1qkbnr/pp2pppp/2p5/3pPb2/3P4/5N2/PPP2PPP/RNBQKB1R b KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "f5c2",
+      "engine_move_is_legal": true,
+      "engine_top_score": -19.145566940307617,
+      "engine_latency_ms": 2142.4,
+      "stockfish_best_move": "e7e6",
+      "stockfish_top3": [
+        "e7e6",
+        "h7h5",
+        "d8d7"
+      ],
+      "stockfish_latency_ms": 13.16,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -559,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -46,
+        "mate_in": null
+      },
+      "move_regret_cp": 513,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2619
+    },
+    {
+      "id": "X14P11",
+      "fen": "rn1qkbnr/pp3ppp/4p3/2ppPb2/3P4/4BN2/PPP1BPPP/RN1QK2R b KQkq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 37,
+      "engine_move": "f5c2",
+      "engine_move_is_legal": true,
+      "engine_top_score": 3.4330475330352783,
+      "engine_latency_ms": 2274.12,
+      "stockfish_best_move": "b8c6",
+      "stockfish_top3": [
+        "c5d4",
+        "d8b6",
+        "f5g4"
+      ],
+      "stockfish_latency_ms": 23.15,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -489,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -86,
+        "mate_in": null
+      },
+      "move_regret_cp": 403,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0476
+    },
+    {
+      "id": "X14P12",
+      "fen": "rn2kbnr/pp3ppp/1q2p3/2ppPb2/3P4/4BN2/PPP1BPPP/RN1QK2R w KQkq - 2 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 36,
+      "engine_move": "d4c5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 306.46240234375,
+      "engine_latency_ms": 1643.39,
+      "stockfish_best_move": "b1c3",
+      "stockfish_top3": [
+        "b1c3",
+        "c2c4",
+        "e1g1"
+      ],
+      "stockfish_latency_ms": 24.97,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -20,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 66,
+        "mate_in": null
+      },
+      "move_regret_cp": 86,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X15P06",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "c4d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 312.02545166015625,
+      "engine_latency_ms": 3869.43,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "g1f3",
+        "c1g5",
+        "e2e3"
+      ],
+      "stockfish_latency_ms": 64.26,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 17,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 29,
+        "mate_in": null
+      },
+      "move_regret_cp": 12,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.1667
+    },
+    {
+      "id": "X15P07",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR b KQkq - 3 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "d5c4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -242.88145446777344,
+      "engine_latency_ms": 2801.58,
+      "stockfish_best_move": "f8e7",
+      "stockfish_top3": [
+        "f8e7",
+        "f8b4",
+        "d5c4"
+      ],
+      "stockfish_latency_ms": 25.56,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -46,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -35,
+        "mate_in": null
+      },
+      "move_regret_cp": 11,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.2381
+    },
+    {
+      "id": "X15P11",
+      "fen": "rnbq1rk1/ppp1bppp/4pn2/3p2B1/2PP4/2N1PN2/PP3PPP/R2QKB1R b KQ - 2 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 29,
+      "engine_move": "d5c4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -183.38848876953125,
+      "engine_latency_ms": 1802.36,
+      "stockfish_best_move": "b8d7",
+      "stockfish_top3": [
+        "b8d7",
+        "h7h6",
+        "f6e4"
+      ],
+      "stockfish_latency_ms": 9.84,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -41,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -32,
+        "mate_in": null
+      },
+      "move_regret_cp": 9,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5
+    },
+    {
+      "id": "X15P12",
+      "fen": "rnbq1rk1/ppp1bpp1/4pn1p/3p2B1/2PP4/2N1PN2/PP3PPP/R2QKB1R w KQ - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 40,
+      "engine_move": "g5f6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 284.3807373046875,
+      "engine_latency_ms": 1276.65,
+      "stockfish_best_move": "g5h4",
+      "stockfish_top3": [
+        "g5h4",
+        "g5f4",
+        "g5f6"
+      ],
+      "stockfish_latency_ms": 14.95,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 21,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 37,
+        "mate_in": null
+      },
+      "move_regret_cp": 16,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4524
+    },
+    {
+      "id": "X16P06",
+      "fen": "rnbqkb1r/ppp1pppp/5n2/8/2pP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 31,
+      "engine_move": "d4d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 86.06668853759766,
+      "engine_latency_ms": 3232.62,
+      "stockfish_best_move": "b1c3",
+      "stockfish_top3": [
+        "e2e3",
+        "b1c3",
+        "d1a4"
+      ],
+      "stockfish_latency_ms": 10.99,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -231,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 39,
+        "mate_in": null
+      },
+      "move_regret_cp": 270,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2381
+    },
+    {
+      "id": "X16P07",
+      "fen": "rnbqkb1r/ppp1pppp/5n2/8/2pP4/4PN2/PP3PPP/RNBQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 33,
+      "engine_move": "c8g4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -228.0564422607422,
+      "engine_latency_ms": 3194.15,
+      "stockfish_best_move": "b7b5",
+      "stockfish_top3": [
+        "e7e6",
+        "c7c5",
+        "b7b5"
+      ],
+      "stockfish_latency_ms": 10.3,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -64,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -44,
+        "mate_in": null
+      },
+      "move_regret_cp": 20,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.4286
+    },
+    {
+      "id": "X16P11",
+      "fen": "rnbqkb1r/pp3ppp/4pn2/2p5/2BP4/4PN2/PP3PPP/RNBQ1RK1 b kq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 33,
+      "engine_move": "c5d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -3.1790966987609863,
+      "engine_latency_ms": 3338.43,
+      "stockfish_best_move": "f8e7",
+      "stockfish_top3": [
+        "c5d4",
+        "f8e7",
+        "b8c6"
+      ],
+      "stockfish_latency_ms": 9.25,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -53,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -47,
+        "mate_in": null
+      },
+      "move_regret_cp": 6,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.0476
+    },
+    {
+      "id": "X16P12",
+      "fen": "rnbqkb1r/1p3ppp/p3pn2/2p5/2BP4/4PN2/PP3PPP/RNBQ1RK1 w kq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 36,
+      "engine_move": "c4e6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 320.7778015136719,
+      "engine_latency_ms": 3468.78,
+      "stockfish_best_move": "e3e4",
+      "stockfish_top3": [
+        "f3e5",
+        "e3e4",
+        "c4d3"
+      ],
+      "stockfish_latency_ms": 9.78,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -346,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 46,
+        "mate_in": null
+      },
+      "move_regret_cp": 392,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.6667
+    },
+    {
+      "id": "X17P06",
+      "fen": "rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 32,
+      "engine_move": "c4d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 147.1030731201172,
+      "engine_latency_ms": 904.74,
+      "stockfish_best_move": "e2e3",
+      "stockfish_top3": [
+        "b1c3",
+        "e2e3",
+        "c4d5"
+      ],
+      "stockfish_latency_ms": 11.14,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 29,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 32,
+        "mate_in": null
+      },
+      "move_regret_cp": 3,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.3095
+    },
+    {
+      "id": "X17P07",
+      "fen": "rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq - 3 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "d5c4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 30.63152503967285,
+      "engine_latency_ms": 2057.54,
+      "stockfish_best_move": "d5c4",
+      "stockfish_top3": [
+        "d5c4",
+        "e7e6",
+        "g7g6"
+      ],
+      "stockfish_latency_ms": 36.97,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -29,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -29,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.119
+    },
+    {
+      "id": "X17P11",
+      "fen": "rn1qkb1r/pp2pppp/2p2n2/5b2/P1pP4/2N1PN2/1P3PPP/R1BQKB1R b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 39,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -141.3617706298828,
+      "engine_latency_ms": 3200.34,
+      "stockfish_best_move": "h7h6",
+      "stockfish_top3": [
+        "e7e6",
+        "h7h6",
+        "b8d7"
+      ],
+      "stockfish_latency_ms": 7.03,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -50,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -46,
+        "mate_in": null
+      },
+      "move_regret_cp": 4,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.3571
+    },
+    {
+      "id": "X17P12",
+      "fen": "rn1qkb1r/pp3ppp/2p1pn2/5b2/P1pP4/2N1PN2/1P3PPP/R1BQKB1R w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 35,
+      "engine_move": "f1c4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 248.75384521484375,
+      "engine_latency_ms": 1465.72,
+      "stockfish_best_move": "f1c4",
+      "stockfish_top3": [
+        "f1c4",
+        "h2h3",
+        "a4a5"
+      ],
+      "stockfish_latency_ms": 25.34,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 45,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 45,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.5714
+    },
+    {
+      "id": "X18P11",
+      "fen": "r1bqkb1r/pp1n1ppp/2p1pn2/3p4/2PP4/2NBPN2/PP3PPP/R1BQK2R b KQkq - 2 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "f8b4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -27.079025268554688,
+      "engine_latency_ms": 1132.56,
+      "stockfish_best_move": "d5c4",
+      "stockfish_top3": [
+        "f8d6",
+        "f8e7",
+        "d5c4"
+      ],
+      "stockfish_latency_ms": 6.59,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -58,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -42,
+        "mate_in": null
+      },
+      "move_regret_cp": 16,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.0476
+    },
+    {
+      "id": "X18P12",
+      "fen": "r1bqkb1r/pp1n1ppp/2p1pn2/8/2pP4/2NBPN2/PP3PPP/R1BQK2R w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 43,
+      "engine_move": "f3e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 134.45590209960938,
+      "engine_latency_ms": 1666.08,
+      "stockfish_best_move": "d3c4",
+      "stockfish_top3": [
+        "d3c4",
+        "d3e2",
+        "d3c2"
+      ],
+      "stockfish_latency_ms": 8.68,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -512,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 57,
+        "mate_in": null
+      },
+      "move_regret_cp": 569,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X19P06",
+      "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 27,
+      "engine_move": "c4c5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 238.41464233398438,
+      "engine_latency_ms": 1007.33,
+      "stockfish_best_move": "c1d2",
+      "stockfish_top3": [
+        "c1d2",
+        "c1g5",
+        "g1f3"
+      ],
+      "stockfish_latency_ms": 6.66,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -103,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 29,
+        "mate_in": null
+      },
+      "move_regret_cp": 132,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.6905
+    },
+    {
+      "id": "X19P07",
+      "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N1P3/PP3PPP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 33,
+      "engine_move": "b4c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -197.76785278320312,
+      "engine_latency_ms": 1415.12,
+      "stockfish_best_move": "c7c5",
+      "stockfish_top3": [
+        "b4c3",
+        "c7c5",
+        "e8g8"
+      ],
+      "stockfish_latency_ms": 5.29,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -23,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -20,
+        "mate_in": null
+      },
+      "move_regret_cp": 3,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.3571
+    },
+    {
+      "id": "X19P11",
+      "fen": "rnbq1rk1/ppp2ppp/4pn2/3p4/1bPP4/2NBPN2/PP3PPP/R1BQK2R b KQ - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 33,
+      "engine_move": "b4c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -58.088409423828125,
+      "engine_latency_ms": 766.72,
+      "stockfish_best_move": "c7c5",
+      "stockfish_top3": [
+        "c7c5",
+        "d5c4",
+        "f8e8"
+      ],
+      "stockfish_latency_ms": 5.02,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -37,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -10,
+        "mate_in": null
+      },
+      "move_regret_cp": 27,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4762
+    },
+    {
+      "id": "X19P12",
+      "fen": "rnbq1rk1/pp3ppp/4pn2/2pp4/1bPP4/2NBPN2/PP3PPP/R1BQK2R w KQ - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 36,
+      "engine_move": "d4c5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 262.39483642578125,
+      "engine_latency_ms": 631.84,
+      "stockfish_best_move": "c4d5",
+      "stockfish_top3": [
+        "e1g1",
+        "a2a3",
+        "c1d2"
+      ],
+      "stockfish_latency_ms": 18.83,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -40,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 5,
+        "mate_in": null
+      },
+      "move_regret_cp": 45,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.619
+    },
+    {
+      "id": "X20P06",
+      "fen": "rnbqkb1r/p1pp1ppp/1p2pn2/8/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 32,
+      "engine_move": "b1c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 246.24398803710938,
+      "engine_latency_ms": 1110.81,
+      "stockfish_best_move": "e2e3",
+      "stockfish_top3": [
+        "a2a3",
+        "b1c3",
+        "e2e3"
+      ],
+      "stockfish_latency_ms": 27.79,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 29,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 31,
+        "mate_in": null
+      },
+      "move_regret_cp": 2,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.0714
+    },
+    {
+      "id": "X20P07",
+      "fen": "rnbqkb1r/p1pp1ppp/1p2pn2/8/2PP4/5NP1/PP2PP1P/RNBQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 29,
+      "engine_move": "h7h6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 87.50712585449219,
+      "engine_latency_ms": 1036.65,
+      "stockfish_best_move": "c8b7",
+      "stockfish_top3": [
+        "f8b4",
+        "c8a6",
+        "c8b7"
+      ],
+      "stockfish_latency_ms": 91.08,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -84,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -41,
+        "mate_in": null
+      },
+      "move_regret_cp": 43,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X20P11",
+      "fen": "rn1qk2r/pbppbppp/1p2pn2/8/2PP4/5NP1/PP2PPBP/RNBQ1RK1 b kq - 4 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 35,
+      "engine_move": "b7f3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 115.6493148803711,
+      "engine_latency_ms": 2081.8,
+      "stockfish_best_move": "e8g8",
+      "stockfish_top3": [
+        "e8g8",
+        "c7c6",
+        "d7d5"
+      ],
+      "stockfish_latency_ms": 18.65,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -135,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -41,
+        "mate_in": null
+      },
+      "move_regret_cp": 94,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.6429
+    },
+    {
+      "id": "X20P12",
+      "fen": "rn1q1rk1/pbppbppp/1p2pn2/8/2PP4/5NP1/PP2PPBP/RNBQ1RK1 w - - 5 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 34,
+      "engine_move": "b1c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 237.7265167236328,
+      "engine_latency_ms": 2636.53,
+      "stockfish_best_move": "b1c3",
+      "stockfish_top3": [
+        "d4d5",
+        "b1c3",
+        "h2h4"
+      ],
+      "stockfish_latency_ms": 26.01,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 43,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 43,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7143
+    },
+    {
+      "id": "X21P06",
+      "fen": "rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "e2e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 282.7957458496094,
+      "engine_latency_ms": 1262.56,
+      "stockfish_best_move": "e2e4",
+      "stockfish_top3": [
+        "e2e4",
+        "g1f3",
+        "h2h4"
+      ],
+      "stockfish_latency_ms": 40.69,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 72,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 72,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.5238
+    },
+    {
+      "id": "X21P07",
+      "fen": "rnbqk2r/ppppppbp/5np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 26,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -65.99280548095703,
+      "engine_latency_ms": 1875.6,
+      "stockfish_best_move": "d7d6",
+      "stockfish_top3": [
+        "d7d6",
+        "e8g8",
+        "f6g8"
+      ],
+      "stockfish_latency_ms": 24.43,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -394,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -77,
+        "mate_in": null
+      },
+      "move_regret_cp": 317,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4762
+    },
+    {
+      "id": "X21P11",
+      "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/2PPP3/2N2N2/PP2BPPP/R1BQK2R b KQ - 3 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -17.732343673706055,
+      "engine_latency_ms": 1586.25,
+      "stockfish_best_move": "e7e5",
+      "stockfish_top3": [
+        "b8d7",
+        "e7e5",
+        "c7c5"
+      ],
+      "stockfish_latency_ms": 18.55,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -375,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -41,
+        "mate_in": null
+      },
+      "move_regret_cp": 334,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5
+    },
+    {
+      "id": "X21P12",
+      "fen": "rnbq1rk1/ppp2pbp/3p1np1/4p3/2PPP3/2N2N2/PP2BPPP/R1BQK2R w KQ - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 38,
+      "engine_move": "d4e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 237.41720581054688,
+      "engine_latency_ms": 1639.73,
+      "stockfish_best_move": "d4d5",
+      "stockfish_top3": [
+        "d4d5",
+        "e1g1",
+        "c1e3"
+      ],
+      "stockfish_latency_ms": 15.73,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 31,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 60,
+        "mate_in": null
+      },
+      "move_regret_cp": 29,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.619
+    },
+    {
+      "id": "X22P06",
+      "fen": "rnbqkb1r/ppp1pp1p/5np1/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "c4d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 320.607177734375,
+      "engine_latency_ms": 1034.94,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "c4d5",
+        "g1f3",
+        "a2a3"
+      ],
+      "stockfish_latency_ms": 21.92,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 69,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 50,
+        "mate_in": null
+      },
+      "move_regret_cp": -19,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.3333
+    },
+    {
+      "id": "X22P07",
+      "fen": "rnbqkb1r/ppp1pp1p/5np1/3P4/3P4/2N5/PP2PPPP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "d8d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 237.41015625,
+      "engine_latency_ms": 870.85,
+      "stockfish_best_move": "f6d5",
+      "stockfish_top3": [
+        "f6d5",
+        "f8g7",
+        "c7c6"
+      ],
+      "stockfish_latency_ms": 7.24,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -580,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -92,
+        "mate_in": null
+      },
+      "move_regret_cp": 488,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X22P11",
+      "fen": "rnbqkb1r/ppp1pp1p/6p1/8/3PP3/2P5/P4PPP/R1BQKBNR b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 29,
+      "engine_move": "d8d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -7.101524829864502,
+      "engine_latency_ms": 1225.1,
+      "stockfish_best_move": "c7c5",
+      "stockfish_top3": [
+        "f8g7",
+        "c7c5",
+        "b8d7"
+      ],
+      "stockfish_latency_ms": 11.95,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -689,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -18,
+        "mate_in": null
+      },
+      "move_regret_cp": 671,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.619
+    },
+    {
+      "id": "X22P12",
+      "fen": "rnbqk2r/ppp1ppbp/6p1/8/3PP3/2P5/P4PPP/R1BQKBNR w KQkq - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 38,
+      "engine_move": "f1b5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 233.78329467773438,
+      "engine_latency_ms": 1761.81,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "f1b5",
+        "g1f3",
+        "f1e2"
+      ],
+      "stockfish_latency_ms": 15.01,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 8,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 16,
+        "mate_in": null
+      },
+      "move_regret_cp": 8,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.2857
+    },
+    {
+      "id": "X23P06",
+      "fen": "rnbqkb1r/pp1p1ppp/4pn2/2pP4/2P5/8/PP2PPPP/RNBQKBNR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 31,
+      "engine_move": "b1c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 246.8030548095703,
+      "engine_latency_ms": 944.17,
+      "stockfish_best_move": "b1c3",
+      "stockfish_top3": [
+        "b1c3",
+        "g1f3",
+        "e2e3"
+      ],
+      "stockfish_latency_ms": 3.96,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 95,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 95,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7143
+    },
+    {
+      "id": "X23P07",
+      "fen": "rnbqkb1r/pp1p1ppp/4pn2/2pP4/2P5/2N5/PP2PPPP/R1BQKBNR b KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 26,
+      "engine_move": "e6d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 107.69662475585938,
+      "engine_latency_ms": 789.8,
+      "stockfish_best_move": "e6d5",
+      "stockfish_top3": [
+        "e6d5",
+        "d7d6",
+        "a7a6"
+      ],
+      "stockfish_latency_ms": 7.65,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -83,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -83,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.1429
+    },
+    {
+      "id": "X23P11",
+      "fen": "rnbqkb1r/pp3ppp/3p1n2/2pP4/4P3/2N5/PP3PPP/R1BQKBNR b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "b8c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 210.04701232910156,
+      "engine_latency_ms": 1162.71,
+      "stockfish_best_move": "g7g6",
+      "stockfish_top3": [
+        "g7g6",
+        "b8d7",
+        "a7a6"
+      ],
+      "stockfish_latency_ms": 17.59,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -530,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -97,
+        "mate_in": null
+      },
+      "move_regret_cp": 433,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4286
+    },
+    {
+      "id": "X23P12",
+      "fen": "rnbqkb1r/pp3p1p/3p1np1/2pP4/4P3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 41,
+      "engine_move": "d1g4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 312.1513671875,
+      "engine_latency_ms": 1730.7,
+      "stockfish_best_move": "a2a4",
+      "stockfish_top3": [
+        "f1e2",
+        "g1f3",
+        "a2a4"
+      ],
+      "stockfish_latency_ms": 17.7,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -528,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 52,
+        "mate_in": null
+      },
+      "move_regret_cp": 580,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X24P06",
+      "fen": "rnbqkb1r/pppp2pp/4pn2/5p2/3P4/6P1/PPP1PPBP/RNBQK1NR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 35,
+      "engine_move": "g2b7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 306.6040344238281,
+      "engine_latency_ms": 1396.23,
+      "stockfish_best_move": "c2c4",
+      "stockfish_top3": [
+        "g1h3",
+        "c2c4",
+        "g1f3"
+      ],
+      "stockfish_latency_ms": 16.29,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -626,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 50,
+        "mate_in": null
+      },
+      "move_regret_cp": 676,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.8571
+    },
+    {
+      "id": "X24P07",
+      "fen": "rnbqkb1r/pppp2pp/4pn2/5p2/3P4/5NP1/PPP1PPBP/RNBQK2R b KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "e8f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 90.74261474609375,
+      "engine_latency_ms": 928.96,
+      "stockfish_best_move": "d7d5",
+      "stockfish_top3": [
+        "d7d5",
+        "f6e4",
+        "h7h6"
+      ],
+      "stockfish_latency_ms": 28.23,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -158,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -56,
+        "mate_in": null
+      },
+      "move_regret_cp": 102,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4286
+    },
+    {
+      "id": "X24P11",
+      "fen": "rnbq1rk1/ppppb1pp/4pn2/5p2/2PP4/5NP1/PP2PPBP/RNBQ1RK1 b - - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "d7d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 182.87612915039062,
+      "engine_latency_ms": 1094.59,
+      "stockfish_best_move": "d7d5",
+      "stockfish_top3": [
+        "d7d5",
+        "c7c6",
+        "f6e4"
+      ],
+      "stockfish_latency_ms": 22.16,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -43,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -43,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7381
+    },
+    {
+      "id": "X24P12",
+      "fen": "rnbq1rk1/ppp1b1pp/3ppn2/5p2/2PP4/5NP1/PP2PPBP/RNBQ1RK1 w - - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 34,
+      "engine_move": "b1c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 269.817138671875,
+      "engine_latency_ms": 1447.28,
+      "stockfish_best_move": "d1b3",
+      "stockfish_top3": [
+        "b1c3",
+        "d1c2",
+        "c1f4"
+      ],
+      "stockfish_latency_ms": 13.64,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 76,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 43,
+        "mate_in": null
+      },
+      "move_regret_cp": -33,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4286
+    },
+    {
+      "id": "X25P06",
+      "fen": "r1bqkb1r/pp1ppppp/2n2n2/2p5/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 4 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 27,
+      "engine_move": "d2d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 104.35853576660156,
+      "engine_latency_ms": 934.8,
+      "stockfish_best_move": "e2e3",
+      "stockfish_top3": [
+        "d2d4",
+        "e2e3",
+        "g2g3"
+      ],
+      "stockfish_latency_ms": 3.57,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 17,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 25,
+        "mate_in": null
+      },
+      "move_regret_cp": 8,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.0952
+    },
+    {
+      "id": "X25P07",
+      "fen": "r1bqkb1r/pp1ppppp/2n2n2/2p5/2P5/2N2NP1/PP1PPP1P/R1BQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 27,
+      "engine_move": "c6d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -100.7663345336914,
+      "engine_latency_ms": 434.87,
+      "stockfish_best_move": "g7g6",
+      "stockfish_top3": [
+        "g7g6",
+        "e7e6",
+        "e7e5"
+      ],
+      "stockfish_latency_ms": 4.88,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -72,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -25,
+        "mate_in": null
+      },
+      "move_regret_cp": 47,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.1905
+    },
+    {
+      "id": "X25P11",
+      "fen": "r1bqk2r/pp1pppbp/2n2np1/2p5/2P5/2N2NP1/PP1PPPBP/R1BQ1RK1 b kq - 3 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "d7d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 4.021240234375,
+      "engine_latency_ms": 436.11,
+      "stockfish_best_move": "e8g8",
+      "stockfish_top3": [
+        "e8g8",
+        "d7d6",
+        "f6h5"
+      ],
+      "stockfish_latency_ms": 9.62,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -21,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -17,
+        "mate_in": null
+      },
+      "move_regret_cp": 4,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5714
+    },
+    {
+      "id": "X25P12",
+      "fen": "r1bq1rk1/pp1pppbp/2n2np1/2p5/2P5/2N2NP1/PP1PPPBP/R1BQ1RK1 w - - 4 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 30,
+      "engine_move": "d2d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 61.89959716796875,
+      "engine_latency_ms": 847.9,
+      "stockfish_best_move": "d2d3",
+      "stockfish_top3": [
+        "d2d3",
+        "f3e1",
+        "f1e1"
+      ],
+      "stockfish_latency_ms": 85.72,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 23,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 13,
+        "mate_in": null
+      },
+      "move_regret_cp": -10,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5238
+    },
+    {
+      "id": "X26P06",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 4 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 28,
+      "engine_move": "d2d4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 212.23748779296875,
+      "engine_latency_ms": 1432.77,
+      "stockfish_best_move": "g2g3",
+      "stockfish_top3": [
+        "a2a3",
+        "e2e3",
+        "d2d3"
+      ],
+      "stockfish_latency_ms": 32.03,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -23,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -12,
+        "mate_in": null
+      },
+      "move_regret_cp": 11,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2857
+    },
+    {
+      "id": "X26P07",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2NP1/PP1PPP1P/R1BQKB1R b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "e5e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -96.35057067871094,
+      "engine_latency_ms": 2205.89,
+      "stockfish_best_move": "d7d5",
+      "stockfish_top3": [
+        "d7d5",
+        "f8b4",
+        "f8c5"
+      ],
+      "stockfish_latency_ms": 17.04,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -19,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 3,
+        "mate_in": null
+      },
+      "move_regret_cp": 22,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "X26P11",
+      "fen": "r1bqkb1r/ppp2ppp/2n5/3np3/8/2N2NP1/PP1PPPBP/R1BQK2R b KQkq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 43,
+      "engine_move": "d5c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -173.87774658203125,
+      "engine_latency_ms": 3308.27,
+      "stockfish_best_move": "d5c3",
+      "stockfish_top3": [
+        "d5c3",
+        "d5b6",
+        "c8e6"
+      ],
+      "stockfish_latency_ms": 10.49,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 18,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 18,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.2857
+    },
+    {
+      "id": "X26P12",
+      "fen": "r1bqkb1r/ppp2ppp/1nn5/4p3/8/2N2NP1/PP1PPPBP/R1BQK2R w KQkq - 2 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 31,
+      "engine_move": "f3e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 343.8927001953125,
+      "engine_latency_ms": 5801.35,
+      "stockfish_best_move": "d2d3",
+      "stockfish_top3": [
+        "d2d3",
+        "e1g1",
+        "a2a3"
+      ],
+      "stockfish_latency_ms": 18.68,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -384,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 19,
+        "mate_in": null
+      },
+      "move_regret_cp": 403,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.119
+    },
+    {
+      "id": "X27P06",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R w KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 26,
+      "engine_move": "b1c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 254.35594177246094,
+      "engine_latency_ms": 1163.01,
+      "stockfish_best_move": "c4d5",
+      "stockfish_top3": [
+        "f1g2",
+        "b2b3",
+        "b1c3"
+      ],
+      "stockfish_latency_ms": 6.83,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -43,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -5,
+        "mate_in": null
+      },
+      "move_regret_cp": 38,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.0714
+    },
+    {
+      "id": "X27P07",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2P5/5NP1/PP1PPPBP/RNBQK2R b KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 33,
+      "engine_move": "b8c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 36.93464660644531,
+      "engine_latency_ms": 1134.11,
+      "stockfish_best_move": "f8e7",
+      "stockfish_top3": [
+        "f8e7",
+        "b8c6",
+        "c7c5"
+      ],
+      "stockfish_latency_ms": 47.0,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -33,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -34,
+        "mate_in": null
+      },
+      "move_regret_cp": -1,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.0476
+    },
+    {
+      "id": "X27P11",
+      "fen": "rnbq1rk1/ppp1bppp/4pn2/3p4/2PP4/5NP1/PP2PPBP/RNBQ1RK1 b - - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "c7c5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 47.67070388793945,
+      "engine_latency_ms": 1292.51,
+      "stockfish_best_move": "c7c5",
+      "stockfish_top3": [
+        "c7c5",
+        "d5c4",
+        "a7a5"
+      ],
+      "stockfish_latency_ms": 43.26,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -44,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -44,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4524
+    },
+    {
+      "id": "X27P12",
+      "fen": "r1bq1rk1/pppnbppp/4pn2/3p4/2PP4/5NP1/PP2PPBP/RNBQ1RK1 w - - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 34,
+      "engine_move": "c4d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 219.46116638183594,
+      "engine_latency_ms": 1849.02,
+      "stockfish_best_move": "b2b3",
+      "stockfish_top3": [
+        "b2b3",
+        "a2a4",
+        "d1c2"
+      ],
+      "stockfish_latency_ms": 38.29,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 2,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 16,
+        "mate_in": null
+      },
+      "move_regret_cp": 14,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5238
+    },
+    {
+      "id": "X28P06",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 38,
+      "engine_move": "f4c7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 216.61563110351562,
+      "engine_latency_ms": 2271.2,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "c2c4",
+        "b1d2",
+        "b1c3"
+      ],
+      "stockfish_latency_ms": 49.77,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -496,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -1,
+        "mate_in": null
+      },
+      "move_regret_cp": 495,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.3333
+    },
+    {
+      "id": "X28P07",
+      "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "c7c5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 58.511138916015625,
+      "engine_latency_ms": 1704.52,
+      "stockfish_best_move": "f8d6",
+      "stockfish_top3": [
+        "f8d6",
+        "c7c5",
+        "f8e7"
+      ],
+      "stockfish_latency_ms": 91.21,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -30,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -14,
+        "mate_in": null
+      },
+      "move_regret_cp": 16,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.5476
+    },
+    {
+      "id": "X28P11",
+      "fen": "rnbq1rk1/ppp2ppp/3bpn2/3p4/3P4/3BPNB1/PPP2PPP/RN1QK2R b KQ - 5 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "d6g3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -40.82991027832031,
+      "engine_latency_ms": 1400.45,
+      "stockfish_best_move": "c7c5",
+      "stockfish_top3": [
+        "c7c5",
+        "b7b6",
+        "h7h6"
+      ],
+      "stockfish_latency_ms": 27.15,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -39,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -4,
+        "mate_in": null
+      },
+      "move_regret_cp": 35,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.3095
+    },
+    {
+      "id": "X28P12",
+      "fen": "rnbq1rk1/pp3ppp/3bpn2/2pp4/3P4/3BPNB1/PPP2PPP/RN1QK2R w KQ - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 40,
+      "engine_move": "g3d6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 421.32366943359375,
+      "engine_latency_ms": 1783.29,
+      "stockfish_best_move": "a2a4",
+      "stockfish_top3": [
+        "d4c5",
+        "c2c3",
+        "a2a4"
+      ],
+      "stockfish_latency_ms": 24.99,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -16,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -10,
+        "mate_in": null
+      },
+      "move_regret_cp": 6,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.3333
+    },
+    {
+      "id": "X29P06",
+      "fen": "rnbqkb1r/ppp2ppp/5n2/3pp3/4PP2/2N5/PPPP2PP/R1BQKBNR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 33,
+      "engine_move": "f4e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 212.6060028076172,
+      "engine_latency_ms": 3726.38,
+      "stockfish_best_move": "e4d5",
+      "stockfish_top3": [
+        "f4e5",
+        "e4d5",
+        "g1f3"
+      ],
+      "stockfish_latency_ms": 16.5,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -36,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -22,
+        "mate_in": null
+      },
+      "move_regret_cp": 14,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.8571
+    },
+    {
+      "id": "X29P07",
+      "fen": "rnbqkb1r/ppp2ppp/5n2/3pP3/4P3/2N5/PPPP2PP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 36,
+      "engine_move": "d5e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -37.250667572021484,
+      "engine_latency_ms": 1369.84,
+      "stockfish_best_move": "f6e4",
+      "stockfish_top3": [
+        "f6e4",
+        "c8g4",
+        "d5d4"
+      ],
+      "stockfish_latency_ms": 54.61,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -337,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 18,
+        "mate_in": null
+      },
+      "move_regret_cp": 355,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.8333
+    },
+    {
+      "id": "X29P11",
+      "fen": "rnbqk2r/ppp1bppp/8/3pP3/3Pn3/2N2N2/PPP3PP/R1BQKB1R b KQkq - 0 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 43,
+      "engine_move": "e4c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -64.04493713378906,
+      "engine_latency_ms": 2375.5,
+      "stockfish_best_move": "c7c5",
+      "stockfish_top3": [
+        "c7c5",
+        "e8g8",
+        "e4c3"
+      ],
+      "stockfish_latency_ms": 36.52,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -22,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 7,
+        "mate_in": null
+      },
+      "move_regret_cp": 29,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.5476
+    },
+    {
+      "id": "X29P12",
+      "fen": "rnbq1rk1/ppp1bppp/8/3pP3/3Pn3/2N2N2/PPP3PP/R1BQKB1R w KQ - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 35,
+      "engine_move": "c3e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 273.6291198730469,
+      "engine_latency_ms": 2037.57,
+      "stockfish_best_move": "f1d3",
+      "stockfish_top3": [
+        "f1d3",
+        "f1e2",
+        "f1b5"
+      ],
+      "stockfish_latency_ms": 33.65,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -216,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -8,
+        "mate_in": null
+      },
+      "move_regret_cp": 208,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.1667
+    },
+    {
+      "id": "X30P06",
+      "fen": "rnb1kbnr/ppp1pppp/8/q7/8/2N5/PPPP1PPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 32,
+      "engine_move": "d1h5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 329.42041015625,
+      "engine_latency_ms": 9441.89,
+      "stockfish_best_move": "d2d4",
+      "stockfish_top3": [
+        "d2d4",
+        "f1e2",
+        "g1f3"
+      ],
+      "stockfish_latency_ms": 14.69,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -551,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 91,
+        "mate_in": null
+      },
+      "move_regret_cp": 642,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.4524
+    },
+    {
+      "id": "X30P07",
+      "fen": "rnb1kbnr/ppp1pppp/8/q7/3P4/2N5/PPP2PPP/R1BQKBNR b KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 39,
+      "engine_move": "a5c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -196.12115478515625,
+      "engine_latency_ms": 9777.37,
+      "stockfish_best_move": "g8f6",
+      "stockfish_top3": [
+        "g7g6",
+        "g8f6",
+        "e7e5"
+      ],
+      "stockfish_latency_ms": 7.31,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -628,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -99,
+        "mate_in": null
+      },
+      "move_regret_cp": 529,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.0714
+    },
+    {
+      "id": "X30P11",
+      "fen": "rnb1kb1r/pp2pppp/2p2n2/q7/2BP4/2N2N2/PPP2PPP/R1BQK2R b KQkq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 42,
+      "engine_move": "a5c3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -257.55145263671875,
+      "engine_latency_ms": 1508.66,
+      "stockfish_best_move": "c8f5",
+      "stockfish_top3": [
+        "c8f5",
+        "c8g4",
+        "b8d7"
+      ],
+      "stockfish_latency_ms": 30.76,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -645,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -114,
+        "mate_in": null
+      },
+      "move_regret_cp": 531,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.5
+    },
+    {
+      "id": "X30P12",
+      "fen": "rn2kb1r/pp2pppp/2p2n2/q4b2/2BP4/2N2N2/PPP2PPP/R1BQK2R w KQkq - 2 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 38,
+      "engine_move": "c4f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 340.9788818359375,
+      "engine_latency_ms": 6145.07,
+      "stockfish_best_move": "f3e5",
+      "stockfish_top3": [
+        "c1d2",
+        "f3e5",
+        "d1e2"
+      ],
+      "stockfish_latency_ms": 18.32,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -189,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 95,
+        "mate_in": null
+      },
+      "move_regret_cp": 284,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.619
+    },
+    {
+      "id": "X31P06",
+      "fen": "rnbqkb1r/ppp1pp1p/3p1np1/8/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 39,
+      "engine_move": "c1g5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 283.0072021484375,
+      "engine_latency_ms": 1842.66,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "f1e2",
+        "h2h4",
+        "g1f3"
+      ],
+      "stockfish_latency_ms": 20.33,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 47,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 66,
+        "mate_in": null
+      },
+      "move_regret_cp": 19,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.8095
+    },
+    {
+      "id": "X31P07",
+      "fen": "rnbqkb1r/ppp1pp1p/3p1np1/8/3PP3/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 7.673068523406982,
+      "engine_latency_ms": 1000.89,
+      "stockfish_best_move": "f8g7",
+      "stockfish_top3": [
+        "f8g7",
+        "b8c6",
+        "c7c6"
+      ],
+      "stockfish_latency_ms": 8.31,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -407,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -72,
+        "mate_in": null
+      },
+      "move_regret_cp": 335,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.5476
+    },
+    {
+      "id": "X31P11",
+      "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/3PP3/2N2N2/PPP1BPPP/R1BQ1RK1 b - - 5 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 32,
+      "engine_move": "f6e4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -20.476797103881836,
+      "engine_latency_ms": 866.99,
+      "stockfish_best_move": "b8c6",
+      "stockfish_top3": [
+        "b8d7",
+        "b8c6",
+        "c8g4"
+      ],
+      "stockfish_latency_ms": 35.57,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -473,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -63,
+        "mate_in": null
+      },
+      "move_regret_cp": 410,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.0714
+    },
+    {
+      "id": "X31P12",
+      "fen": "rnbq1rk1/pp2ppbp/2pp1np1/8/3PP3/2N2N2/PPP1BPPP/R1BQ1RK1 w - - 0 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 34,
+      "engine_move": "e4e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 223.28482055664062,
+      "engine_latency_ms": 6255.58,
+      "stockfish_best_move": "a2a4",
+      "stockfish_top3": [
+        "h2h3",
+        "a2a4",
+        "c1f4"
+      ],
+      "stockfish_latency_ms": 5.79,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 21,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 51,
+        "mate_in": null
+      },
+      "move_regret_cp": 30,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0238
+    },
+    {
+      "id": "X32P06",
+      "fen": "rnbqkb1r/ppp1pppp/3p4/3nP3/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "legal_move_count": 38,
+      "engine_move": "e5d6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 359.0092468261719,
+      "engine_latency_ms": 781.53,
+      "stockfish_best_move": "g1f3",
+      "stockfish_top3": [
+        "g1f3",
+        "c2c4",
+        "f2f4"
+      ],
+      "stockfish_latency_ms": 9.63,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 33,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 61,
+        "mate_in": null
+      },
+      "move_regret_cp": 28,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.1429
+    },
+    {
+      "id": "X32P07",
+      "fen": "rnbqkb1r/ppp1pppp/3p4/3nP3/3P4/5N2/PPP2PPP/RNBQKB1R b KQkq - 1 4",
+      "category": "opening",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "d6e5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 74.98448944091797,
+      "engine_latency_ms": 690.81,
+      "stockfish_best_move": "d6e5",
+      "stockfish_top3": [
+        "c8g4",
+        "b8c6",
+        "d6e5"
+      ],
+      "stockfish_latency_ms": 5.15,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -109,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -109,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.2619
+    },
+    {
+      "id": "X32P11",
+      "fen": "rn1qkb1r/ppp2ppp/3pp3/3nP3/3P2b1/5N2/PPP1BPPP/RNBQ1RK1 b kq - 1 6",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "legal_move_count": 37,
+      "engine_move": "g4f3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 53.47039794921875,
+      "engine_latency_ms": 1693.33,
+      "stockfish_best_move": "b8c6",
+      "stockfish_top3": [
+        "f8e7",
+        "d5b6",
+        "d6e5"
+      ],
+      "stockfish_latency_ms": 14.47,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -160,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -148,
+        "mate_in": null
+      },
+      "move_regret_cp": 12,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.0952
+    },
+    {
+      "id": "X32P12",
+      "fen": "rn1qk2r/ppp1bppp/3pp3/3nP3/3P2b1/5N2/PPP1BPPP/RNBQ1RK1 w kq - 2 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "legal_move_count": 31,
+      "engine_move": "e5d6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 332.7558288574219,
+      "engine_latency_ms": 1196.81,
+      "stockfish_best_move": "c2c4",
+      "stockfish_top3": [
+        "h2h3",
+        "c2c4",
+        "f1e1"
+      ],
+      "stockfish_latency_ms": 35.12,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 58,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 75,
+        "mate_in": null
+      },
+      "move_regret_cp": 17,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.6905
+    },
+    {
+      "id": "XEG01",
+      "fen": "8/8/8/4k3/8/4K3/4P3/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 4,
+      "engine_move": "e3d3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 351.39666748046875,
+      "engine_latency_ms": 647.54,
+      "stockfish_best_move": "e3d3",
+      "stockfish_top3": [
+        "e3d3",
+        "e3f3",
+        "e3d2"
+      ],
+      "stockfish_latency_ms": 128.32,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 13,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 13,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.6
+    },
+    {
+      "id": "XEG02",
+      "fen": "8/8/8/4k3/8/4K3/4P3/8 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 5,
+      "engine_move": "e5d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 241.5322265625,
+      "engine_latency_ms": 488.9,
+      "stockfish_best_move": "e5d6",
+      "stockfish_top3": [
+        "e5d6",
+        "e5e6",
+        "e5f6"
+      ],
+      "stockfish_latency_ms": 8.39,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -560,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -486,
+        "mate_in": null
+      },
+      "move_regret_cp": 74,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -1.0
+    },
+    {
+      "id": "XEG03",
+      "fen": "8/5pk1/8/8/8/5P2/5PK1/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 7,
+      "engine_move": "g2g1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 174.4358367919922,
+      "engine_latency_ms": 515.85,
+      "stockfish_best_move": "f3f4",
+      "stockfish_top3": [
+        "f3f4",
+        "g2g3",
+        "g2h3"
+      ],
+      "stockfish_latency_ms": 15.96,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 66,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 218,
+        "mate_in": null
+      },
+      "move_regret_cp": 152,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.5
+    },
+    {
+      "id": "XEG04",
+      "fen": "8/5pk1/8/8/8/8/5PK1/R6r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 19,
+      "engine_move": "g2h1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 344.8062744140625,
+      "engine_latency_ms": 744.24,
+      "stockfish_best_move": "g2h1",
+      "stockfish_top3": [
+        "g2h1",
+        "a1h1",
+        "a1a3"
+      ],
+      "stockfish_latency_ms": 11.32,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 480,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 480,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7857
+    },
+    {
+      "id": "XEG05",
+      "fen": "8/5pk1/8/8/8/8/5PK1/R6r b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 23,
+      "engine_move": "h1a1",
+      "engine_move_is_legal": true,
+      "engine_top_score": -205.02853393554688,
+      "engine_latency_ms": 643.95,
+      "stockfish_best_move": "h1a1",
+      "stockfish_top3": [
+        "h1a1",
+        "h1h6",
+        "h1h8"
+      ],
+      "stockfish_latency_ms": 6.13,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 501,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 501,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.5238
+    },
+    {
+      "id": "XEG06",
+      "fen": "8/5pk1/6p1/8/8/6P1/5PKP/R6r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 22,
+      "engine_move": "g2h1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 269.47528076171875,
+      "engine_latency_ms": 605.79,
+      "stockfish_best_move": "g2h1",
+      "stockfish_top3": [
+        "g2h1",
+        "a1h1",
+        "a1g1"
+      ],
+      "stockfish_latency_ms": 2.89,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 626,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 626,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.2857
+    },
+    {
+      "id": "XEG07",
+      "fen": "8/5pkp/6p1/8/8/6P1/5PK1/R6r b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 22,
+      "engine_move": "h1a1",
+      "engine_move_is_legal": true,
+      "engine_top_score": -298.4986572265625,
+      "engine_latency_ms": 726.52,
+      "stockfish_best_move": "h1a1",
+      "stockfish_top3": [
+        "h1a1",
+        "h1h6",
+        "h1h5"
+      ],
+      "stockfish_latency_ms": 4.37,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 649,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 649,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.0952
+    },
+    {
+      "id": "XEG08",
+      "fen": "8/8/4k3/8/8/4K3/8/4R3 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 16,
+      "engine_move": "e3d3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 499.6662292480469,
+      "engine_latency_ms": 1836.89,
+      "stockfish_best_move": "e3d2",
+      "stockfish_top3": [
+        "e3e2",
+        "e3d2",
+        "e1g1"
+      ],
+      "stockfish_latency_ms": 7.08,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 551,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 543,
+        "mate_in": null
+      },
+      "move_regret_cp": -8,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.1667
+    },
+    {
+      "id": "XEG09",
+      "fen": "8/8/4k3/8/8/4K3/8/4R3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 8,
+      "engine_move": "e6f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 456.5272521972656,
+      "engine_latency_ms": 615.17,
+      "stockfish_best_move": "e6e5",
+      "stockfish_top3": [
+        "e6d6",
+        "e6f6",
+        "e6f5"
+      ],
+      "stockfish_latency_ms": 4.05,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -600,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -555,
+        "mate_in": null
+      },
+      "move_regret_cp": 45,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.119
+    },
+    {
+      "id": "XEG10",
+      "fen": "8/8/4k3/8/8/4K3/8/4Q3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 8,
+      "engine_move": "e6f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 510.1595153808594,
+      "engine_latency_ms": 651.71,
+      "stockfish_best_move": "e6f6",
+      "stockfish_top3": [
+        "e6d5",
+        "e6e5",
+        "e6d6"
+      ],
+      "stockfish_latency_ms": 3.2,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -546,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -545,
+        "mate_in": null
+      },
+      "move_regret_cp": 1,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.2381
+    },
+    {
+      "id": "XEG11",
+      "fen": "8/5pk1/8/8/8/2B5/5PK1/6b1 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 6,
+      "engine_move": "g7h7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 104.96520233154297,
+      "engine_latency_ms": 474.59,
+      "stockfish_best_move": "g7h6",
+      "stockfish_top3": [
+        "g7h6",
+        "g7h7",
+        "g7g6"
+      ],
+      "stockfish_latency_ms": 20.75,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -536,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -489,
+        "mate_in": null
+      },
+      "move_regret_cp": 47,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.6
+    },
+    {
+      "id": "XEG12",
+      "fen": "8/4kpp1/8/8/8/5N2/4KPP1/6b1 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 16,
+      "engine_move": "f3g1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 374.3987121582031,
+      "engine_latency_ms": 480.7,
+      "stockfish_best_move": "f3g1",
+      "stockfish_top3": [
+        "f3g1",
+        "e2f1",
+        "g2g3"
+      ],
+      "stockfish_latency_ms": 14.56,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 488,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 488,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7619
+    },
+    {
+      "id": "XEG13",
+      "fen": "8/4kp2/8/8/3N4/2N5/4KP2/5n2 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 21,
+      "engine_move": "e2f1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 542.4476318359375,
+      "engine_latency_ms": 453.87,
+      "stockfish_best_move": "c3d5",
+      "stockfish_top3": [
+        "e2f3",
+        "c3d5",
+        "d4f5"
+      ],
+      "stockfish_latency_ms": 20.32,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 262,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 271,
+        "mate_in": null
+      },
+      "move_regret_cp": 9,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.5476
+    },
+    {
+      "id": "XEG14",
+      "fen": "8/5pk1/8/8/8/8/5PK1/3Q3r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 26,
+      "engine_move": "g2h1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 617.9019775390625,
+      "engine_latency_ms": 691.49,
+      "stockfish_best_move": "g2h1",
+      "stockfish_top3": [
+        "d1h1",
+        "g2h1",
+        "d1g4"
+      ],
+      "stockfish_latency_ms": 5.21,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 547,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 547,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7619
+    },
+    {
+      "id": "XEG15",
+      "fen": "8/5pk1/8/8/8/8/5PK1/3Q3r b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 20,
+      "engine_move": "h1d1",
+      "engine_move_is_legal": true,
+      "engine_top_score": -253.72802734375,
+      "engine_latency_ms": 840.85,
+      "stockfish_best_move": "h1d1",
+      "stockfish_top3": [
+        "h1d1",
+        "h1h6",
+        "h1h4"
+      ],
+      "stockfish_latency_ms": 3.83,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 507,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 507,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.1429
+    },
+    {
+      "id": "XEG16",
+      "fen": "8/5pk1/8/3B4/8/6P1/5PK1/6b1 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 18,
+      "engine_move": "g2g1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 405.56781005859375,
+      "engine_latency_ms": 581.03,
+      "stockfish_best_move": "g2g1",
+      "stockfish_top3": [
+        "g2g1",
+        "g2f1",
+        "d5c4"
+      ],
+      "stockfish_latency_ms": 5.66,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 502,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 502,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.4286
+    },
+    {
+      "id": "XEG17",
+      "fen": "8/4kppp/8/8/8/8/4KPPP/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 13,
+      "engine_move": "f2f4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 239.571533203125,
+      "engine_latency_ms": 543.24,
+      "stockfish_best_move": "e2d3",
+      "stockfish_top3": [
+        "e2e3",
+        "e2f3",
+        "e2d3"
+      ],
+      "stockfish_latency_ms": 25.83,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -14,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 2,
+        "mate_in": null
+      },
+      "move_regret_cp": 16,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.6667
+    },
+    {
+      "id": "XEG18",
+      "fen": "8/5pk1/8/8/8/5P2/5PK1/R6r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 17,
+      "engine_move": "g2h1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 369.0163269042969,
+      "engine_latency_ms": 870.02,
+      "stockfish_best_move": "g2h1",
+      "stockfish_top3": [
+        "a1h1",
+        "g2h1",
+        "a1a5"
+      ],
+      "stockfish_latency_ms": 2.94,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 620,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 620,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.7143
+    },
+    {
+      "id": "XEG19",
+      "fen": "8/8/4k3/8/8/2B1K3/4B3/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 27,
+      "engine_move": "e2f3",
+      "engine_move_is_legal": true,
+      "engine_top_score": 549.331298828125,
+      "engine_latency_ms": 679.01,
+      "stockfish_best_move": "e2c4",
+      "stockfish_top3": [
+        "e3e4",
+        "e2c4",
+        "c3a1"
+      ],
+      "stockfish_latency_ms": 8.06,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 304,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 298,
+        "mate_in": null
+      },
+      "move_regret_cp": -6,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.0238
+    },
+    {
+      "id": "XEG20",
+      "fen": "8/6k1/8/8/1p6/8/1P4K1/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "legal_move_count": 9,
+      "engine_move": "g2h1",
+      "engine_move_is_legal": true,
+      "engine_top_score": 269.60247802734375,
+      "engine_latency_ms": 697.69,
+      "stockfish_best_move": "g2f3",
+      "stockfish_top3": [
+        "g2f3",
+        "g2f2",
+        "b2b3"
+      ],
+      "stockfish_latency_ms": 6.19,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -34,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 470,
+        "mate_in": null
+      },
+      "move_regret_cp": 504,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.5
+    },
+    {
+      "id": "XEG21",
+      "fen": "8/4kpp1/8/8/8/5N2/4KPP1/6b1 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "legal_move_count": 13,
+      "engine_move": "g1f2",
+      "engine_move_is_legal": true,
+      "engine_top_score": 179.0618133544922,
+      "engine_latency_ms": 741.42,
+      "stockfish_best_move": "g1f2",
+      "stockfish_top3": [
+        "g1f2",
+        "e7e6",
+        "g1h2"
+      ],
+      "stockfish_latency_ms": 10.66,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -268,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -268,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.0714
+    },
+    {
+      "id": "XTC01",
+      "fen": "6k1/5ppp/8/8/8/8/8/R5K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 17,
+      "engine_move": "a1a4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 289.4268798828125,
+      "engine_latency_ms": 544.86,
+      "stockfish_best_move": "a1a8",
+      "stockfish_top3": [
+        "a1a8",
+        "a1f1",
+        "a1a5"
+      ],
+      "stockfish_latency_ms": 2.88,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 330,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": null,
+        "mate_in": 0
+      },
+      "move_regret_cp": null,
+      "mate_status": "missed_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2857
+    },
+    {
+      "id": "XTC02",
+      "fen": "r5k1/8/8/8/8/8/5PPP/6K1 b - - 0 1",
+      "category": "tactical",
+      "side_to_move": "black",
+      "legal_move_count": 17,
+      "engine_move": "a8a5",
+      "engine_move_is_legal": true,
+      "engine_top_score": -61.7299919128418,
+      "engine_latency_ms": 928.36,
+      "stockfish_best_move": "a8a1",
+      "stockfish_top3": [
+        "a8a1",
+        "a8a4",
+        "a8a2"
+      ],
+      "stockfish_latency_ms": 3.61,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 258,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": null,
+        "mate_in": 0
+      },
+      "move_regret_cp": null,
+      "mate_status": "missed_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.4762
+    },
+    {
+      "id": "XTC03",
+      "fen": "4r1k1/5ppp/8/4N3/8/8/5PPP/6K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 16,
+      "engine_move": "e5f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": 149.87400817871094,
+      "engine_latency_ms": 4663.28,
+      "stockfish_best_move": "e5f3",
+      "stockfish_top3": [
+        "e5f3",
+        "f2f4",
+        "e5d3"
+      ],
+      "stockfish_latency_ms": 4.13,
+      "eval_after_engine_move_pov_mover": {
+        "cp": null,
+        "mate_in": -1
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -407,
+        "mate_in": null
+      },
+      "move_regret_cp": null,
+      "mate_status": "engine_move_allows_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.5238
+    },
+    {
+      "id": "XTC04",
+      "fen": "3qr1k1/5ppp/8/4N3/8/8/5PPP/6K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 16,
+      "engine_move": "e5f7",
+      "engine_move_is_legal": true,
+      "engine_top_score": -253.22964477539062,
+      "engine_latency_ms": 1118.35,
+      "stockfish_best_move": "f2f4",
+      "stockfish_top3": [
+        "g2g4",
+        "e5d3",
+        "f2f4"
+      ],
+      "stockfish_latency_ms": 6.74,
+      "eval_after_engine_move_pov_mover": {
+        "cp": null,
+        "mate_in": -1
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -773,
+        "mate_in": null
+      },
+      "move_regret_cp": null,
+      "mate_status": "engine_move_allows_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4048
+    },
+    {
+      "id": "XTC05",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/1Q4K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 27,
+      "engine_move": "b1f5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 622.4757690429688,
+      "engine_latency_ms": 652.65,
+      "stockfish_best_move": "b1b8",
+      "stockfish_top3": [
+        "b1b8",
+        "f2f3",
+        "g1h1"
+      ],
+      "stockfish_latency_ms": 1.93,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 595,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": null,
+        "mate_in": 0
+      },
+      "move_regret_cp": null,
+      "mate_status": "missed_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.381
+    },
+    {
+      "id": "XTC06",
+      "fen": "6k1/5ppp/8/8/1B6/8/5PPP/6K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 17,
+      "engine_move": "b4d6",
+      "engine_move_is_legal": true,
+      "engine_top_score": 349.6553955078125,
+      "engine_latency_ms": 522.24,
+      "stockfish_best_move": "g2g4",
+      "stockfish_top3": [
+        "g1f1",
+        "h2h3",
+        "b4c3"
+      ],
+      "stockfish_latency_ms": 4.7,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 496,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 469,
+        "mate_in": null
+      },
+      "move_regret_cp": -27,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.4286
+    },
+    {
+      "id": "XTC07",
+      "fen": "4k3/8/8/8/8/4n3/8/3QK3 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 20,
+      "engine_move": "d1d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": 545.1564331054688,
+      "engine_latency_ms": 1075.72,
+      "stockfish_best_move": "d1b3",
+      "stockfish_top3": [
+        "d1c1",
+        "d1d2",
+        "d1b3"
+      ],
+      "stockfish_latency_ms": 6.74,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 35,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 538,
+        "mate_in": null
+      },
+      "move_regret_cp": 503,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.7143
+    },
+    {
+      "id": "XTC08",
+      "fen": "4k3/8/8/4N3/8/8/8/3RK3 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 22,
+      "engine_move": "e5c4",
+      "engine_move_is_legal": true,
+      "engine_top_score": 616.4228515625,
+      "engine_latency_ms": 1141.3,
+      "stockfish_best_move": "d1b1",
+      "stockfish_top3": [
+        "d1b1",
+        "d1a1",
+        "d1d4"
+      ],
+      "stockfish_latency_ms": 7.9,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 604,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 592,
+        "mate_in": null
+      },
+      "move_regret_cp": -12,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.7857
+    },
+    {
+      "id": "XTC09",
+      "fen": "8/4P3/8/8/8/5k2/8/R3K3 w Q - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "legal_move_count": 18,
+      "engine_move": "e7e8q",
+      "engine_move_is_legal": true,
+      "engine_top_score": 807.9185180664062,
+      "engine_latency_ms": 518.71,
+      "stockfish_best_move": "a1a2",
+      "stockfish_top3": [
+        "a1a3",
+        "a1c1",
+        "a1a2"
+      ],
+      "stockfish_latency_ms": 6.57,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 848,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 872,
+        "mate_in": null
+      },
+      "move_regret_cp": 24,
+      "mate_status": "none",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.2143
+    },
+    {
+      "id": "XTC10",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR b KQkq - 4 3",
+      "category": "tactical",
+      "side_to_move": "black",
+      "legal_move_count": 31,
+      "engine_move": "f8b4",
+      "engine_move_is_legal": true,
+      "engine_top_score": -250.0354766845703,
+      "engine_latency_ms": 1381.71,
+      "stockfish_best_move": "g8f6",
+      "stockfish_top3": [
+        "g8f6",
+        "d8f6",
+        "d8e7"
+      ],
+      "stockfish_latency_ms": 16.08,
+      "eval_after_engine_move_pov_mover": {
+        "cp": null,
+        "mate_in": -1
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 86,
+        "mate_in": null
+      },
+      "move_regret_cp": null,
+      "mate_status": "engine_move_allows_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": 0.4524
+    },
+    {
+      "id": "XDF01",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/R5K1 b - - 0 1",
+      "category": "defensive",
+      "side_to_move": "black",
+      "legal_move_count": 8,
+      "engine_move": "g8h8",
+      "engine_move_is_legal": true,
+      "engine_top_score": 297.5982666015625,
+      "engine_latency_ms": 511.41,
+      "stockfish_best_move": "h7h6",
+      "stockfish_top3": [
+        "h7h5",
+        "h7h6",
+        "g8f8"
+      ],
+      "stockfish_latency_ms": 3.17,
+      "eval_after_engine_move_pov_mover": {
+        "cp": null,
+        "mate_in": -1
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -700,
+        "mate_in": null
+      },
+      "move_regret_cp": null,
+      "mate_status": "engine_move_allows_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.3571
+    },
+    {
+      "id": "XDF02",
+      "fen": "6k1/5ppp/8/1q6/8/8/5PPP/6K1 w - - 0 1",
+      "category": "defensive",
+      "side_to_move": "white",
+      "legal_move_count": 7,
+      "engine_move": "h2h3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -555.426025390625,
+      "engine_latency_ms": 575.29,
+      "stockfish_best_move": "h2h3",
+      "stockfish_top3": [
+        "h2h3",
+        "h2h4",
+        "g2g4"
+      ],
+      "stockfish_latency_ms": 3.19,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -664,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -664,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": -0.2857
+    },
+    {
+      "id": "XDF03",
+      "fen": "rnbqkbnr/ppp2ppp/8/1B1pp3/4P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 3",
+      "category": "defensive",
+      "side_to_move": "black",
+      "legal_move_count": 6,
+      "engine_move": "c7c6",
+      "engine_move_is_legal": true,
+      "engine_top_score": -3.247926712036133,
+      "engine_latency_ms": 840.82,
+      "stockfish_best_move": "c7c6",
+      "stockfish_top3": [
+        "c7c6",
+        "b8d7",
+        "c8d7"
+      ],
+      "stockfish_latency_ms": 11.9,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 181,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": 181,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.9429
+    },
+    {
+      "id": "XDF04",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2",
+      "category": "defensive",
+      "side_to_move": "black",
+      "legal_move_count": 30,
+      "engine_move": "d7d5",
+      "engine_move_is_legal": true,
+      "engine_top_score": -285.453857421875,
+      "engine_latency_ms": 1165.1,
+      "stockfish_best_move": "d8h4",
+      "stockfish_top3": [
+        "d8h4",
+        "h7h5",
+        "g7g6"
+      ],
+      "stockfish_latency_ms": 3.43,
+      "eval_after_engine_move_pov_mover": {
+        "cp": 332,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": null,
+        "mate_in": 0
+      },
+      "move_regret_cp": null,
+      "mate_status": "missed_forced_mate",
+      "top1_agreement": false,
+      "top3_containment": false,
+      "spearman_rho_vs_stockfish_topk": -0.3571
+    },
+    {
+      "id": "XDF05",
+      "fen": "6k1/5ppp/8/8/3b4/8/5PPP/6K1 w - - 0 1",
+      "category": "defensive",
+      "side_to_move": "white",
+      "legal_move_count": 6,
+      "engine_move": "h2h3",
+      "engine_move_is_legal": true,
+      "engine_top_score": -118.96334075927734,
+      "engine_latency_ms": 693.24,
+      "stockfish_best_move": "h2h3",
+      "stockfish_top3": [
+        "g2g3",
+        "h2h3",
+        "g1f1"
+      ],
+      "stockfish_latency_ms": 3.62,
+      "eval_after_engine_move_pov_mover": {
+        "cp": -483,
+        "mate_in": null
+      },
+      "eval_after_stockfish_move_pov_mover": {
+        "cp": -483,
+        "mate_in": null
+      },
+      "move_regret_cp": 0,
+      "mate_status": "none",
+      "top1_agreement": true,
+      "top3_containment": true,
+      "spearman_rho_vs_stockfish_topk": 0.2
+    }
+  ]
+}

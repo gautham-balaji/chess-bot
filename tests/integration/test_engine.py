@@ -297,3 +297,176 @@ def test_candidate_material_and_space_are_post_move_values(engine_mod, white_to_
         assert entry["material"] == engine_mod.material_balance(board)
         assert entry["space"] == engine_mod.space_control(board)
         assert entry["mobility"] == engine_mod.mobility_score(board)
+
+
+# ==================================================================== C2 lookahead
+#
+# The 1-ply lookahead must implement minimax over the opponent's replies.
+#
+# Established empirically (see docs/PHASE_4B_REPORT.md):
+#   * the CNN is a WHITE-POSITIVE evaluator (+342cp with White a queen up,
+#     -486cp with Black a queen up), and is side-to-move blind;
+#   * the candidate score is also White-positive (material_balance is
+#     White-minus-Black and every Ridge coefficient is positive);
+#   * the opponent-reply scores are raw CNN output, with no sign transform.
+#
+# Therefore the opponent picks the reply best for THEM on the White-positive
+# scale - Black minimises, White maximises - and that value must be blended in
+# POSITIVELY, because the final sort already encodes direction (descending for
+# White, ascending for Black).
+#
+# These tests drive rerank_moves with a stubbed CNN so the reply values are fully
+# controlled, and measure the APPLIED lookahead term by differencing two runs
+# that are identical except for the reply values. The candidate-batch value is
+# held constant, so the weighted term and the heuristic bonuses cancel exactly in
+# the difference and cannot confound the result.
+#
+# The expected deltas are derived from the minimax contract, NOT from the
+# implementation, and they differ in sign from what the pre-fix code produces -
+# so these cannot pass by sharing a wrong assumption with the implementation.
+
+import numpy as np
+
+LOOKAHEAD_WEIGHT = 0.5      # matches engine.py; the term is 0.5 * tanh(V / 200)
+LOOKAHEAD_SCALE = 200.0
+
+
+class _StubCNN:
+    """Returns controlled values: constant for the candidate batch, then a caller
+    supplied list for the opponent-reply batch (rerank_moves calls predict twice)."""
+
+    def __init__(self, candidate_value, reply_values):
+        self.candidate_value = candidate_value
+        self.reply_values = reply_values
+        self.calls = 0
+
+    def predict(self, arr, verbose=0):
+        self.calls += 1
+        n = len(arr)
+        if self.calls == 1:
+            return np.full((n, 1), self.candidate_value, dtype=np.float32)
+        assert n == len(self.reply_values), (
+            f"opponent batch size {n} != prepared reply values {len(self.reply_values)}"
+        )
+        return np.asarray(self.reply_values, dtype=np.float32).reshape(n, 1)
+
+
+def _reply_layout(board):
+    """Candidate order and reply counts, mirroring how rerank_moves batches."""
+    candidates = list(board.legal_moves)
+    counts = []
+    for mv in candidates:
+        board.push(mv)
+        counts.append(board.legal_moves.count())
+        board.pop()
+    return candidates, counts
+
+
+def _run_with_reply_values(engine_mod, monkeypatch, board, values):
+    stub = _StubCNN(candidate_value=0.0, reply_values=values)
+    monkeypatch.setattr(engine_mod, "cnn_model", stub)
+    ranked = engine_mod.rerank_moves(board.copy())
+    return {e["move"].uci(): float(e["score"]) for e in ranked}
+
+
+def _expected_term(value):
+    return LOOKAHEAD_WEIGHT * np.tanh(value / LOOKAHEAD_SCALE)
+
+
+@pytest.mark.parametrize(
+    "fen,side,injected,expected_delta_desc",
+    [
+        # White to move: the opponent is Black, who MINIMISES the White-positive
+        # score. Injecting a reply that is great for White must NOT change the
+        # lookahead term - Black would never choose it.
+        ("8/8/8/4k3/8/4K3/4P3/8 w - - 0 1", "white", +1000.0, "no change"),
+        # ...whereas injecting a reply that is terrible for White MUST lower it.
+        ("8/8/8/4k3/8/4K3/4P3/8 w - - 0 1", "white", -1000.0, "lower"),
+        # Black to move: the opponent is White, who MAXIMISES. A reply that is
+        # great for White MUST raise the score (worse for Black, who sorts
+        # ascending).
+        ("8/8/8/4k3/8/4K3/4P3/8 b - - 0 1", "black", +1000.0, "raise"),
+        # ...and a reply that is terrible for White must NOT change it.
+        ("8/8/8/4k3/8/4K3/4P3/8 b - - 0 1", "black", -1000.0, "no change"),
+    ],
+)
+def test_lookahead_uses_the_opponents_best_reply(
+    engine_mod, monkeypatch, fen, side, injected, expected_delta_desc
+):
+    board = chess.Board(fen)
+    assert (board.turn == chess.WHITE) == (side == "white")
+
+    candidates, counts = _reply_layout(board)
+    total = sum(counts)
+
+    baseline_values = [0.0] * total
+    baseline = _run_with_reply_values(engine_mod, monkeypatch, board, baseline_values)
+
+    # Inject the extreme value into the FIRST reply of the FIRST candidate only.
+    injected_values = list(baseline_values)
+    injected_values[0] = injected
+    injected_run = _run_with_reply_values(engine_mod, monkeypatch, board, injected_values)
+
+    target = candidates[0].uci()
+    delta = injected_run[target] - baseline[target]
+
+    if expected_delta_desc == "no change":
+        assert delta == pytest.approx(0.0, abs=2e-3), (
+            f"{side} to move: injecting a reply worth {injected:+.0f} changed the "
+            f"lookahead by {delta:+.4f}, but the opponent would never pick that reply"
+        )
+    elif expected_delta_desc == "raise":
+        expected = _expected_term(injected) - _expected_term(0.0)
+        assert delta == pytest.approx(expected, abs=2e-3), (
+            f"black to move: a reply worth {injected:+.0f} to White must RAISE the "
+            f"White-positive score by {expected:+.4f} (worse for Black), got {delta:+.4f}"
+        )
+    else:  # lower
+        expected = _expected_term(injected) - _expected_term(0.0)
+        assert delta == pytest.approx(expected, abs=2e-3), (
+            f"white to move: a reply worth {injected:+.0f} to White must LOWER the "
+            f"score by {expected:+.4f}, got {delta:+.4f}"
+        )
+
+    # Every other candidate is untouched, so its score must be unchanged.
+    for uci, score in baseline.items():
+        if uci == target:
+            continue
+        assert injected_run[uci] == pytest.approx(score, abs=2e-3), (
+            f"{uci} changed although none of its replies were modified"
+        )
+
+
+@pytest.mark.parametrize(
+    "fen,side", [("8/8/8/4k3/8/4K3/4P3/8 w - - 0 1", "white"),
+                 ("8/8/8/4k3/8/4K3/4P3/8 b - - 0 1", "black")]
+)
+def test_lookahead_term_matches_the_minimax_value_exactly(
+    engine_mod, monkeypatch, fen, side
+):
+    """The applied term must equal 0.5*tanh(V/200) where V is min(replies) for
+    White to move and max(replies) for Black to move."""
+    board = chess.Board(fen)
+    candidates, counts = _reply_layout(board)
+
+    # Distinct spread per candidate so min and max are clearly different.
+    values, offsets, cursor = [], [], 0
+    for k in counts:
+        offsets.append(cursor)
+        spread = [(-400.0 + 200.0 * j) for j in range(k)]
+        values.extend(spread)
+        cursor += k
+
+    zero = _run_with_reply_values(engine_mod, monkeypatch, board, [0.0] * sum(counts))
+    actual = _run_with_reply_values(engine_mod, monkeypatch, board, values)
+
+    opponent_maximises = (board.turn == chess.BLACK)
+    for idx, mv in enumerate(candidates):
+        block = values[offsets[idx]:offsets[idx] + counts[idx]]
+        v = max(block) if opponent_maximises else min(block)
+        expected = _expected_term(v) - _expected_term(0.0)
+        got = actual[mv.uci()] - zero[mv.uci()]
+        assert got == pytest.approx(expected, abs=2e-3), (
+            f"{side} to move, {mv.uci()}: replies {block} -> minimax value {v}, "
+            f"expected applied term {expected:+.4f}, got {got:+.4f}"
+        )
