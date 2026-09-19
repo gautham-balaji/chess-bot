@@ -21,6 +21,13 @@ values, so the arms differ in exactly one respect.
                       and labels stay side-to-move relative.
                       >>> THIS IS THE A0 CONTROL <<<
 
+    corrected_mate_white_perspective
+                      A1's mate mapping PLUS normalisation to a White-positive
+                      frame. Differs from A1 in exactly one respect: Black-to-move
+                      labels are negated. Equals the stored `label` field, but is
+                      derived from the raw values so A1/A2 share one derivation path.
+                      >>> THIS IS A2 <<<
+
     c6prep            The repaired policy from training/labels.py: mates mapped
                       onto the centipawn axis, labels White-positive, clipping
                       applied to cp only. This is the `label` field as stored.
@@ -64,8 +71,10 @@ DEFAULT_TEST_FRACTION = 0.2
 
 LABEL_POLICY_LEGACY = "legacy_notebook"
 LABEL_POLICY_CORRECTED_MATE = "corrected_mate_legacy_perspective"
+LABEL_POLICY_CORRECTED_MATE_WHITE = "corrected_mate_white_perspective"
 LABEL_POLICY_C6PREP = "c6prep"
-LABEL_POLICIES = (LABEL_POLICY_LEGACY, LABEL_POLICY_CORRECTED_MATE, LABEL_POLICY_C6PREP)
+LABEL_POLICIES = (LABEL_POLICY_LEGACY, LABEL_POLICY_CORRECTED_MATE,
+                  LABEL_POLICY_CORRECTED_MATE_WHITE, LABEL_POLICY_C6PREP)
 
 
 # ============================================================ loading
@@ -147,6 +156,43 @@ def corrected_mate_legacy_perspective_label(raw_value: int, eval_type: str,
     return _labels.clip_cp(raw_value, clip)
 
 
+def corrected_mate_white_perspective_label(raw_value: int, eval_type: str,
+                                           side_to_move_is_white: bool,
+                                           clip: int = CP_CLIP_LEGACY) -> int:
+    """A2: A1's mate mapping PLUS perspective normalisation to White-positive.
+
+    Exactly one change from A1 - the frame the label is expressed in:
+
+        mate scale   : the repaired magnitude scale     IDENTICAL to A1
+        clip bounds  : cp only, +/-1500                 IDENTICAL to A1
+        perspective  : normalised to White-positive     CHANGED from A1
+
+    A1 hardcodes `side_to_move_is_white=True`, which pins every label to the
+    mover's frame. A2 passes the record's ACTUAL side to move, so a label now
+    always means "good for White" regardless of whose turn it is.
+
+    Consequences, all of which are asserted by tests:
+
+        White to move -> label IDENTICAL to A1 (the two frames coincide)
+        Black to move -> label is A1's negated (both cp and mate)
+        mate magnitudes are preserved under the flip; only the sign moves
+
+    This is the same policy `training/labels.make_label` implements, and hence
+    the same as dataset_v1's stored `label` field - a test pins the equality on
+    all 9,667 records. It is expressed here as an explicit derivation from the
+    raw values rather than as a read of the stored column, so that A1 and A2 are
+    both derivations of the SAME inputs and the contrast between them is
+    auditable in one place.
+    """
+    from training import labels as _labels
+
+    if eval_type == _labels.EVAL_TYPE_MATE:
+        return _labels.mate_to_white_positive(
+            raw_value, side_to_move_is_white=side_to_move_is_white)
+    return _labels.to_white_positive(_labels.clip_cp(raw_value, clip),
+                                     side_to_move_is_white=side_to_move_is_white)
+
+
 def apply_label_policy(records: list[dict], policy: str) -> np.ndarray:
     """Derive the label vector for an arm. Never mutates `records`."""
     if policy == LABEL_POLICY_LEGACY:
@@ -156,6 +202,11 @@ def apply_label_policy(records: list[dict], policy: str) -> np.ndarray:
         return np.array([corrected_mate_legacy_perspective_label(
             r["raw_stockfish_value"], r["eval_type"]) for r in records],
             dtype=np.float32)
+    if policy == LABEL_POLICY_CORRECTED_MATE_WHITE:
+        return np.array([corrected_mate_white_perspective_label(
+            r["raw_stockfish_value"], r["eval_type"],
+            side_to_move_is_white=(r["side_to_move"] == "white"))
+            for r in records], dtype=np.float32)
     if policy == LABEL_POLICY_C6PREP:
         return np.array([r["label"] for r in records], dtype=np.float32)
     raise ValueError(f"unknown label policy {policy!r}; expected one of {LABEL_POLICIES}")
@@ -200,6 +251,34 @@ def label_policy_summary(policy: str) -> dict:
             "is_control_arm": False,
             "applies_perspective_normalisation": False,
             "reproduces_historical_labels": False,
+        }
+    if policy == LABEL_POLICY_CORRECTED_MATE_WHITE:
+        return {
+            "name": LABEL_POLICY_CORRECTED_MATE_WHITE,
+            "perspective": "white (NORMALISED - this is the change from A1)",
+            "mate_handling": (
+                f"repaired: magnitude = {MATE_BASE} - {MATE_STEP} * "
+                f"min(|d|, {MATE_MAX_D}), signed White-positive; "
+                f"mate == 0 means the side to move is checkmated, so the label "
+                f"is negative for a White mover and positive for a Black mover"
+            ),
+            "clip": [-CP_CLIP_LEGACY, CP_CLIP_LEGACY],
+            "clip_applies_to": "cp labels only; mate labels are never clipped",
+            "derivation": (
+                "cp -> to_white_positive(clip(raw_stockfish_value, +/-1500), stm); "
+                "mate -> labels.mate_to_white_positive(d, stm)"
+            ),
+            "changed_from_a1": "perspective normalisation ONLY",
+            "unchanged_from_a1": [
+                "mate magnitude scale", "cp clip bounds",
+                "White-to-move label values", "representation (12 planes)",
+                "dataset, split, architecture, optimiser, loss",
+            ],
+            "changed_from_a0": "mate representation AND perspective normalisation",
+            "is_control_arm": False,
+            "applies_perspective_normalisation": True,
+            "reproduces_historical_labels": False,
+            "equivalent_to_stored_label_field": True,
         }
     if policy == LABEL_POLICY_C6PREP:
         return {

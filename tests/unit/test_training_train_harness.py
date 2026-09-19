@@ -215,5 +215,43 @@ def test_a0_and_a1_differ_only_in_label_policy():
     assert a0["label_policy"] != a1["label_policy"]
 
 
-def test_a2_is_not_implemented_yet():
-    assert sorted(T.ARMS) == ["A0", "A1"]
+# ------------------------------------------------------------------------ A2
+
+def test_a2_is_registered_with_the_white_perspective_policy():
+    assert sorted(T.ARMS) == ["A0", "A1", "A2"]
+    assert T.ARMS["A2"]["label_policy"] == D.LABEL_POLICY_CORRECTED_MATE_WHITE
+
+
+def test_a2_differs_from_a1_in_label_policy_only():
+    """PROPERTY 6: everything an arm can configure is identical except labels."""
+    a1, a2 = T.ARMS["A1"], T.ARMS["A2"]
+    assert a1["label_policy"] != a2["label_policy"]
+    differing = {k for k in set(a1) | set(a2)
+                 if a1.get(k) != a2.get(k)} - {"description"}
+    assert differing == {"label_policy"}, (
+        f"A1 and A2 must differ in label_policy alone, also differ in {differing}")
+
+
+def test_a2_shares_a0_and_a1_representation():
+    assert (T.ARMS["A0"]["representation"] == T.ARMS["A1"]["representation"]
+            == T.ARMS["A2"]["representation"] == "planes12")
+
+
+def test_a2_uses_the_same_hyperparameters_as_a0_and_a1():
+    """PROPERTY 6: architecture/optimiser/loss/batch/epochs are arm-independent.
+
+    HP is a single module-level dict consulted by every arm, so there is no
+    per-arm override path at all - assert that explicitly rather than comparing
+    values to themselves.
+    """
+    for arm_spec in T.ARMS.values():
+        assert not (set(arm_spec) & set(T.HP)), (
+            "an arm must not be able to override a hyperparameter")
+    assert T.HP["loss"] == "huber"
+    assert T.HP["learning_rate"] == 1e-3
+    assert T.HP["batch_size"] == 64
+
+
+def test_all_three_arms_have_distinct_label_policies():
+    policies = [T.ARMS[a]["label_policy"] for a in ("A0", "A1", "A2")]
+    assert len(set(policies)) == 3

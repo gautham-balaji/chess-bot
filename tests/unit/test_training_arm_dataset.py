@@ -4,6 +4,8 @@ No TensorFlow, no training, no dataset file required (synthetic records), so the
 run in milliseconds. The heavy training path is exercised by a separate smoke run,
 not by the test suite.
 """
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -274,3 +276,128 @@ def test_a1_uses_the_same_split_as_a0():
     a1 = D.build_arm_data(records, D.LABEL_POLICY_CORRECTED_MATE)
     assert np.array_equal(a0.split.test_index, a1.split.test_index)
     assert np.array_equal(a0.split.train_index, a1.split.train_index)
+
+
+# ==================================================================== A2 policy
+# A2 = A1 + perspective normalisation, and NOTHING else. Each test below pins
+# one of the six properties the experiment design requires.
+
+def test_a2_equals_a1_on_white_to_move_cp_records():
+    """PROPERTY 2: White cp labels are unchanged - the frames coincide."""
+    records = [_rec(f"f{i}", v, stm="white")
+               for i, v in enumerate([-9000, -572, -1, 0, 7, 598, 9000])]
+    a1 = D.apply_label_policy(records, D.LABEL_POLICY_CORRECTED_MATE)
+    a2 = D.apply_label_policy(records, D.LABEL_POLICY_CORRECTED_MATE_WHITE)
+    assert np.array_equal(a1, a2)
+    assert list(a2) == [-1500.0, -572.0, -1.0, 0.0, 7.0, 598.0, 1500.0]
+
+
+def test_a2_sign_flips_black_to_move_cp_records():
+    """PROPERTY 3: Black cp labels are A1's negated, magnitude preserved."""
+    records = [_rec(f"f{i}", v, stm="black")
+               for i, v in enumerate([-9000, -572, -1, 0, 7, 598, 9000])]
+    a1 = D.apply_label_policy(records, D.LABEL_POLICY_CORRECTED_MATE)
+    a2 = D.apply_label_policy(records, D.LABEL_POLICY_CORRECTED_MATE_WHITE)
+    assert np.array_equal(a2, -a1)
+    assert list(a2) == [1500.0, 572.0, 1.0, 0.0, -7.0, -598.0, -1500.0]
+
+
+def test_a2_clips_cp_before_flipping_not_after():
+    """Clipping then negating and negating then clipping agree only because the
+    bound is symmetric - pin the bound so an asymmetric clip cannot slip in."""
+    # raw +9000 with Black to move = Black winning -> clipped +1500 in the
+    # mover's frame -> -1500 once expressed White-positive.
+    assert D.apply_label_policy([_rec("a", 9000, stm="black")],
+                                D.LABEL_POLICY_CORRECTED_MATE_WHITE)[0] == -1500.0
+    assert D.apply_label_policy([_rec("a", -9000, stm="black")],
+                                D.LABEL_POLICY_CORRECTED_MATE_WHITE)[0] == 1500.0
+    assert D.apply_label_policy([_rec("a", 9000, stm="white")],
+                                D.LABEL_POLICY_CORRECTED_MATE_WHITE)[0] == 1500.0
+
+
+def test_a2_mate_magnitude_is_unchanged_and_only_the_sign_moves():
+    """PROPERTY 4: mate magnitude/sign correct under White-positive."""
+    for d, mag in ((1, 1990), (5, 1950), (49, 1510), (60, 1510)):
+        white = D.apply_label_policy([_mate("a", d, stm="white")],
+                                     D.LABEL_POLICY_CORRECTED_MATE_WHITE)[0]
+        black = D.apply_label_policy([_mate("a", d, stm="black")],
+                                     D.LABEL_POLICY_CORRECTED_MATE_WHITE)[0]
+        assert white == float(mag), f"White mates in {d} -> +{mag}"
+        assert black == float(-mag), f"Black mates in {d} -> -{mag} (White-negative)"
+        # magnitude survives the perspective change
+        a1 = D.apply_label_policy([_mate("a", d, stm="black")],
+                                  D.LABEL_POLICY_CORRECTED_MATE)[0]
+        assert abs(a1) == abs(black) == float(mag)
+
+
+def test_a2_mate_labels_are_never_clipped():
+    """Mate magnitudes exceed the cp clip; the flip must not introduce one."""
+    for stm in ("white", "black"):
+        v = D.apply_label_policy([_mate("a", 1, stm=stm)],
+                                 D.LABEL_POLICY_CORRECTED_MATE_WHITE)[0]
+        assert abs(v) == 1990.0 > D.CP_CLIP_LEGACY
+
+
+def test_a2_handles_being_mated_in_both_frames():
+    """d < 0 means the side to move GETS mated; d == 0 means it is checkmated.
+    Under White-positive both must read as good for the opponent."""
+    cases = {("white", -3): -1970.0, ("black", -3): 1970.0,
+             ("white", 0): -2000.0, ("black", 0): 2000.0}
+    for (stm, d), expected in cases.items():
+        assert D.apply_label_policy([_mate("a", d, stm=stm)],
+                                    D.LABEL_POLICY_CORRECTED_MATE_WHITE)[0] == expected
+
+
+def test_a1_and_a2_can_never_share_a_policy_name():
+    """PROPERTY 5: the two arms are structurally distinguishable."""
+    assert D.LABEL_POLICY_CORRECTED_MATE != D.LABEL_POLICY_CORRECTED_MATE_WHITE
+    assert D.LABEL_POLICY_CORRECTED_MATE_WHITE in D.LABEL_POLICIES
+    a1 = D.label_policy_summary(D.LABEL_POLICY_CORRECTED_MATE)
+    a2 = D.label_policy_summary(D.LABEL_POLICY_CORRECTED_MATE_WHITE)
+    assert a1["applies_perspective_normalisation"] is False
+    assert a2["applies_perspective_normalisation"] is True
+    assert a2["changed_from_a1"] == "perspective normalisation ONLY"
+    assert a1["name"] != a2["name"]
+
+
+def test_a2_differs_from_a1_on_black_records_only():
+    """PROPERTY 1: the ONLY labels that move are Black-to-move ones."""
+    records = ([_rec(f"w{i}", i * 37 - 500, stm="white") for i in range(30)]
+               + [_rec(f"b{i}", i * 37 - 500, stm="black") for i in range(30)]
+               + [_mate(f"wm{i}", i - 3, stm="white") for i in range(6)]
+               + [_mate(f"bm{i}", i - 3, stm="black") for i in range(6)])
+    a1 = D.apply_label_policy(records, D.LABEL_POLICY_CORRECTED_MATE)
+    a2 = D.apply_label_policy(records, D.LABEL_POLICY_CORRECTED_MATE_WHITE)
+    for rec, x, y in zip(records, a1, a2):
+        if rec["side_to_move"] == "white":
+            assert x == y, f"White record {rec['fen']} must not move"
+        else:
+            assert y == -x, f"Black record {rec['fen']} must be negated"
+
+
+def test_a2_matches_the_stored_c6prep_label_on_the_real_dataset():
+    """PROPERTY 1 (end-to-end): the derived A2 policy reproduces dataset_v1's
+    stored `label` column exactly. Derivation and storage cross-validate.
+
+    Skipped rather than failed when the (gitignored) artifact is absent.
+    """
+    path = (Path(__file__).resolve().parents[2]
+            / "training" / "artifacts" / "dataset_v1.jsonl")
+    if not path.is_file():
+        pytest.skip("dataset_v1.jsonl not generated in this checkout")
+    records = D.load_records(path)
+    derived = D.apply_label_policy(records, D.LABEL_POLICY_CORRECTED_MATE_WHITE)
+    stored = D.apply_label_policy(records, D.LABEL_POLICY_C6PREP)
+    assert np.array_equal(derived, stored), (
+        f"{int((derived != stored).sum())} of {len(records)} labels disagree")
+
+
+def test_a2_shares_the_split_with_a0_and_a1():
+    """PROPERTY 6: identical split, so seed spread stays training variance."""
+    records = _records(400)
+    splits = [D.build_arm_data(records, p).split for p in
+              (D.LABEL_POLICY_LEGACY, D.LABEL_POLICY_CORRECTED_MATE,
+               D.LABEL_POLICY_CORRECTED_MATE_WHITE)]
+    for s in splits[1:]:
+        assert np.array_equal(s.test_index, splits[0].test_index)
+        assert np.array_equal(s.train_index, splits[0].train_index)

@@ -93,6 +93,15 @@ ARMS = {
             "side-to-move perspective retained, 12 planes"
         ),
     },
+    "A2": {
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+        "representation": "planes12",
+        "description": (
+            "label perspective normalisation: A1's repaired mate scale plus "
+            "White-positive labels, 12 planes. Differs from A1 ONLY in "
+            "perspective"
+        ),
+    },
 }
 
 
