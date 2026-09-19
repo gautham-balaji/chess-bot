@@ -13,3 +13,7 @@ chess_model.ipynb
 # OS / editor noise
 .DS_Store
 *.pyc
+
+# Generated training dataset artifacts (regenerable via training/build_dataset.py;
+# checksum recorded in the accompanying .manifest.json, which IS committed)
+training/artifacts/*.jsonl

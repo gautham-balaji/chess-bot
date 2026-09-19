@@ -1,0 +1,148 @@
+{
+  "pipeline_version": "c6prep-1",
+  "generated_at_utc": "2026-09-19T09:10:25+00:00",
+  "generation_seconds": 187.0,
+  "purpose": "C6-Prep reproducible dataset/label artifact. Inputs for the planned A0-A3 experiments. No model is trained by this pipeline.",
+  "dataset": {
+    "source_filename": "games.csv",
+    "source_sha256": "e7aadff104a610afb5403caf81c1461babecb0dc87760ff5eea7dc0e7a4a8129",
+    "source_size_bytes": 7672655,
+    "source_row_count": 20058,
+    "source_columns": [
+      "id",
+      "rated",
+      "created_at",
+      "last_move_at",
+      "turns",
+      "victory_status",
+      "winner",
+      "increment_code",
+      "white_id",
+      "white_rating",
+      "black_id",
+      "black_rating",
+      "moves",
+      "opening_eco",
+      "opening_name",
+      "opening_ply"
+    ],
+    "expected_source": {
+      "filename": "games.csv",
+      "sha256": "e7aadff104a610afb5403caf81c1461babecb0dc87760ff5eea7dc0e7a4a8129",
+      "size_bytes": 7672655,
+      "row_count": 20058
+    },
+    "source_matches_expected": {
+      "sha256": true,
+      "size_bytes": true,
+      "row_count": true
+    },
+    "sample_size": 10000,
+    "sample_seed": 42,
+    "sampling_method": "pandas DataFrame.sample(n=10000, random_state=42) - uniform, without replacement, not stratified",
+    "deduplication": {
+      "method": "exact FEN, first occurrence kept",
+      "input_rows": 10000,
+      "unique_fens": 9667,
+      "duplicate_rows_removed": 333,
+      "fens_occurring_more_than_once": 252,
+      "max_occurrences_of_one_fen": 13
+    },
+    "final_record_count": 9667,
+    "side_to_move_counts": {
+      "white": 9260,
+      "black": 407
+    }
+  },
+  "position_generation": {
+    "max_fullmoves": 10,
+    "max_plies": 20,
+    "derivation": "replay SAN tokens[:20] from the initial position - AT MOST 20 plies, not exactly 20. Games with fewer plies yield earlier positions. Preserved from the notebook.",
+    "san_policy": "python-chess push_san; a malformed token stops the replay and is recorded per-record in truncated_by_bad_san / bad_san_token",
+    "counts": {
+      "games_processed": 10000,
+      "valid_positions": 10000
+    },
+    "ply_histogram": {
+      "1": 9,
+      "2": 86,
+      "3": 43,
+      "4": 25,
+      "5": 14,
+      "6": 24,
+      "7": 36,
+      "8": 27,
+      "9": 40,
+      "10": 28,
+      "11": 51,
+      "12": 36,
+      "13": 48,
+      "14": 49,
+      "15": 61,
+      "16": 63,
+      "17": 78,
+      "18": 61,
+      "19": 66,
+      "20": 9155
+    },
+    "positions_at_ply_cap": 8932,
+    "positions_below_ply_cap": 735
+  },
+  "stockfish": {
+    "version": "Stockfish 17.1 by the Stockfish developers (see AUTHORS file)",
+    "wrapper_package": "stockfish",
+    "wrapper_version": "4.0.8",
+    "depth": 8,
+    "threads": 1,
+    "hash_mb": 16,
+    "clear_hash_per_position": true,
+    "turn_perspective_used": "True (native side-to-move relative); converted to White-positive in training/labels.py",
+    "note": "Executable path is deliberately NOT part of dataset identity. Clearing the hash before each position makes labels independent of iteration order; the notebook did not do this."
+  },
+  "labels": {
+    "label_perspective": "white",
+    "cp_policy": "raw Stockfish centipawns, side-to-move-relative, converted to White-positive, then clipped",
+    "mate_policy": "magnitude = 2000 - 10 * min(|mate_distance|, 49); signed so that positive means White wins. Monotonic in mate distance and strictly above the centipawn clip bound.",
+    "mate_zero_policy": "mate == 0 means the SIDE TO MOVE is checkmated and has lost; the sign is taken from the side to move, not from the value, because zero carries no sign. Magnitude is the maximum (2000).",
+    "clip_bounds": [
+      -1500,
+      1500
+    ],
+    "clip_applies_to": "cp labels only; mate labels are never clipped",
+    "ordering": "mate mapping -> perspective normalisation -> clipping (cp only)",
+    "mate_score_base": 2000,
+    "mate_score_step": 10,
+    "mate_max_distance": 49,
+    "cp_clip_used": 1500,
+    "counts": {
+      "eval_type_cp": 9479,
+      "eval_type_mate": 188,
+      "clipped": 1
+    },
+    "cp_label_count": 9479,
+    "mate_label_count": 188,
+    "clipped_count": 1,
+    "anomalies": [],
+    "label_min": -2000,
+    "label_max": 2000,
+    "label_mean": 76.361
+  },
+  "artifact": {
+    "records_file": "dataset_v1.jsonl",
+    "records_sha256": "5a689e3f37156a0540598cdebd0c7f42cdbb09976b5c9af61c013ebdcf3a430d",
+    "records_format": "JSON Lines (one position per line, UTF-8, LF)"
+  },
+  "reproducibility": {
+    "python_version": "3.12.10",
+    "platform": "Windows 11 AMD64",
+    "packages": {
+      "pandas": "2.3.3",
+      "python-chess": "1.11.2",
+      "stockfish": "4.0.8",
+      "numpy": "2.4.3"
+    },
+    "git_commit": "31eb674ff4f5eff410b6cdd8c94e73ad95612478",
+    "git_dirty": true,
+    "determinism": "Deterministic for fixed games.csv, Stockfish binary/version, configuration, seed and pipeline version. No model training and no RNG beyond the pandas sample seed."
+  }
+}
