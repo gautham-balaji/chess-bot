@@ -24,7 +24,8 @@ import chess
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-BASELINE_DIR = REPO_ROOT / "baseline"
+BASELINE_DIR = REPO_ROOT / "baseline"        # historical Phase 0 evidence, frozen
+REGRESSION_DIR = REPO_ROOT / "regression"    # current accepted expectations
 
 
 # ---------------------------------------------------------------- module loading
@@ -138,12 +139,32 @@ def baseline_fens():
 
 @pytest.fixture(scope="session")
 def baseline_engine_results():
-    """Phase 0 recorded engine output, keyed by position id.
+    """ORIGINAL Phase 0 engine output, keyed by position id. Historical evidence.
 
-    IMPORTANT: this records what the engine DID before later phases, not what it
-    SHOULD do. Phase 4 is expected to change some of these deliberately.
+    Captured before the C1 and C2 correctness fixes. Score values here no longer
+    match the current engine; selected moves and top-3 ordering still do, which is
+    what the historical-continuity test asserts.
+
+    This file is never re-recorded. For the live change-detector expectations, use
+    `current_engine_results`.
     """
     with open(BASELINE_DIR / "engine_results.json", encoding="utf-8") as fh:
+        data = json.load(fh)
+    return {row["id"]: row for row in data["pass1"]}
+
+
+@pytest.fixture(scope="session")
+def current_engine_results():
+    """The ACCEPTED post-C2 engine output - the live regression expectations.
+
+    Re-recorded after C1 and C2 were accepted, by running
+    `baseline/scripts/measure_engine.py` against the committed engine. Generated,
+    never hand-edited. See regression/README.md.
+
+    This still records what the engine DOES, not what it SHOULD do. A later
+    accepted change is expected to require re-recording it again.
+    """
+    with open(REGRESSION_DIR / "engine_results_post_c2.json", encoding="utf-8") as fh:
         data = json.load(fh)
     return {row["id"]: row for row in data["pass1"]}
 
