@@ -270,3 +270,178 @@ def test_stage2_writes_only_under_the_a1r_directory():
     assert S2.OUT_DIR.name == "A1R"
     assert S2.OUT_DIR.resolve() != (S2.REPO_ROOT / "models").resolve()
     assert S2.RIDGE_DIR.is_relative_to(S2.OUT_DIR)
+
+
+# ==================================================================== A2R Stage 1
+#
+# A2R reuses this module rather than reimplementing it. These tests pin (a) that
+# the reuse is additive and cannot disturb the committed A1R configuration, and
+# (b) the new ranking diagnostics the A2R gate depends on.
+
+def test_a2_is_registered_with_the_white_perspective_policy():
+    from training import dataset as D
+    assert RR.ARM_POLICIES["A2"] == D.LABEL_POLICY_CORRECTED_MATE_WHITE
+    assert set(RR.ARM_POLICIES) == {"A0", "A1", "A2"}
+
+
+def test_default_arm_set_is_still_the_a1r_pair():
+    """Running with no arguments must reproduce A1R, whose Stage 2 reads the
+    artifact this module writes. A2R must not have widened the default."""
+    assert set(RR.ARMS) == {"A0", "A1"}
+    assert "A2" not in RR.ARMS
+    assert RR.OUT_DIR.name == "A1R"
+
+
+def test_every_registered_arm_has_a_distinct_label_policy():
+    assert len(set(RR.ARM_POLICIES.values())) == len(RR.ARM_POLICIES)
+
+
+# ---------------------------------------------------------------- direction
+
+def test_best_index_maximises_for_white_and_minimises_for_black():
+    scores = np.array([10.0, -5.0, 3.0])
+    assert RR._best_index(scores, maximise=True) == 0
+    assert RR._best_index(scores, maximise=False) == 1
+
+
+# ---------------------------------------------------------------- decisive
+
+def _one_position(cnn_values, board_rows, maximise=True):
+    fen = "x"
+    return ({fen: np.asarray(cnn_values, float)},
+            {fen: np.asarray(board_rows, float)},
+            {fen: maximise})
+
+
+W = [330.9, 32.4, 0.79, 5.17, 0.019]
+
+
+def test_cnn_is_decisive_when_it_overturns_the_heuristic_ranking():
+    """Heuristics prefer candidate 1 (material 3 vs 0); a large CNN advantage on
+    candidate 0 must flip the top move."""
+    cnn, feats, up = _one_position([600.0, -600.0], [[0, 0, 0, 0], [3, 0, 0, 0]])
+    out = RR.decisive_contribution(W, cnn, feats, up)
+    assert out["cnn_decisive_pct"] == pytest.approx(100.0)
+    assert out["cnn_dictates_top_move_pct"] == pytest.approx(100.0)
+
+
+def test_cnn_is_not_decisive_when_it_agrees_with_the_heuristics():
+    cnn, feats, up = _one_position([-600.0, 600.0], [[0, 0, 0, 0], [3, 0, 0, 0]])
+    out = RR.decisive_contribution(W, cnn, feats, up)
+    assert out["cnn_decisive_pct"] == pytest.approx(0.0)
+    assert out["cnn_dictates_top_move_pct"] == pytest.approx(100.0)
+
+
+def test_decisive_contribution_respects_side_to_move():
+    """The identical numbers must give a different answer for Black, because the
+    engine encodes the side in the sort direction.
+
+    Candidates: CNN likes c0, a big material term lifts c1, c2 is worst on both.
+    Maximising, the material term overrules the CNN, so the CNN does not dictate.
+    Minimising, the worst candidate is c2 on both, so it does.
+    """
+    rows = [[0, 0, 0, 0], [10, 0, 0, 0], [0, 0, 0, 0]]
+    cnn_w, feats_w, up_w = _one_position([100.0, 50.0, -200.0], rows, maximise=True)
+    cnn_b, feats_b, up_b = _one_position([100.0, 50.0, -200.0], rows, maximise=False)
+
+    white = RR.decisive_contribution(W, cnn_w, feats_w, up_w)
+    black = RR.decisive_contribution(W, cnn_b, feats_b, up_b)
+    assert white["cnn_dictates_top_move_pct"] == pytest.approx(0.0)
+    assert black["cnn_dictates_top_move_pct"] == pytest.approx(100.0)
+
+
+def test_decisive_contribution_skips_positions_with_one_candidate():
+    cnn, feats, up = _one_position([100.0], [[1, 1, 1, 1]])
+    assert RR.decisive_contribution(W, cnn, feats, up)["n_positions"] == 0
+
+
+# ---------------------------------------------------------------- top-move proxy
+
+def test_identical_coefficients_always_agree_on_the_top_move():
+    cnn, feats, up = _one_position([-300.0, 300.0], [[0, 0, 0, 0], [3, 1, 2, 4]])
+    out = RR.top_move_agreement(W, W, cnn, feats, up)
+    assert out["same_top_move_pct"] == pytest.approx(100.0)
+    assert out["changed_top_move_pct"] == pytest.approx(0.0)
+
+
+def test_top_move_agreement_detects_a_reordering_refit():
+    """A material coefficient large enough to outweigh the CNN must change the
+    top move - this is the channel (a) effect the gate cares about."""
+    cnn, feats, up = _one_position([300.0, -300.0], [[0, 0, 0, 0], [3, 0, 0, 0]])
+    heavier = [330.9, 3240.0, 0.79, 5.17, 0.019]
+    out = RR.top_move_agreement(W, heavier, cnn, feats, up)
+    assert out["changed_top_move_pct"] == pytest.approx(100.0)
+
+
+def test_top_move_agreement_is_blind_to_uniform_rescaling():
+    """A uniform rescale cannot reorder the weighted sum, so this proxy reports
+    no change. That is correct AND is exactly why it cannot see channel (b):
+    the engine's unscaled bonus and lookahead terms are outside this sum.
+    """
+    cnn, feats, up = _one_position([-300.0, 300.0], [[0, 0, 0, 0], [3, 1, 2, 4]])
+    out = RR.top_move_agreement(W, [10 * x for x in W], cnn, feats, up)
+    assert out["same_top_move_pct"] == pytest.approx(100.0)
+
+
+def test_top_move_agreement_records_that_it_is_a_proxy():
+    cnn, feats, up = _one_position([-300.0, 300.0], [[0, 0, 0, 0], [3, 0, 0, 0]])
+    assert "proxy" in RR.top_move_agreement(W, W, cnn, feats, up)["note"]
+
+
+# ---------------------------------------------------------------- perturbation
+
+def test_perturbation_sensitivity_reproduces_the_measured_cosine_blindness():
+    """Pins A1R's finding as data: cosine reacts to `material` but is nearly
+    blind to `space` and `mobility`, so the gate must not rely on it."""
+    s = RR.perturbation_sensitivity([330.9, 32.4, 0.79, 5.17, 0.019])
+    assert s["material_x10"] < 0.80          # detected
+    assert s["space_x10"] > 0.999            # effectively blind
+    assert s["mobility_x100"] > 0.9999       # blind
+    assert s["uniform_x10"] == pytest.approx(1.0)
+    assert s["space_sign_flip"] > 0.999      # a SIGN FLIP is invisible to cosine
+
+
+def test_perturbation_sensitivity_covers_every_feature():
+    s = RR.perturbation_sensitivity([330.9, 32.4, 0.79, 5.17, 0.019])
+    for name in RR.FEATURE_NAMES:
+        assert f"{name}_x10" in s
+
+
+# ==================================================================== A2R gate logic
+
+def test_band_overlap_detection():
+    from training import a2r_stage1_analysis as AN
+    a = {"min": 1.0, "max": 2.0}
+    assert AN.overlaps(a, {"min": 1.5, "max": 3.0})
+    assert AN.overlaps(a, {"min": 0.0, "max": 1.5})
+    assert AN.overlaps(a, {"min": 0.0, "max": 9.0})       # contained
+    assert not AN.overlaps(a, {"min": 2.5, "max": 3.0})
+    assert not AN.overlaps(a, {"min": -1.0, "max": 0.5})
+
+
+def test_touching_bands_count_as_overlapping():
+    """A2's decisive band touches A1's at a single point. Treating that as an
+    overlap is the conservative choice: it makes GATE 2 harder to trip, so the
+    gate cannot be tripped by a boundary coincidence."""
+    from training import a2r_stage1_analysis as AN
+    assert AN.overlaps({"min": 32.5, "max": 36.25}, {"min": 36.25, "max": 47.5})
+
+
+def test_gate2_reference_band_matches_the_a1r_report():
+    from training import a2r_stage1_analysis as AN
+    assert (AN.GATE_BAND_LOW, AN.GATE_BAND_HIGH) == (82.85, 84.93)
+
+
+def test_a2r_analysis_writes_only_under_the_a2r_directory():
+    from training import a2r_stage1_analysis as AN
+    assert AN.A2R.name == "A2R"
+    assert "experiments" in str(AN.A2R)
+    assert AN.OUT.is_relative_to(AN.A2R)
+    assert AN.A2R.resolve() != (AN.REPO_ROOT / "models").resolve()
+
+
+def test_a2r_analysis_does_not_target_the_a1r_artifact():
+    """A2R must not overwrite the A1R Stage 1 results that A1R Stage 2 reads."""
+    from training import a2r_stage1_analysis as AN
+    assert AN.RESULTS != AN.A1R_RESULTS
+    assert AN.OUT != AN.A1R_RESULTS

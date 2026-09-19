@@ -1,6 +1,8 @@
-"""C6-A1R Stage 1 - Ridge compatibility diagnostic (coefficient inspection only).
+"""C6 Stage 1 - Ridge compatibility diagnostic (coefficient inspection only).
 
-    python -m training.refit_ridge
+    python -m training.refit_ridge                       # A1R default: A0 + A1
+    python -m training.refit_ridge --arms A0 A1 A2 \\
+        --out-dir training/experiments/A2R --stage A2R-stage1
 
 Answers: would refitting the Ridge fusion layer for each arm's own CNN materially
 change how the engine RANKS moves? Stage 1 does NOT run the engine; it fits the
@@ -24,8 +26,19 @@ For each of the six trained models (A0 x3, A1 x3):
      production vector, inner-split R2, and the implied per-term RANKING spread
      on evaluation positions.
 
+  5. Report how often the CNN term is DECISIVE for the top-ranked candidate, and
+     whether the refit coefficients would rank a different candidate first than
+     the production coefficients do. Both are proxies for the engine's choice -
+     `rerank_moves` also adds unscaled heuristic bonuses and a 1-ply lookahead -
+     but they are far tighter evidence about rankings than coefficients alone.
+
 Nothing production is read-write: models/weight_model.pkl is loaded read-only as
-the comparison reference. Output goes to training/experiments/A1R/ (gitignored).
+the comparison reference. Output goes to an experiments directory (gitignored).
+
+The arm set, seeds, output directory and stage label are all selectable, so the
+same methodology serves A1R (A0 + A1) and A2R (A0 + A1 + A2) without being
+reimplemented. Running the module with NO arguments reproduces the committed A1R
+Stage 1 configuration exactly.
 """
 from __future__ import annotations
 
@@ -49,6 +62,16 @@ from training import dataset as D  # noqa: E402
 from training import representation as R  # noqa: E402
 
 STAGE = "A1R-stage1"
+
+# Every arm this diagnostic knows how to fit, with the label policy whose target
+# it must use. ARMS below stays at the A1R default so that running the module
+# with no arguments reproduces the committed A1R Stage 1 artifact byte for byte;
+# A2R selects its arms explicitly on the command line.
+ARM_POLICIES = {
+    "A0": D.LABEL_POLICY_LEGACY,
+    "A1": D.LABEL_POLICY_CORRECTED_MATE,
+    "A2": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+}
 ARMS = {"A0": D.LABEL_POLICY_LEGACY, "A1": D.LABEL_POLICY_CORRECTED_MATE}
 SEEDS = (0, 1, 2)
 FEATURE_NAMES = ["cnn_norm", "material", "space", "center", "mobility"]
@@ -176,11 +199,128 @@ def ranking_spread(coef, cnn_by_position, features_by_position) -> dict:
     }
 
 
+# ============================================================ decisive contribution
+#
+# Ranking share says how much spread each term contributes. It does not say
+# whether that spread ever CHANGES the chosen move. These two measures do, and
+# they are what the Stage 1 gate needs in order to talk about rankings rather
+# than about coefficients.
+#
+# IMPORTANT: this is a PROXY for the engine's choice, not the engine's choice.
+# `rerank_moves` adds unscaled heuristic bonuses and a 1-ply lookahead term on
+# top of the weighted sum, so a proxy disagreement does not guarantee an engine
+# disagreement, nor the reverse. Only Stage 2 measures the engine.
+
+def _weighted_terms(coef, cnn_values, board_feats):
+    coef = np.asarray(coef, dtype=float)
+    cnn_norm = np.tanh(np.asarray(cnn_values, float) / TANH_SCALE)
+    return np.column_stack([coef[0] * cnn_norm] +
+                           [coef[i + 1] * board_feats[:, i] for i in range(4)])
+
+
+def _best_index(scores, maximise: bool) -> int:
+    """The engine scores White-positive and encodes the side in the sort
+    direction, so the mover's best candidate is the max for White and the min
+    for Black."""
+    return int(np.argmax(scores)) if maximise else int(np.argmin(scores))
+
+
+def decisive_contribution(coef, cnn_by_position, features_by_position,
+                          maximise_by_position) -> dict:
+    """How often the CNN term actually determines which move ranks first."""
+    decisive = dictates = n = 0
+    for fen, cnn in cnn_by_position.items():
+        feats = features_by_position[fen]
+        if len(feats) < 2:
+            continue
+        up = maximise_by_position[fen]
+        terms = _weighted_terms(coef, cnn, feats)
+        full = _best_index(terms.sum(axis=1), up)
+        without_cnn = _best_index(terms[:, 1:].sum(axis=1), up)
+        cnn_only = _best_index(terms[:, 0], up)
+        decisive += int(full != without_cnn)
+        dictates += int(full == cnn_only)
+        n += 1
+    return {
+        "n_positions": n,
+        # the CNN changed the top move relative to the heuristics alone
+        "cnn_decisive_pct": round(100 * decisive / n, 3) if n else None,
+        # the top move is simply the CNN's own favourite
+        "cnn_dictates_top_move_pct": round(100 * dictates / n, 3) if n else None,
+    }
+
+
+def top_move_agreement(coef_a, coef_b, cnn_by_position, features_by_position,
+                       maximise_by_position) -> dict:
+    """Do two coefficient vectors rank the same candidate first?
+
+    This is the most direct Stage 1 evidence about whether a refit could change
+    engine rankings - still a proxy (see the note above), but a far tighter one
+    than a coefficient comparison.
+    """
+    same = n = 0
+    for fen, cnn in cnn_by_position.items():
+        feats = features_by_position[fen]
+        if len(feats) < 2:
+            continue
+        up = maximise_by_position[fen]
+        a = _best_index(_weighted_terms(coef_a, cnn, feats).sum(axis=1), up)
+        b = _best_index(_weighted_terms(coef_b, cnn, feats).sum(axis=1), up)
+        same += int(a == b)
+        n += 1
+    return {
+        "n_positions": n,
+        "same_top_move_pct": round(100 * same / n, 3) if n else None,
+        "changed_top_move_pct": round(100 * (n - same) / n, 3) if n else None,
+        "note": "proxy: the weighted sum only, without the engine's unscaled "
+                "heuristic bonuses or its 1-ply lookahead term",
+    }
+
+
+def perturbation_sensitivity(reference) -> dict:
+    """How much each coefficient must move before cosine notices.
+
+    A1R Stage 1 found cosine to be a poor discriminator here because w[0]
+    dominates the norm. This records that as a measured artifact rather than a
+    remark, so the A2R gate cannot lean on cosine by accident.
+    """
+    ref = np.asarray(reference, dtype=float)
+    out = {}
+    for i, name in enumerate(FEATURE_NAMES):
+        for factor in (2.0, 10.0, 100.0):
+            v = ref.copy()
+            v[i] *= factor
+            out[f"{name}_x{factor:g}"] = round(cosine_similarity(ref, v), 6)
+    v = ref.copy()
+    v[2] *= -1.0
+    out["space_sign_flip"] = round(cosine_similarity(ref, v), 6)
+    out["uniform_x10"] = round(cosine_similarity(ref, ref * 10.0), 6)
+    return out
+
+
 # ============================================================ main
 
-def main() -> int:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    print(f"{STAGE}: Ridge compatibility diagnostic (Stage 1 only - no engine evaluation)\n")
+def main(argv=None) -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(
+        description="C6 Ridge compatibility diagnostic, Stage 1 (no engine evaluation).")
+    ap.add_argument("--arms", nargs="+", default=sorted(ARMS),
+                    choices=sorted(ARM_POLICIES),
+                    help="arms to fit (default: the A1R pair A0 A1)")
+    ap.add_argument("--seeds", nargs="+", type=int, default=list(SEEDS))
+    ap.add_argument("--out-dir", type=Path, default=OUT_DIR,
+                    help="output directory (default: the A1R directory)")
+    ap.add_argument("--stage", default=STAGE, help="stage label recorded in the artifact")
+    args = ap.parse_args(argv)
+
+    arms = {a: ARM_POLICIES[a] for a in args.arms}
+    seeds = tuple(args.seeds)
+    out_dir, stage = args.out_dir, args.stage
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    print(f"{stage}: Ridge compatibility diagnostic (Stage 1 only - no engine evaluation)")
+    print(f"arms: {sorted(arms)}   seeds: {list(seeds)}   out: {out_dir}\n")
 
     test_records, all_records, split, dataset_sha = load_test_split()
     print(f"dataset_v1 sha256 {dataset_sha[:16]}... (manifest OK)")
@@ -200,10 +340,11 @@ def main() -> int:
         (REPO_ROOT / "evaluation" / "positions" / "extended.json").read_text(
             encoding="utf-8"))["positions"]][:RANKING_POSITIONS]
     import engine as E
-    rank_board_feats, rank_candidates = {}, {}
+    rank_board_feats, rank_candidates, rank_maximise = {}, {}, {}
     for fen in eval_fens:
         b = chess.Board(fen)
         rows, posts = [], []
+        rank_maximise[fen] = b.turn == chess.WHITE
         for mv in b.legal_moves:
             b.push(mv)
             rows.append([E.material_balance(b), E.space_control(b),
@@ -218,9 +359,9 @@ def main() -> int:
     X_test_encoded = R.encode_many(r["fen"] for r in test_records)
     results = []
 
-    for arm, policy in ARMS.items():
+    for arm, policy in arms.items():
         y = D.apply_label_policy(test_records, policy).astype(np.float64)
-        for seed in SEEDS:
+        for seed in seeds:
             model, model_path = load_model_for(arm, seed)
 
             # --- features on the position itself, as cell 31 did ---------------
@@ -263,6 +404,12 @@ def main() -> int:
                 "ranking_spread_refit_coef": spread_refit,
                 "cnn_share_shift_pct_points": round(
                     spread_refit["cnn_share_pct"] - spread_prod["cnn_share_pct"], 3),
+                "decisive_production_coef": decisive_contribution(
+                    w_prod, cnn_by_pos, rank_board_feats, rank_maximise),
+                "decisive_refit_coef": decisive_contribution(
+                    w, cnn_by_pos, rank_board_feats, rank_maximise),
+                "top_move_agreement_production_vs_refit": top_move_agreement(
+                    w_prod, w, cnn_by_pos, rank_board_feats, rank_maximise),
             }
             results.append(row)
             print(f"  {arm} seed {seed}: coef={[round(x, 3) for x in w]}")
@@ -271,11 +418,17 @@ def main() -> int:
                   f"R2(holdout)={r2_out:.4f}  "
                   f"CNN share {spread_prod['cnn_share_pct']:.2f}% -> "
                   f"{spread_refit['cnn_share_pct']:.2f}%")
+            print(f"      CNN decisive {row['decisive_production_coef']['cnn_decisive_pct']:.1f}%"
+                  f" -> {row['decisive_refit_coef']['cnn_decisive_pct']:.1f}%   "
+                  f"top move changed by refit: "
+                  f"{row['top_move_agreement_production_vs_refit']['changed_top_move_pct']:.1f}%")
 
     payload = {
-        "stage": STAGE,
+        "stage": stage,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "method": {
+            "arms": {a: p for a, p in arms.items()},
+            "seeds": list(seeds),
             "fit_positions": "dataset_v1 TEST split (out-of-sample for every model)",
             "features": FEATURE_NAMES,
             "features_computed_on": "the position itself (matches notebook cell 31)",
@@ -288,9 +441,10 @@ def main() -> int:
         "dataset_sha256": dataset_sha,
         "production_coef": [float(x) for x in w_prod],
         "production_intercept": float(production.intercept_),
+        "cosine_perturbation_sensitivity_of_production": perturbation_sensitivity(w_prod),
         "results": results,
     }
-    out = OUT_DIR / "stage1_results.json"
+    out = out_dir / "stage1_results.json"
     out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(f"\nWROTE {out}")
     return 0
