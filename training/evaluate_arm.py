@@ -55,11 +55,21 @@ SUITES = {
 }
 
 
-def stage_models_dir(experiment_model: Path, staging: Path) -> Path:
-    """Build a models/ directory holding the experimental CNN + production Ridge."""
+def stage_models_dir(experiment_model: Path, staging: Path,
+                     ridge_model: Path | None = None) -> Path:
+    """Build a models/ directory holding the experimental CNN + a Ridge.
+
+    `ridge_model` defaults to None, which copies the PRODUCTION Ridge - the
+    behaviour every A0 and A1 run used, and the behaviour the existing tests
+    pin. Passing an explicit path instead stages that Ridge, which is what the
+    A1R Stage 2 matched-fusion diagnostic needs.
+
+    Either way the production directory is only ever READ.
+    """
     staging.mkdir(parents=True, exist_ok=True)
     shutil.copy2(experiment_model, staging / "cnn_model.keras")
-    shutil.copy2(PRODUCTION_MODELS / "weight_model.pkl", staging / "weight_model.pkl")
+    shutil.copy2(ridge_model or (PRODUCTION_MODELS / "weight_model.pkl"),
+                 staging / "weight_model.pkl")
     return staging
 
 
