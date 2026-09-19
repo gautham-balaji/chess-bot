@@ -1,0 +1,135 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1789792665.452740   38200 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1789792672.586163   38200 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1789792679.975394   38200 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+C:\Users\vsriv\OneDrive\Desktop\Chess Bot\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeRegressor from version 1.7.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\vsriv\OneDrive\Desktop\Chess Bot\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator RandomForestRegressor from version 1.7.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\vsriv\OneDrive\Desktop\Chess Bot\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelBinarizer from version 1.7.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\vsriv\OneDrive\Desktop\Chess Bot\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator MLPClassifier from version 1.7.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\vsriv\OneDrive\Desktop\Chess Bot\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.7.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\vsriv\OneDrive\Desktop\Chess Bot\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator Ridge from version 1.7.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+✅ All models loaded
+import engine: 16.50s
+  [pass1]  1/52 OP01 d2d4 1018ms legal=True
+  [pass1]  2/52 OP02 e7e5 649ms legal=True
+  [pass1]  3/52 OP03 d2d4 633ms legal=True
+  [pass1]  4/52 OP04 d1g4 684ms legal=True
+  [pass1]  5/52 OP05 d1h5 618ms legal=True
+  [pass1]  6/52 OP06 d1g4 598ms legal=True
+  [pass1]  7/52 OP07 c8g4 722ms legal=True
+  [pass1]  8/52 OP08 c4d5 846ms legal=True
+  [pass1]  9/52 OP09 f3e5 665ms legal=True
+  [pass1] 10/52 OP10 c6d4 1005ms legal=True
+  [pass1] 11/52 OP11 f3e5 750ms legal=True
+  [pass1] 12/52 OP12 f3e5 851ms legal=True
+  [pass1] 13/52 OP13 e2e4 629ms legal=True
+  [pass1] 14/52 OP14 c4c5 643ms legal=True
+  [pass1] 15/52 OP15 b8c6 615ms legal=True
+  [pass1] 16/52 OP16 d7d5 611ms legal=True
+  [pass1] 17/52 OP17 e7e5 717ms legal=True
+  [pass1] 18/52 OP18 c6d4 867ms legal=True
+  [pass1] 19/52 MG01 b3d5 671ms legal=True
+  [pass1] 20/52 MG02 d1d6 916ms legal=True
+  [pass1] 21/52 MG03 h4f6 808ms legal=True
+  [pass1] 22/52 MG04 f1d3 746ms legal=True
+  [pass1] 23/52 MG05 f3e5 942ms legal=True
+  [pass1] 24/52 MG06 f3e5 661ms legal=True
+  [pass1] 25/52 MG07 f3e5 758ms legal=True
+  [pass1] 26/52 MG08 d1d8 980ms legal=True
+  [pass1] 27/52 MG09 f6e4 679ms legal=True
+  [pass1] 28/52 MG10 f6e4 1112ms legal=True
+  [pass1] 29/52 MG11 e6d5 1016ms legal=True
+  [pass1] 30/52 MG12 f6e4 878ms legal=True
+  [pass1] 31/52 EG01 e3d3 294ms legal=True
+  [pass1] 32/52 EG02 e5d5 261ms legal=True
+  [pass1] 33/52 EG03 e3d3 294ms legal=True
+  [pass1] 34/52 EG04 e6f7 338ms legal=True
+  [pass1] 35/52 EG05 g2h1 422ms legal=True
+  [pass1] 36/52 EG06 h2g1 265ms legal=True
+  [pass1] 37/52 EG07 g7h7 277ms legal=True
+  [pass1] 38/52 EG08 f3g1 394ms legal=True
+  [pass1] 39/52 EG09 e6e5 331ms legal=True
+  [pass1] 40/52 EG10 g2h1 411ms legal=True
+  [pass1] 41/52 EG11 h1a1 432ms legal=True
+  [pass1] 42/52 EG12 e6f7 276ms legal=True
+  [pass1] 43/52 TC01 a1a4 257ms legal=True
+  [pass1] 44/52 TC02 a8a5 404ms legal=True
+  [pass1] 45/52 TC03 f8b4 937ms legal=True
+  [pass1] 46/52 TC04 e5f7 428ms legal=True
+  [pass1] 47/52 TC05 b1f5 367ms legal=True
+  [pass1] 48/52 TC06 f6e4 662ms legal=True
+  [pass1] 49/52 DF01 g8h8 326ms legal=True
+  [pass1] 50/52 DF02 h2h3 322ms legal=True
+  [pass1] 51/52 DF03 d7d5 531ms legal=True
+  [pass1] 52/52 DF04 e1g1 566ms legal=True
+  [pass2]  1/52 OP01 d2d4 410ms legal=True
+  [pass2]  2/52 OP02 e7e5 510ms legal=True
+  [pass2]  3/52 OP03 d2d4 756ms legal=True
+  [pass2]  4/52 OP04 d1g4 570ms legal=True
+  [pass2]  5/52 OP05 d1h5 709ms legal=True
+  [pass2]  6/52 OP06 d1g4 536ms legal=True
+  [pass2]  7/52 OP07 c8g4 608ms legal=True
+  [pass2]  8/52 OP08 c4d5 689ms legal=True
+  [pass2]  9/52 OP09 f3e5 617ms legal=True
+  [pass2] 10/52 OP10 c6d4 721ms legal=True
+  [pass2] 11/52 OP11 f3e5 719ms legal=True
+  [pass2] 12/52 OP12 f3e5 894ms legal=True
+  [pass2] 13/52 OP13 e2e4 632ms legal=True
+  [pass2] 14/52 OP14 c4c5 580ms legal=True
+  [pass2] 15/52 OP15 b8c6 644ms legal=True
+  [pass2] 16/52 OP16 d7d5 528ms legal=True
+  [pass2] 17/52 OP17 e7e5 664ms legal=True
+  [pass2] 18/52 OP18 c6d4 740ms legal=True
+  [pass2] 19/52 MG01 b3d5 628ms legal=True
+  [pass2] 20/52 MG02 d1d6 903ms legal=True
+  [pass2] 21/52 MG03 h4f6 858ms legal=True
+  [pass2] 22/52 MG04 f1d3 716ms legal=True
+  [pass2] 23/52 MG05 f3e5 880ms legal=True
+  [pass2] 24/52 MG06 f3e5 697ms legal=True
+  [pass2] 25/52 MG07 f3e5 718ms legal=True
+  [pass2] 26/52 MG08 d1d8 908ms legal=True
+  [pass2] 27/52 MG09 f6e4 990ms legal=True
+  [pass2] 28/52 MG10 f6e4 995ms legal=True
+  [pass2] 29/52 MG11 e6d5 890ms legal=True
+  [pass2] 30/52 MG12 f6e4 788ms legal=True
+  [pass2] 31/52 EG01 e3d3 261ms legal=True
+  [pass2] 32/52 EG02 e5d5 293ms legal=True
+  [pass2] 33/52 EG03 e3d3 298ms legal=True
+  [pass2] 34/52 EG04 e6f7 330ms legal=True
+  [pass2] 35/52 EG05 g2h1 414ms legal=True
+  [pass2] 36/52 EG06 h2g1 363ms legal=True
+  [pass2] 37/52 EG07 g7h7 330ms legal=True
+  [pass2] 38/52 EG08 f3g1 350ms legal=True
+  [pass2] 39/52 EG09 e6e5 351ms legal=True
+  [pass2] 40/52 EG10 g2h1 443ms legal=True
+  [pass2] 41/52 EG11 h1a1 419ms legal=True
+  [pass2] 42/52 EG12 e6f7 357ms legal=True
+  [pass2] 43/52 TC01 a1a4 301ms legal=True
+  [pass2] 44/52 TC02 a8a5 390ms legal=True
+  [pass2] 45/52 TC03 f8b4 837ms legal=True
+  [pass2] 46/52 TC04 e5f7 359ms legal=True
+  [pass2] 47/52 TC05 b1f5 365ms legal=True
+  [pass2] 48/52 TC06 f6e4 645ms legal=True
+  [pass2] 49/52 DF01 g8h8 332ms legal=True
+  [pass2] 50/52 DF02 h2h3 336ms legal=True
+  [pass2] 51/52 DF03 d7d5 575ms legal=True
+  [pass2] 52/52 DF04 e1g1 496ms legal=True
+WROTE baseline/engine_results.json
+latency pass1: {'n': 52, 'min_ms': 257.08, 'median_ms': 638.03, 'mean_ms': 616.99, 'p95_ms': 1004.9, 'max_ms': 1112.25, 'total_s': 32.08}
+legality: {'legal_moves_returned': 52, 'total': 52, 'rate': 1.0}
+deterministic: True

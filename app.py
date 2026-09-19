@@ -1,13 +1,18 @@
+import os
+
+# Must be set BEFORE TensorFlow is imported (which happens via `engine` below),
+# otherwise it has no effect. It was previously set after that import.
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")  # keep TF logs off the console
+
 from flask import Flask, request, jsonify, render_template
 import chess
 import numpy as np
-import os
+
+import config
 
 app = Flask(__name__)
 
 from engine import engine_move, position_metrics, explain_move, cnn_model, board_to_planes
-
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2" # So TensorFlow logs do not flood the console
 
 # ── global game state ─────────────────────────────────────────────────────────
 board            = chess.Board()
@@ -378,11 +383,21 @@ def benchmark():
         results["hybrid"] = {"error": str(e), "time_ms": round(hybrid_time, 2)}
     
     # Try Stockfish benchmark (optional - will fail gracefully if not installed)
+    stockfish_path = config.find_stockfish()
+    if stockfish_path is None:
+        results["stockfish"] = {
+            "available": False,
+            "note": "Stockfish not found. Set the STOCKFISH_PATH environment "
+                    "variable or install stockfish on PATH.",
+        }
+        results["comparison"] = {"note": "Stockfish comparison unavailable"}
+        return jsonify(results)
+
     try:
         import chess.engine
-        STOCKFISH_PATH = r"C:\Users\vsriv\Downloads\stockfish-windows-x86-64-avx2\stockfish\stockfish-windows-x86-64-avx2.exe"
-        STOCKFISH_DEPTH = 8
-        
+        STOCKFISH_PATH = stockfish_path
+        STOCKFISH_DEPTH = config.STOCKFISH_DEPTH
+
         with chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH) as engine:
             start = time.perf_counter()
             result = engine.play(board, chess.engine.Limit(depth=STOCKFISH_DEPTH))
@@ -402,16 +417,34 @@ def benchmark():
                 "depth": STOCKFISH_DEPTH
             }
             
-            # Comparison metrics
+            # Comparison metrics.
+            #
+            # Only unit-free comparisons are reported. The previous
+            # "eval_diff_cp" field subtracted a side-to-move-relative Stockfish
+            # centipawn score from the hybrid engine's score, which is NOT in
+            # centipawns (it is a Ridge-weighted sum of a tanh-squashed CNN
+            # output plus raw feature counts, and the Ridge intercept is not
+            # applied). That subtraction mixed units and points of view, so it
+            # has been removed rather than re-labelled.
+            #
+            # "speedup" was likewise removed: it was stockfish_time/hybrid_time,
+            # which reads as a speed-up but is below 1 because this engine is
+            # slower. It is replaced by an explicitly named ratio.
             if results["hybrid"].get("move") and results["stockfish"].get("move"):
                 results["comparison"] = {
                     "agreement": results["hybrid"]["move"] == results["stockfish"]["move"],
-                    "speedup": round(stockfish_time / hybrid_time, 2) if hybrid_time > 0 else 0,
-                    "time_saved_ms": round(stockfish_time - hybrid_time, 2),
-                    "eval_diff_cp": abs(hybrid_eval - stockfish_eval)
+                    "engine_time_ratio_vs_stockfish": (
+                        round(hybrid_time / stockfish_time, 2) if stockfish_time > 0 else None
+                    ),
+                    "ratio_note": "engine time / Stockfish time; greater than 1 means "
+                                  "this engine is SLOWER than Stockfish",
+                    "eval_comparison": "not reported: the engine's score is not in "
+                                       "centipawns and is not directly comparable to "
+                                       "Stockfish's evaluation",
                 }
-    except (FileNotFoundError, Exception) as e:
-        results["stockfish"] = {"available": False, "note": "Stockfish not installed or not found"}
+    except Exception as e:
+        results["stockfish"] = {"available": False,
+                                "note": f"Stockfish call failed: {e}"}
         results["comparison"] = {"note": "Stockfish comparison unavailable"}
     
     return jsonify(results)
@@ -463,11 +496,23 @@ def model_info():
         model_config["total_params"]     = int(model_config["total_params"])
         model_config["estimated_size_mb"] = round(model_config["total_params"] * 4 / (1024 * 1024), 2)
 
+        # Figures below are taken from the retained outputs of
+        # chess_model_FINAL.ipynb (cell 14 collection log, cell 16 correlation).
+        # They describe the CNN's fit to its training target only - they are NOT
+        # a measure of playing strength.
         model_config["training"] = {
             "framework": "TensorFlow/Keras",
             "target": "Stockfish centipawn evaluations (depth 8)",
-            "dataset_size": "~50,000 positions",
-            "correlation_vs_stockfish": 0.506
+            "dataset_size": "10,000 positions",
+            "dataset_note": "all sampled at ply 20 (after 10 full moves); "
+                            "no endgame or late-middlegame positions",
+            "test_split": "20% holdout (~2,000 positions)",
+            "correlation_vs_stockfish": 0.708,
+            "correlation_note": "Pearson r between CNN output and Stockfish depth-8 "
+                                "centipawn labels on the held-out split "
+                                "(chess_model_FINAL.ipynb cell 16). Measures "
+                                "label fit, not move quality.",
+            "source": "chess_model_FINAL.ipynb retained cell outputs",
         }
 
         return jsonify(model_config)

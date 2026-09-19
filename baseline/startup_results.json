@@ -1,0 +1,50 @@
+{
+  "note": "Each run is a fresh interpreter. Run 1 reflects the coldest state available at measurement time; later runs reflect a warm OS file cache. No true cold-boot (post-reboot) measurement was taken.",
+  "python_executable": "C:\\Users\\vsriv\\OneDrive\\Desktop\\Chess Bot\\venv\\Scripts\\python.exe",
+  "measurements": {
+    "engine": {
+      "runs": [
+        {
+          "import_seconds": 17.2928,
+          "process_wall_seconds": 19.3152,
+          "returncode": 0,
+          "stderr_tail": "ELAPSED=17.2928"
+        },
+        {
+          "import_seconds": 17.9078,
+          "process_wall_seconds": 20.0423,
+          "returncode": 0,
+          "stderr_tail": "ELAPSED=17.9078"
+        },
+        {
+          "import_seconds": 24.3368,
+          "process_wall_seconds": 27.0819,
+          "returncode": 0,
+          "stderr_tail": "ELAPSED=24.3368"
+        }
+      ],
+      "first_run_seconds": 17.2928,
+      "min_seconds": 17.2928,
+      "max_seconds": 24.3368
+    },
+    "app": {
+      "runs": [
+        {
+          "import_seconds": 23.4535,
+          "process_wall_seconds": 25.4881,
+          "returncode": 0,
+          "stderr_tail": "ELAPSED=23.4535"
+        },
+        {
+          "import_seconds": 20.8508,
+          "process_wall_seconds": 22.9725,
+          "returncode": 0,
+          "stderr_tail": "ELAPSED=20.8508"
+        }
+      ],
+      "first_run_seconds": 23.4535,
+      "min_seconds": 20.8508,
+      "max_seconds": 23.4535
+    }
+  }
+}

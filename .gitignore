@@ -6,3 +6,10 @@ ogapp.py
 check_strucutre.py
 chess_model.ipynb
 
+
+# Local machine-specific configuration (see .env.example)
+.env
+
+# OS / editor noise
+.DS_Store
+*.pyc

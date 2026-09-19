@@ -1,0 +1,25 @@
+# Additional dependencies for re-running chess_model_FINAL.ipynb (training).
+# Not required to run the web application or the engine.
+#
+# Install on top of requirements.txt:
+#     pip install -r requirements.txt -r requirements-notebook.txt
+#
+# NOTE: the notebook cannot actually be re-run from a clean clone, because its
+# input dataset games.csv is gitignored and not distributed. See
+# docs/REPRODUCIBILITY.md ("Known limitations").
+#
+# Versions pinned to those recorded in baseline/environment.json.
+
+pandas==2.3.3
+matplotlib==3.10.8
+seaborn==0.13.2
+ipython==9.11.0
+tqdm==4.67.3
+
+# Python wrapper around the Stockfish binary, used by the notebook to generate
+# centipawn training labels. The application itself does not use this package -
+# it talks UCI directly via python-chess (chess.engine).
+stockfish==4.0.8
+
+# Removed from the dependency set in Phase 1: `streamlit`. It was listed in the
+# original requirements.txt but is imported nowhere in this repository.

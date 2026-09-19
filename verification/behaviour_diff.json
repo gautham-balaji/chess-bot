@@ -1,0 +1,46 @@
+{
+  "positions_compared": 52,
+  "behaviour_preserved": true,
+  "summary": {
+    "selected_move_unchanged": "52/52",
+    "top3_uci_and_scores_unchanged": "52/52",
+    "top_score_unchanged": "52/52",
+    "legality_unchanged": "52/52"
+  },
+  "phase0": {
+    "legality_rate": 1.0,
+    "deterministic": true,
+    "mean_ms": 616.99,
+    "median_ms": 638.03,
+    "import_engine_seconds": 16.5,
+    "ridge_coefficients": [
+      330.90054907067594,
+      32.38987190183733,
+      0.7918842501134431,
+      5.165416134314497,
+      0.018828301264436076
+    ]
+  },
+  "phase1": {
+    "legality_rate": 1.0,
+    "deterministic": true,
+    "mean_ms": 660.8,
+    "median_ms": 642.17,
+    "import_engine_seconds": 12.86,
+    "ridge_coefficients": [
+      330.90054907067594,
+      32.38987190183733,
+      0.7918842501134431,
+      5.165416134314497,
+      0.018828301264436076
+    ]
+  },
+  "ridge_coefficients_identical": true,
+  "differences": {
+    "selected_move": [],
+    "top_score": [],
+    "top3_ordering_or_scores": [],
+    "legality": [],
+    "missing_positions": []
+  }
+}

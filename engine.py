@@ -1,24 +1,28 @@
+import logging
 import pickle
 import numpy as np
 import chess
 from tensorflow.keras.models import load_model
 
-# --- Load all models ---
-cnn_model = load_model("models/cnn_model.keras", compile=False)
+from config import CNN_MODEL_PATH, WEIGHT_MODEL_PATH
 
-with open("models/rf_model.pkl", "rb") as f:
-    rf = pickle.load(f)
+logger = logging.getLogger(__name__)
 
-with open("models/mlp_model.pkl", "rb") as f:
-    mlp = pickle.load(f)
+# --- Load the models the engine actually uses ---
+# Paths are repository-relative (see config.py), not relative to the current
+# working directory, so importing this module does not depend on where Python
+# was launched from.
+#
+# rf_model.pkl, mlp_model.pkl and scaler.pkl were previously loaded here but are
+# never referenced by this module or by app.py. They are training-notebook
+# artifacts; loading them cost ~1.07s and ~79MB of resident memory for no effect.
+# The files are retained on disk for provenance. See docs/REPRODUCIBILITY.md.
+cnn_model = load_model(str(CNN_MODEL_PATH), compile=False)
 
-with open("models/scaler.pkl", "rb") as f:
-    scaler = pickle.load(f)
-
-with open("models/weight_model.pkl", "rb") as f:
+with open(WEIGHT_MODEL_PATH, "rb") as f:
     weight_model = pickle.load(f)
 
-print("✅ All models loaded")
+logger.info("Loaded CNN evaluator and Ridge weight model")
 
 # ─────────────────────────────────────────────
 # BOARD TENSOR

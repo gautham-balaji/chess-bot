@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "generated_by": "baseline/scripts/capture_environment.py",
+  "git": {
+    "branch": "main",
+    "commit_sha": "ccd24c417826bb20048ac19b2cb50202189cf870",
+    "commit_date": "2026-04-16 10:12:33 +0530",
+    "commit_subject": "Comparision, Metrics, Architecture",
+    "status_porcelain": [
+      "?? baseline/",
+      "?? benchmark_stockfish.py",
+      "?? generate_visualizations.py"
+    ],
+    "tracked_file_count": 22
+  },
+  "interpreter": {
+    "version": "3.12.10",
+    "version_full": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "executable": "C:\\Users\\vsriv\\OneDrive\\Desktop\\Chess Bot\\venv\\Scripts\\python.exe",
+    "implementation": "CPython"
+  },
+  "platform": {
+    "system": "Windows",
+    "release": "11",
+    "version": "10.0.26200",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+    "cpu_count": 12
+  },
+  "installed_packages": {
+    "tensorflow": "2.21.0",
+    "keras": "3.13.2",
+    "scikit-learn": "1.8.0",
+    "chess": "1.11.2",
+    "flask": "3.1.3",
+    "flask-cors": "6.0.2",
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "pandas": "2.3.3",
+    "stockfish": "4.0.8",
+    "gunicorn": null,
+    "matplotlib": "3.10.8",
+    "seaborn": "0.13.2",
+    "tqdm": "4.67.3",
+    "streamlit": "1.55.0",
+    "ipython": "9.11.0",
+    "h5py": "3.14.0",
+    "protobuf": "6.33.6",
+    "pytest": null
+  },
+  "declared_dependency_files": {
+    "requirements.txt": "pandas\nnumpy\npython-chess\nscikit-learn\nmatplotlib\nseaborn\nipython\nstockfish\ntensorflow==2.15.0\ntqdm\nscipy\nstreamlit>=1.30.0\nflask\nflask-cors\ngunicorn",
+    "runtime.txt": "python-3.10.13",
+    ".python-version": "3.10.13"
+  },
+  "models": {
+    "cnn_model.keras": {
+      "present": true,
+      "size_bytes": 28381519,
+      "size_mb": 27.07,
+      "sha256": "972d81199a1355667fca554b06dd05b35fdec3c4dc789968ac4a1b0599d8dec3",
+      "archive_entries": [
+        "metadata.json",
+        "config.json",
+        "model.weights.h5"
+      ],
+      "metadata_json": {
+        "keras_version": "3.11.1",
+        "date_saved": "2026-03-11@09:16:31"
+      }
+    },
+    "mlp_model.pkl": {
+      "present": true,
+      "size_bytes": 1061773,
+      "size_mb": 1.01,
+      "sha256": "02ce252f6c3dabf1f1d5002149aa8010028327d5e09d1cbad8e09d467fe0caa9"
+    },
+    "rf_model.pkl": {
+      "present": true,
+      "size_bytes": 81720956,
+      "size_mb": 77.94,
+      "sha256": "a26c01a43330f5f7d3fafbdbe92650a00025d028a0b233be9484966068ce450f"
+    },
+    "scaler.pkl": {
+      "present": true,
+      "size_bytes": 862,
+      "size_mb": 0.0,
+      "sha256": "53619d50f5c1d9baac2a2fe5abbfb07fa4a0bb7b0699e8f4a5c5d02901a00203"
+    },
+    "weight_model.pkl": {
+      "present": true,
+      "size_bytes": 480,
+      "size_mb": 0.0,
+      "sha256": "59a731127cc9b440c866c7a5d27ce39d905c9c5dadd8116d7f97a8542f18bcd0"
+    }
+  },
+  "source_files": {
+    "app.py": {
+      "size_bytes": 17542,
+      "sha256": "323d1e565eb9e770"
+    },
+    "engine.py": {
+      "size_bytes": 10590,
+      "sha256": "02f0bd753b598798"
+    },
+    "requirements.txt": {
+      "size_bytes": 163,
+      "sha256": "418c56bea2a62cb5"
+    },
+    "runtime.txt": {
+      "size_bytes": 14,
+      "sha256": "7d0ac3bcab0fecd5"
+    },
+    ".python-version": {
+      "size_bytes": 7,
+      "sha256": "4f605b41ce777665"
+    },
+    "Procfile": {
+      "size_bytes": 21,
+      "sha256": "57b2620f74b4d2f4"
+    },
+    "benchmark_stockfish.py": {
+      "size_bytes": 5076,
+      "sha256": "0adf03d8b4d6d3d1"
+    },
+    "generate_visualizations.py": {
+      "size_bytes": 7302,
+      "sha256": "64eb3111265db630"
+    },
+    "templates/index.html": {
+      "size_bytes": 68990,
+      "sha256": "9d9755ebe14dbf81"
+    },
+    "chess_model_FINAL.ipynb": {
+      "size_bytes": 399502,
+      "sha256": "1163dd103e4e93d0"
+    },
+    "README.md": {
+      "size_bytes": 20688,
+      "sha256": "464f1f999f3362a0"
+    }
+  },
+  "stockfish": {
+    "hardcoded_path": "C:\\Users\\vsriv\\Downloads\\stockfish-windows-x86-64-avx2\\stockfish\\stockfish-windows-x86-64-avx2.exe",
+    "exists_on_this_machine": true,
+    "size_bytes": 79835136,
+    "version_banner": "Stockfish 17.1 by the Stockfish developers (see AUTHORS file)",
+    "on_PATH": false
+  },
+  "reproducibility_conflicts": [
+    {
+      "id": "PY-VERSION-MISMATCH",
+      "declared": "runtime.txt='python-3.10.13', .python-version='3.10.13'",
+      "actual": "3.12.10",
+      "impact": "The interpreter actually in use is not the one the repo declares."
+    },
+    {
+      "id": "TF-PIN-CANNOT-LOAD-MODEL",
+      "declared": "requirements.txt pins tensorflow==2.15.0, which ships Keras 2.x",
+      "actual": "models/cnn_model.keras was written by Keras 3.11.1; installed keras==3.13.2, tensorflow==2.21.0",
+      "impact": "A clean install from requirements.txt is expected to be unable to load the committed model. NOT empirically verified in Phase 0 (installing TF 2.15 was out of scope); based on the Keras version recorded inside the model archive."
+    },
+    {
+      "id": "SKLEARN-PICKLE-SKEW",
+      "declared": "requirements.txt pins scikit-learn with no version",
+      "actual": "installed scikit-learn==1.8.0; pickles emit InconsistentVersionWarning (written by 1.7.1)",
+      "impact": "Unpinned; sklearn warns that results may be invalid."
+    },
+    {
+      "id": "GUNICORN-MISSING",
+      "declared": "Procfile runs 'gunicorn app:app'; requirements.txt lists gunicorn",
+      "actual": "gunicorn installed: None",
+      "impact": "The documented production start command cannot run in this venv."
+    },
+    {
+      "id": "STOCKFISH-HARDCODED-PATH",
+      "declared": "absolute Windows path literal in app.py:383 and benchmark_stockfish.py:12",
+      "actual": "exists on this machine: True; on PATH: False",
+      "impact": "Stockfish-dependent code is machine-specific."
+    },
+    {
+      "id": "CWD-RELATIVE-MODEL-PATHS",
+      "declared": "engine.py:7 loads 'models/cnn_model.keras' (relative)",
+      "actual": "import fails unless CWD is the repo root; observed during Phase 0 when running a script from baseline/scripts/",
+      "impact": "Import is CWD-dependent; affects pytest and CI invocation."
+    }
+  ]
+}

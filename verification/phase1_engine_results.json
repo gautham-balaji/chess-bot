@@ -1,0 +1,5236 @@
+{
+  "schema_version": 1,
+  "generated_by": "baseline/scripts/measure_engine.py",
+  "engine_entry_point": "engine.engine_move(chess.Board(fen))",
+  "import_engine_seconds": 12.86,
+  "ridge_coefficients": [
+    330.90054907067594,
+    32.38987190183733,
+    0.7918842501134431,
+    5.165416134314497,
+    0.018828301264436076
+  ],
+  "ridge_intercept": 15.077236450243632,
+  "ridge_intercept_used_at_inference": false,
+  "ridge_intercept_note": "engine.py lines 131-132 and 162-163 use weight_model.coef_ only; weight_model.intercept_ is never added. Verified by reading the source.",
+  "position_count": 52,
+  "latency_summary_pass1_ms": {
+    "n": 52,
+    "min_ms": 288.87,
+    "median_ms": 642.17,
+    "mean_ms": 660.8,
+    "p95_ms": 1035.97,
+    "max_ms": 1146.34,
+    "total_s": 34.36
+  },
+  "latency_summary_pass2_ms": {
+    "n": 52,
+    "min_ms": 273.9,
+    "median_ms": 636.34,
+    "mean_ms": 619.62,
+    "p95_ms": 989.54,
+    "max_ms": 1013.69,
+    "total_s": 32.22
+  },
+  "latency_by_category_ms": {
+    "defensive": {
+      "n": 4,
+      "min_ms": 326.46,
+      "median_ms": 474.69,
+      "mean_ms": 455.52,
+      "p95_ms": 546.23,
+      "max_ms": 546.23,
+      "total_s": 1.82
+    },
+    "endgame": {
+      "n": 12,
+      "min_ms": 288.87,
+      "median_ms": 388.98,
+      "mean_ms": 394.96,
+      "p95_ms": 533.28,
+      "max_ms": 571.3,
+      "total_s": 4.74
+    },
+    "middlegame": {
+      "n": 12,
+      "min_ms": 625.78,
+      "median_ms": 891.56,
+      "mean_ms": 889.36,
+      "p95_ms": 1089.64,
+      "max_ms": 1146.34,
+      "total_s": 10.67
+    },
+    "opening": {
+      "n": 18,
+      "min_ms": 550.56,
+      "median_ms": 754.16,
+      "mean_ms": 774.75,
+      "p95_ms": 1014.88,
+      "max_ms": 1054.46,
+      "total_s": 13.95
+    },
+    "tactical": {
+      "n": 6,
+      "min_ms": 380.39,
+      "median_ms": 410.56,
+      "mean_ms": 530.35,
+      "p95_ms": 935.92,
+      "max_ms": 935.92,
+      "total_s": 3.18
+    }
+  },
+  "legality": {
+    "legal_moves_returned": 52,
+    "total": 52,
+    "rate": 1.0
+  },
+  "error_count": 0,
+  "determinism": {
+    "method": "same process, two sequential passes over the same 52 FENs",
+    "identical_move_count": 52,
+    "identical_top_score_count": 52,
+    "total": 52,
+    "fully_deterministic": true,
+    "caveat": "This shows run-to-run stability within one process. It does not prove determinism across processes, machines, or TF/BLAS versions.",
+    "per_position": [
+      {
+        "id": "OP01",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP02",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP03",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP04",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP05",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP06",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP07",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP08",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP09",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP10",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP11",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP12",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP13",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP14",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP15",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP16",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP17",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "OP18",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG01",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG02",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG03",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG04",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG05",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG06",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG07",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG08",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG09",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG10",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG11",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "MG12",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG01",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG02",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG03",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG04",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG05",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG06",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG07",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG08",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG09",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG10",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG11",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "EG12",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "TC01",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "TC02",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "TC03",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "TC04",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "TC05",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "TC06",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "DF01",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "DF02",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "DF03",
+        "same_move": true,
+        "same_top_scores": true
+      },
+      {
+        "id": "DF04",
+        "same_move": true,
+        "same_top_scores": true
+      }
+    ]
+  },
+  "board_mutation_check": {
+    "positions_where_input_fen_preserved": 52,
+    "total": 52
+  },
+  "pass1": [
+    {
+      "id": "OP01",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d2d4",
+      "engine_move_san": "d4",
+      "is_legal": true,
+      "engine_top_score": 92.9968,
+      "top_candidates": [
+        {
+          "uci": "d2d4",
+          "score": 92.9968,
+          "cnn_cp": 48.12,
+          "material": 0,
+          "space": 6,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "e2e4",
+          "score": 89.9728,
+          "cnn_cp": 48.98,
+          "material": 0,
+          "space": 7,
+          "center": 0,
+          "mobility": -10
+        },
+        {
+          "uci": "b1c3",
+          "score": 80.909,
+          "cnn_cp": 41.4,
+          "material": 0,
+          "space": 4,
+          "center": 0,
+          "mobility": -2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "increases board control by +6 squares"
+      ],
+      "time_ms": 1054.46,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP02",
+      "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "e7e5",
+      "engine_move_san": "e5",
+      "is_legal": true,
+      "engine_top_score": 55.9358,
+      "top_candidates": [
+        {
+          "uci": "e7e5",
+          "score": 55.9358,
+          "cnn_cp": 34.09,
+          "material": 0,
+          "space": 0,
+          "center": 1,
+          "mobility": 0
+        },
+        {
+          "uci": "c7c5",
+          "score": 60.7151,
+          "cnn_cp": 35.07,
+          "material": 0,
+          "space": 4,
+          "center": 1,
+          "mobility": 8
+        },
+        {
+          "uci": "e7e6",
+          "score": 67.4128,
+          "cnn_cp": 41.47,
+          "material": 0,
+          "space": 0,
+          "center": 1,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-7 squares)"
+      ],
+      "time_ms": 550.56,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP03",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d2d4",
+      "engine_move_san": "d4",
+      "is_legal": true,
+      "engine_top_score": 128.7842,
+      "top_candidates": [
+        {
+          "uci": "d2d4",
+          "score": 128.7842,
+          "cnn_cp": 71.83,
+          "material": 0,
+          "space": 6,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "d1h5",
+          "score": 108.6635,
+          "cnn_cp": 63.63,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -13
+        },
+        {
+          "uci": "g1f3",
+          "score": 104.441,
+          "cnn_cp": 57.62,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": 2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "increases board control by +6 squares"
+      ],
+      "time_ms": 701.14,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP04",
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d1g4",
+      "engine_move_san": "Qg4",
+      "is_legal": true,
+      "engine_top_score": 199.9288,
+      "top_candidates": [
+        {
+          "uci": "d1g4",
+          "score": 199.9288,
+          "cnn_cp": 130.06,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -18
+        },
+        {
+          "uci": "d2d4",
+          "score": 149.2856,
+          "cnn_cp": 84.06,
+          "material": 0,
+          "space": 10,
+          "center": 0,
+          "mobility": -16
+        },
+        {
+          "uci": "d1h5",
+          "score": 138.9752,
+          "cnn_cp": 81.87,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -23
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 580.67,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP05",
+      "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d1h5",
+      "engine_move_san": "Qh5",
+      "is_legal": true,
+      "engine_top_score": 160.6958,
+      "top_candidates": [
+        {
+          "uci": "d1h5",
+          "score": 160.6958,
+          "cnn_cp": 99.58,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "d1g4",
+          "score": 144.6454,
+          "cnn_cp": 88.63,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "g1f3",
+          "score": 131.2504,
+          "cnn_cp": 75.65,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": 2
+        }
+      ],
+      "explanation": [
+        "increases board control by +5 squares"
+      ],
+      "time_ms": 984.32,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP06",
+      "fen": "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d1g4",
+      "engine_move_san": "Qg4",
+      "is_legal": true,
+      "engine_top_score": 171.5554,
+      "top_candidates": [
+        {
+          "uci": "d1g4",
+          "score": 171.5554,
+          "cnn_cp": 106.2,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -19
+        },
+        {
+          "uci": "d2d4",
+          "score": 154.2207,
+          "cnn_cp": 87.66,
+          "material": 0,
+          "space": 10,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "d1h5",
+          "score": 121.0178,
+          "cnn_cp": 68.88,
+          "material": 0,
+          "space": 9,
+          "center": 0,
+          "mobility": -26
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 660.5,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP07",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "c8g4",
+      "engine_move_san": "Bg4",
+      "is_legal": true,
+      "engine_top_score": -102.1845,
+      "top_candidates": [
+        {
+          "uci": "c8g4",
+          "score": -102.1845,
+          "cnn_cp": -68.24,
+          "material": 0,
+          "space": 2,
+          "center": 1,
+          "mobility": -3
+        },
+        {
+          "uci": "b8c6",
+          "score": -11.3456,
+          "cnn_cp": -3.13,
+          "material": 0,
+          "space": -1,
+          "center": 1,
+          "mobility": 1
+        },
+        {
+          "uci": "d5c4",
+          "score": -1.753,
+          "cnn_cp": 18.64,
+          "material": -1,
+          "space": 0,
+          "center": 1,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "trades space for other compensation (-1 squares)"
+      ],
+      "time_ms": 671.12,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP08",
+      "fen": "rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "c4d5",
+      "engine_move_san": "cxd5",
+      "is_legal": true,
+      "engine_top_score": 206.6732,
+      "top_candidates": [
+        {
+          "uci": "c4d5",
+          "score": 206.6732,
+          "cnn_cp": 111.22,
+          "material": 1,
+          "space": 3,
+          "center": 1,
+          "mobility": 0
+        },
+        {
+          "uci": "b1c3",
+          "score": 151.5275,
+          "cnn_cp": 90.24,
+          "material": 0,
+          "space": 2,
+          "center": 1,
+          "mobility": -4
+        },
+        {
+          "uci": "e2e4",
+          "score": 112.3892,
+          "cnn_cp": 64.73,
+          "material": 0,
+          "space": 5,
+          "center": 1,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 777.66,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP09",
+      "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 303.6012,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 303.6012,
+          "cnn_cp": 235.52,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "d2d4",
+          "score": 115.0033,
+          "cnn_cp": 71.07,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "h2h4",
+          "score": 100.0189,
+          "cnn_cp": 62.83,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 581.55,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP10",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "c6d4",
+      "engine_move_san": "Nd4",
+      "is_legal": true,
+      "engine_top_score": -120.1482,
+      "top_candidates": [
+        {
+          "uci": "c6d4",
+          "score": -120.1482,
+          "cnn_cp": -81.5,
+          "material": 0,
+          "space": -3,
+          "center": 1,
+          "mobility": -2
+        },
+        {
+          "uci": "f8c5",
+          "score": -44.8803,
+          "cnn_cp": -30.34,
+          "material": 0,
+          "space": 0,
+          "center": 1,
+          "mobility": -3
+        },
+        {
+          "uci": "g8f6",
+          "score": 43.2513,
+          "cnn_cp": 30.58,
+          "material": 0,
+          "space": -2,
+          "center": 1,
+          "mobility": 4
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 853.93,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP11",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 245.4052,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 245.4052,
+          "cnn_cp": 169.33,
+          "material": 1,
+          "space": 1,
+          "center": -1,
+          "mobility": -10
+        },
+        {
+          "uci": "c4f7",
+          "score": 82.2029,
+          "cnn_cp": 33.68,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -31
+        },
+        {
+          "uci": "d2d4",
+          "score": 74.5258,
+          "cnn_cp": 48.82,
+          "material": 0,
+          "space": 1,
+          "center": -1,
+          "mobility": -12
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 918.61,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP12",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 289.3398,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 289.3398,
+          "cnn_cp": 217.88,
+          "material": 1,
+          "space": 5,
+          "center": 0,
+          "mobility": -6
+        },
+        {
+          "uci": "c1f4",
+          "score": 211.9409,
+          "cnn_cp": 152.14,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": -4
+        },
+        {
+          "uci": "c1g5",
+          "score": 207.4666,
+          "cnn_cp": 146.05,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": -5
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 1014.88,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP13",
+      "fen": "rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "e2e4",
+      "engine_move_san": "e4",
+      "is_legal": true,
+      "engine_top_score": 282.4052,
+      "top_candidates": [
+        {
+          "uci": "e2e4",
+          "score": 282.4052,
+          "cnn_cp": 220.74,
+          "material": 0,
+          "space": 9,
+          "center": 2,
+          "mobility": -14
+        },
+        {
+          "uci": "a2a4",
+          "score": 219.5646,
+          "cnn_cp": 145.88,
+          "material": 0,
+          "space": 5,
+          "center": 2,
+          "mobility": -7
+        },
+        {
+          "uci": "c1d2",
+          "score": 218.8569,
+          "cnn_cp": 150.73,
+          "material": 0,
+          "space": 4,
+          "center": 2,
+          "mobility": -7
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 730.67,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP14",
+      "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "c4c5",
+      "engine_move_san": "c5",
+      "is_legal": true,
+      "engine_top_score": 238.0734,
+      "top_candidates": [
+        {
+          "uci": "c4c5",
+          "score": 238.0734,
+          "cnn_cp": 165.82,
+          "material": 0,
+          "space": 4,
+          "center": 2,
+          "mobility": 2
+        },
+        {
+          "uci": "a2a3",
+          "score": 235.5363,
+          "cnn_cp": 164.02,
+          "material": 0,
+          "space": 3,
+          "center": 2,
+          "mobility": 5
+        },
+        {
+          "uci": "g2g3",
+          "score": 176.9629,
+          "cnn_cp": 109.36,
+          "material": 0,
+          "space": 3,
+          "center": 2,
+          "mobility": 5
+        }
+      ],
+      "explanation": [
+        "expands space with a pawn advance",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 943.11,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP15",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/2P5/2N5/PP1PPPPP/R1BQKBNR b KQkq - 1 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "b8c6",
+      "engine_move_san": "Nc6",
+      "is_legal": true,
+      "engine_top_score": 5.9228,
+      "top_candidates": [
+        {
+          "uci": "b8c6",
+          "score": 5.9228,
+          "cnn_cp": 6.15,
+          "material": 0,
+          "space": -5,
+          "center": 1,
+          "mobility": -6
+        },
+        {
+          "uci": "g8f6",
+          "score": 7.7114,
+          "cnn_cp": 10.3,
+          "material": 0,
+          "space": -5,
+          "center": 1,
+          "mobility": -2
+        },
+        {
+          "uci": "e5e4",
+          "score": 16.1773,
+          "cnn_cp": 5.13,
+          "material": 0,
+          "space": -3,
+          "center": 1,
+          "mobility": -5
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "trades space for other compensation (-2 squares)"
+      ],
+      "time_ms": 814.04,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP16",
+      "fen": "rnbqkb1r/pppppppp/5n2/8/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "d7d5",
+      "engine_move_san": "d5",
+      "is_legal": true,
+      "engine_top_score": 12.6342,
+      "top_candidates": [
+        {
+          "uci": "d7d5",
+          "score": 12.6342,
+          "cnn_cp": 3.5,
+          "material": 0,
+          "space": 2,
+          "center": 1,
+          "mobility": 0
+        },
+        {
+          "uci": "h7h6",
+          "score": 20.6973,
+          "cnn_cp": 7.53,
+          "material": 0,
+          "space": 4,
+          "center": 1,
+          "mobility": 7
+        },
+        {
+          "uci": "b8c6",
+          "score": 25.6399,
+          "cnn_cp": 18.18,
+          "material": 0,
+          "space": 1,
+          "center": 1,
+          "mobility": 6
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 635.32,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP17",
+      "fen": "rnbqkbnr/ppp1pppp/8/3P4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "e7e5",
+      "engine_move_san": "e5",
+      "is_legal": true,
+      "engine_top_score": 60.933,
+      "top_candidates": [
+        {
+          "uci": "e7e5",
+          "score": 60.933,
+          "cnn_cp": 25.68,
+          "material": 1,
+          "space": -4,
+          "center": -1,
+          "mobility": -7
+        },
+        {
+          "uci": "d8d5",
+          "score": 63.7393,
+          "cnn_cp": 54.36,
+          "material": 0,
+          "space": -10,
+          "center": -1,
+          "mobility": -18
+        },
+        {
+          "uci": "c8g4",
+          "score": 79.2375,
+          "cnn_cp": 31.95,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -6
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-7 squares)"
+      ],
+      "time_ms": 644.69,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP18",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "c6d4",
+      "engine_move_san": "Nxd4",
+      "is_legal": true,
+      "engine_top_score": -43.2555,
+      "top_candidates": [
+        {
+          "uci": "c6d4",
+          "score": -43.2555,
+          "cnn_cp": -11.76,
+          "material": -1,
+          "space": -2,
+          "center": 1,
+          "mobility": -1
+        },
+        {
+          "uci": "e5d4",
+          "score": 20.1425,
+          "cnn_cp": 28.48,
+          "material": -1,
+          "space": 1,
+          "center": 1,
+          "mobility": 5
+        },
+        {
+          "uci": "d7d6",
+          "score": 109.8244,
+          "cnn_cp": 65.25,
+          "material": 0,
+          "space": 1,
+          "center": 1,
+          "mobility": 2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-5 squares)"
+      ],
+      "time_ms": 828.28,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG01",
+      "fen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N2/PP1P1PPP/RNBQR1K1 w - - 1 9",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "b3d5",
+      "engine_move_san": "Bd5",
+      "is_legal": true,
+      "engine_top_score": 93.1729,
+      "top_candidates": [
+        {
+          "uci": "b3d5",
+          "score": 93.1729,
+          "cnn_cp": 59.08,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -1
+        },
+        {
+          "uci": "f3d4",
+          "score": 92.7003,
+          "cnn_cp": 62.17,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -3
+        },
+        {
+          "uci": "f3e5",
+          "score": 90.613,
+          "cnn_cp": 38.35,
+          "material": 1,
+          "space": 1,
+          "center": 0,
+          "mobility": -4
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 639.66,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG02",
+      "fen": "rnbqk2r/1p2bppp/p2p1n2/4p3/4P3/1NN1B3/PPP2PPP/R2QKB1R w KQkq - 2 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "d1d6",
+      "engine_move_san": "Qxd6",
+      "is_legal": true,
+      "engine_top_score": 270.1478,
+      "top_candidates": [
+        {
+          "uci": "d1d6",
+          "score": 270.1478,
+          "cnn_cp": 162.04,
+          "material": 1,
+          "space": 15,
+          "center": -1,
+          "mobility": -28
+        },
+        {
+          "uci": "c3d5",
+          "score": 106.0691,
+          "cnn_cp": 69.51,
+          "material": 0,
+          "space": 8,
+          "center": -1,
+          "mobility": -19
+        },
+        {
+          "uci": "e3c5",
+          "score": 101.7851,
+          "cnn_cp": 64.64,
+          "material": 0,
+          "space": 5,
+          "center": -1,
+          "mobility": -12
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +8 squares"
+      ],
+      "time_ms": 1035.97,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG03",
+      "fen": "rnbq1rk1/p1p1bpp1/1p2pn1p/3p4/2PP3B/2N1PN2/PP3PPP/R2QKB1R w KQ - 0 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "h4f6",
+      "engine_move_san": "Bxf6",
+      "is_legal": true,
+      "engine_top_score": 286.3418,
+      "top_candidates": [
+        {
+          "uci": "h4f6",
+          "score": 286.3418,
+          "cnn_cp": 119.14,
+          "material": 3,
+          "space": 3,
+          "center": 2,
+          "mobility": -14
+        },
+        {
+          "uci": "c4d5",
+          "score": 236.252,
+          "cnn_cp": 131.48,
+          "material": 1,
+          "space": 4,
+          "center": 2,
+          "mobility": -6
+        },
+        {
+          "uci": "c3d5",
+          "score": 202.5428,
+          "cnn_cp": 107.08,
+          "material": 1,
+          "space": 4,
+          "center": 2,
+          "mobility": -4
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 878.83,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG04",
+      "fen": "rnbqk2r/pp2nppp/4p3/2ppP3/3P4/P1P5/2P2PPP/R1BQKBNR w KQkq - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f1d3",
+      "engine_move_san": "Bd3",
+      "is_legal": true,
+      "engine_top_score": 108.7068,
+      "top_candidates": [
+        {
+          "uci": "f1d3",
+          "score": 108.7068,
+          "cnn_cp": 63.09,
+          "material": 0,
+          "space": 10,
+          "center": -1,
+          "mobility": -7
+        },
+        {
+          "uci": "d1e2",
+          "score": 105.9665,
+          "cnn_cp": 62.41,
+          "material": 0,
+          "space": 8,
+          "center": -1,
+          "mobility": -2
+        },
+        {
+          "uci": "g1f3",
+          "score": 104.2901,
+          "cnn_cp": 65.6,
+          "material": 0,
+          "space": 6,
+          "center": -1,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 827.53,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG05",
+      "fen": "r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQR1K1 w - - 0 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 200.5783,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 200.5783,
+          "cnn_cp": 113.82,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": 0
+        },
+        {
+          "uci": "c1g5",
+          "score": 143.274,
+          "cnn_cp": 92.86,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": -1
+        },
+        {
+          "uci": "d3d4",
+          "score": 114.6676,
+          "cnn_cp": 71.51,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": -4
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 998.62,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG06",
+      "fen": "r1bq1rk1/pppn1pbp/3p1np1/3Pp3/2P1P3/2N2N2/PP2BPPP/R1BQK2R w KQ - 1 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 140.6099,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 140.6099,
+          "cnn_cp": 63.96,
+          "material": 1,
+          "space": 8,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "h2h4",
+          "score": 104.133,
+          "cnn_cp": 64.13,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -14
+        },
+        {
+          "uci": "e1g1",
+          "score": 103.0685,
+          "cnn_cp": 62.17,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -10
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "increases board control by +5 squares"
+      ],
+      "time_ms": 720.45,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG07",
+      "fen": "r2qkbnr/pp1nppp1/2p3bp/8/3P3P/5NN1/PPP2PP1/R1BQKB1R w KQkq - 2 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Ne5",
+      "is_legal": true,
+      "engine_top_score": 265.5088,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 265.5088,
+          "cnn_cp": 211.6,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -15
+        },
+        {
+          "uci": "g3e4",
+          "score": 179.3032,
+          "cnn_cp": 124.18,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -13
+        },
+        {
+          "uci": "d1e2",
+          "score": 164.5639,
+          "cnn_cp": 106.43,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +5 squares"
+      ],
+      "time_ms": 833.53,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG08",
+      "fen": "rnbqk2r/1p3ppp/p3pn2/2b5/2B5/4PN2/PP3PPP/RNBQ1RK1 w kq - 0 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "d1d8",
+      "engine_move_san": "Qxd8+",
+      "is_legal": true,
+      "engine_top_score": 447.9019,
+      "top_candidates": [
+        {
+          "uci": "d1d8",
+          "score": 447.9019,
+          "cnn_cp": 96.36,
+          "material": 9,
+          "space": 11,
+          "center": 0,
+          "mobility": -42
+        },
+        {
+          "uci": "c4e6",
+          "score": 322.8125,
+          "cnn_cp": 265.43,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": 2
+        },
+        {
+          "uci": "d1d6",
+          "score": 286.5958,
+          "cnn_cp": 250.72,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -15
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "delivers a check to the opponent king",
+        "increases board control by +10 squares"
+      ],
+      "time_ms": 1146.34,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG09",
+      "fen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N1P/PP1P1PP1/RNBQR1K1 b - - 0 9",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -3.1569,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -3.1569,
+          "cnn_cp": 14.31,
+          "material": -1,
+          "space": -6,
+          "center": 0,
+          "mobility": -5
+        },
+        {
+          "uci": "c8h3",
+          "score": 29.6538,
+          "cnn_cp": 39.47,
+          "material": -1,
+          "space": -3,
+          "center": 0,
+          "mobility": -5
+        },
+        {
+          "uci": "c6a5",
+          "score": 31.3512,
+          "cnn_cp": 19.98,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-4 squares)"
+      ],
+      "time_ms": 625.78,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG10",
+      "fen": "rnbqk2r/1p2bppp/p2p1n2/4p3/4P3/1NN1BP2/PPP3PP/R2QKB1R b KQkq - 0 8",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -20.2561,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -20.2561,
+          "cnn_cp": 3.58,
+          "material": -1,
+          "space": 1,
+          "center": -1,
+          "mobility": 9
+        },
+        {
+          "uci": "b8c6",
+          "score": 19.0493,
+          "cnn_cp": 12.6,
+          "material": 0,
+          "space": 4,
+          "center": -1,
+          "mobility": 11
+        },
+        {
+          "uci": "d8c7",
+          "score": 21.8387,
+          "cnn_cp": 14.49,
+          "material": 0,
+          "space": 4,
+          "center": -1,
+          "mobility": 9
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-4 squares)"
+      ],
+      "time_ms": 1089.64,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG11",
+      "fen": "rnbq1rk1/p1p1bpp1/1p2pn1p/3P4/3P3B/2N1PN2/PP3PPP/R2QKB1R b KQ - 0 8",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6d5",
+      "engine_move_san": "exd5",
+      "is_legal": true,
+      "engine_top_score": 46.0807,
+      "top_candidates": [
+        {
+          "uci": "e6d5",
+          "score": 46.0807,
+          "cnn_cp": 21.69,
+          "material": 0,
+          "space": 0,
+          "center": 2,
+          "mobility": 5
+        },
+        {
+          "uci": "f6d5",
+          "score": 104.599,
+          "cnn_cp": 54.12,
+          "material": 0,
+          "space": 2,
+          "center": 2,
+          "mobility": 5
+        },
+        {
+          "uci": "d8d5",
+          "score": 126.8078,
+          "cnn_cp": 83.36,
+          "material": 0,
+          "space": -4,
+          "center": 2,
+          "mobility": -9
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "captures an opponent piece",
+        "trades space for other compensation (-4 squares)"
+      ],
+      "time_ms": 904.29,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG12",
+      "fen": "r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2PP1N2/PP1N1PPP/R1BQR1K1 b - - 1 8",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -45.0925,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -45.0925,
+          "cnn_cp": -11.48,
+          "material": -1,
+          "space": -5,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "c8g4",
+          "score": 5.7366,
+          "cnn_cp": 5.08,
+          "material": 0,
+          "space": -3,
+          "center": 0,
+          "mobility": -12
+        },
+        {
+          "uci": "c5e3",
+          "score": 20.5734,
+          "cnn_cp": 13.53,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 971.68,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG01",
+      "fen": "8/8/8/4k3/8/4K3/4P3/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "e3d3",
+      "engine_move_san": "Kd3",
+      "is_legal": true,
+      "engine_top_score": 350.4861,
+      "top_candidates": [
+        {
+          "uci": "e3d3",
+          "score": 350.4861,
+          "cnn_cp": 431.69,
+          "material": 1,
+          "space": 2,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e3f2",
+          "score": 332.578,
+          "cnn_cp": 373.0,
+          "material": 1,
+          "space": 1,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e3f3",
+          "score": 326.6392,
+          "cnn_cp": 314.18,
+          "material": 1,
+          "space": 2,
+          "center": -1,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 295.44,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG02",
+      "fen": "8/8/8/4k3/8/4K3/4P3/8 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e5d5",
+      "engine_move_san": "Kd5",
+      "is_legal": true,
+      "engine_top_score": 240.6818,
+      "top_candidates": [
+        {
+          "uci": "e5d5",
+          "score": 240.6818,
+          "cnn_cp": 153.83,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e5f5",
+          "score": 268.4753,
+          "cnn_cp": 179.38,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e5e6",
+          "score": 276.6353,
+          "cnn_cp": 189.9,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 398.33,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG03",
+      "fen": "8/8/4k3/8/8/4K3/8/4R3 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "e3d3",
+      "engine_move_san": "Kd3+",
+      "is_legal": true,
+      "engine_top_score": 498.7064,
+      "top_candidates": [
+        {
+          "uci": "e3d3",
+          "score": 498.7064,
+          "cnn_cp": 471.56,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -14
+        },
+        {
+          "uci": "e3e4",
+          "score": 493.6636,
+          "cnn_cp": 369.92,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "e3d4",
+          "score": 492.0222,
+          "cnn_cp": 394.37,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -13
+        }
+      ],
+      "explanation": [
+        "delivers a check to the opponent king",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 314.6,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG04",
+      "fen": "8/8/4k3/8/8/4K3/8/4Q3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6f7",
+      "engine_move_san": "Kf7",
+      "is_legal": true,
+      "engine_top_score": 509.1925,
+      "top_candidates": [
+        {
+          "uci": "e6f7",
+          "score": 509.1925,
+          "cnn_cp": 137.42,
+          "material": 9,
+          "space": 13,
+          "center": 0,
+          "mobility": 15
+        },
+        {
+          "uci": "e6d5",
+          "score": 569.6949,
+          "cnn_cp": 234.98,
+          "material": 9,
+          "space": 13,
+          "center": 0,
+          "mobility": 15
+        },
+        {
+          "uci": "e6f5",
+          "score": 583.1712,
+          "cnn_cp": 251.92,
+          "material": 9,
+          "space": 13,
+          "center": 0,
+          "mobility": 15
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 372.6,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG05",
+      "fen": "8/5pk1/8/8/8/8/5PK1/R6r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "g2h1",
+      "engine_move_san": "Kxh1",
+      "is_legal": true,
+      "engine_top_score": 344.0936,
+      "top_candidates": [
+        {
+          "uci": "g2h1",
+          "score": 344.0936,
+          "cnn_cp": 117.99,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "a1h1",
+          "score": 293.3572,
+          "cnn_cp": 78.73,
+          "material": 5,
+          "space": 10,
+          "center": 0,
+          "mobility": -16
+        },
+        {
+          "uci": "a1a7",
+          "score": 179.5497,
+          "cnn_cp": 121.24,
+          "material": 0,
+          "space": 1,
+          "center": 0,
+          "mobility": 4
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +9 squares"
+      ],
+      "time_ms": 417.09,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG06",
+      "fen": "8/5ppk/8/8/8/8/5PPK/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "h2g1",
+      "engine_move_san": "Kg1",
+      "is_legal": true,
+      "engine_top_score": 71.1709,
+      "top_candidates": [
+        {
+          "uci": "h2g1",
+          "score": 71.1709,
+          "cnn_cp": 42.87,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": 1
+        },
+        {
+          "uci": "h2h1",
+          "score": 68.7954,
+          "cnn_cp": 42.36,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": 2
+        },
+        {
+          "uci": "f2f4",
+          "score": 66.1348,
+          "cnn_cp": 37.05,
+          "material": 0,
+          "space": 1,
+          "center": 0,
+          "mobility": 1
+        }
+      ],
+      "explanation": [
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 288.87,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG07",
+      "fen": "8/5pk1/8/8/8/2B5/5PK1/6b1 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "g7h7",
+      "engine_move_san": "Kh7",
+      "is_legal": true,
+      "engine_top_score": 104.3668,
+      "top_candidates": [
+        {
+          "uci": "g7h7",
+          "score": 104.3668,
+          "cnn_cp": 52.3,
+          "material": 0,
+          "space": 12,
+          "center": 2,
+          "mobility": 12
+        },
+        {
+          "uci": "g7g8",
+          "score": 127.8274,
+          "cnn_cp": 68.34,
+          "material": 0,
+          "space": 11,
+          "center": 2,
+          "mobility": 13
+        },
+        {
+          "uci": "g7h6",
+          "score": 147.805,
+          "cnn_cp": 81.7,
+          "material": 0,
+          "space": 12,
+          "center": 2,
+          "mobility": 11
+        }
+      ],
+      "explanation": [
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 399.35,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG08",
+      "fen": "8/4kpp1/8/8/8/5N2/4KPP1/6b1 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3g1",
+      "engine_move_san": "Nxg1",
+      "is_legal": true,
+      "engine_top_score": 373.6284,
+      "top_candidates": [
+        {
+          "uci": "f3g1",
+          "score": 373.6284,
+          "cnn_cp": 239.76,
+          "material": 3,
+          "space": 1,
+          "center": 2,
+          "mobility": -2
+        },
+        {
+          "uci": "e2e1",
+          "score": 308.0009,
+          "cnn_cp": 285.82,
+          "material": 0,
+          "space": 4,
+          "center": 2,
+          "mobility": 0
+        },
+        {
+          "uci": "e2f1",
+          "score": 301.5196,
+          "cnn_cp": 270.19,
+          "material": 0,
+          "space": 3,
+          "center": 2,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 404.23,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG09",
+      "fen": "8/8/4k3/8/8/4K3/8/3QR3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6e5",
+      "engine_move_san": "Ke5",
+      "is_legal": true,
+      "engine_top_score": 798.2711,
+      "top_candidates": [
+        {
+          "uci": "e6e5",
+          "score": 798.2711,
+          "cnn_cp": 778.56,
+          "material": 14,
+          "space": 18,
+          "center": 1,
+          "mobility": 23
+        },
+        {
+          "uci": "e6f5",
+          "score": 802.6923,
+          "cnn_cp": 649.36,
+          "material": 14,
+          "space": 18,
+          "center": 1,
+          "mobility": 22
+        },
+        {
+          "uci": "e6f6",
+          "score": 808.2083,
+          "cnn_cp": 695.44,
+          "material": 14,
+          "space": 18,
+          "center": 1,
+          "mobility": 21
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 364.8,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG10",
+      "fen": "8/5pk1/6p1/8/8/6P1/5PKP/R6r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "g2h1",
+      "engine_move_san": "Kxh1",
+      "is_legal": true,
+      "engine_top_score": 268.8969,
+      "top_candidates": [
+        {
+          "uci": "g2h1",
+          "score": 268.8969,
+          "cnn_cp": 41.55,
+          "material": 6,
+          "space": 9,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a1h1",
+          "score": 246.7761,
+          "cnn_cp": 29.67,
+          "material": 6,
+          "space": 5,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "a1a7",
+          "score": 138.3876,
+          "cnn_cp": 64.66,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": -5
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "increases board control by +6 squares"
+      ],
+      "time_ms": 571.3,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG11",
+      "fen": "8/5pk1/8/8/8/8/5PK1/R6r b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "h1a1",
+      "engine_move_san": "Rxa1",
+      "is_legal": true,
+      "engine_top_score": -204.3395,
+      "top_candidates": [
+        {
+          "uci": "h1a1",
+          "score": -204.3395,
+          "cnn_cp": -18.99,
+          "material": -5,
+          "space": -14,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "h1d1",
+          "score": -23.7276,
+          "cnn_cp": -5.98,
+          "material": 0,
+          "space": -4,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "h1b1",
+          "score": 32.0058,
+          "cnn_cp": 22.57,
+          "material": 0,
+          "space": -6,
+          "center": 0,
+          "mobility": -9
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "trades space for other compensation (-14 squares)"
+      ],
+      "time_ms": 533.28,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG12",
+      "fen": "8/8/4k3/8/8/4K3/8/4R3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6f7",
+      "engine_move_san": "Kf7",
+      "is_legal": true,
+      "engine_top_score": 455.6048,
+      "top_candidates": [
+        {
+          "uci": "e6f7",
+          "score": 455.6048,
+          "cnn_cp": 242.89,
+          "material": 5,
+          "space": 8,
+          "center": 0,
+          "mobility": 8
+        },
+        {
+          "uci": "e6d5",
+          "score": 457.7071,
+          "cnn_cp": 285.61,
+          "material": 5,
+          "space": 8,
+          "center": 0,
+          "mobility": 8
+        },
+        {
+          "uci": "e6f5",
+          "score": 479.3793,
+          "cnn_cp": 349.59,
+          "material": 5,
+          "space": 8,
+          "center": 0,
+          "mobility": 8
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 379.62,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC01",
+      "fen": "6k1/5ppp/8/8/8/8/8/R5K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move_uci": "a1a4",
+      "engine_move_san": "Ra4",
+      "is_legal": true,
+      "engine_top_score": 288.7012,
+      "top_candidates": [
+        {
+          "uci": "a1a4",
+          "score": 288.7012,
+          "cnn_cp": 146.1,
+          "material": 2,
+          "space": 10,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a1a7",
+          "score": 285.3932,
+          "cnn_cp": 154.81,
+          "material": 2,
+          "space": 8,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "a1a8",
+          "score": 254.709,
+          "cnn_cp": 124.5,
+          "material": 2,
+          "space": 9,
+          "center": 0,
+          "mobility": -18
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 380.39,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC02",
+      "fen": "r5k1/8/8/8/8/8/5PPP/6K1 b - - 0 1",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move_uci": "a8a5",
+      "engine_move_san": "Ra5",
+      "is_legal": true,
+      "engine_top_score": -61.852,
+      "top_candidates": [
+        {
+          "uci": "a8a5",
+          "score": -61.852,
+          "cnn_cp": 12.98,
+          "material": -2,
+          "space": -10,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a8a4",
+          "score": -39.7191,
+          "cnn_cp": 26.51,
+          "material": -2,
+          "space": -10,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a8b8",
+          "score": -25.9841,
+          "cnn_cp": 27.6,
+          "material": -2,
+          "space": -8,
+          "center": 0,
+          "mobility": -9
+        }
+      ],
+      "explanation": [
+        "trades space for other compensation (-2 squares)"
+      ],
+      "time_ms": 392.93,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC03",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR b KQkq - 4 3",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move_uci": "f8b4",
+      "engine_move_san": "Bb4",
+      "is_legal": true,
+      "engine_top_score": -249.7485,
+      "top_candidates": [
+        {
+          "uci": "f8b4",
+          "score": -249.7485,
+          "cnn_cp": -194.9,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": 5
+        },
+        {
+          "uci": "g8f6",
+          "score": -221.1394,
+          "cnn_cp": -148.63,
+          "material": 0,
+          "space": -3,
+          "center": 0,
+          "mobility": 12
+        },
+        {
+          "uci": "d7d5",
+          "score": -215.6709,
+          "cnn_cp": -139.18,
+          "material": 0,
+          "space": -8,
+          "center": 0,
+          "mobility": 1
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "trades space for other compensation (-1 squares)"
+      ],
+      "time_ms": 935.92,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC04",
+      "fen": "4r1k1/5ppp/8/4N3/8/8/5PPP/6K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move_uci": "e5f7",
+      "engine_move_san": "Nxf7",
+      "is_legal": true,
+      "engine_top_score": 149.2936,
+      "top_candidates": [
+        {
+          "uci": "e5f7",
+          "score": 149.2936,
+          "cnn_cp": 131.53,
+          "material": -1,
+          "space": -5,
+          "center": -1,
+          "mobility": 4
+        },
+        {
+          "uci": "f2f4",
+          "score": 109.9314,
+          "cnn_cp": 117.32,
+          "material": -2,
+          "space": 1,
+          "center": -1,
+          "mobility": 0
+        },
+        {
+          "uci": "e5c6",
+          "score": 103.0924,
+          "cnn_cp": 113.88,
+          "material": -2,
+          "space": -3,
+          "center": -1,
+          "mobility": 4
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "trades space for other compensation (-5 squares)"
+      ],
+      "time_ms": 428.18,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC05",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/1Q4K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move_uci": "b1f5",
+      "engine_move_san": "Qf5",
+      "is_legal": true,
+      "engine_top_score": 621.5958,
+      "top_candidates": [
+        {
+          "uci": "b1f5",
+          "score": 621.5958,
+          "cnn_cp": 300.54,
+          "material": 9,
+          "space": 20,
+          "center": 1,
+          "mobility": -23
+        },
+        {
+          "uci": "b1b6",
+          "score": 608.9371,
+          "cnn_cp": 292.86,
+          "material": 9,
+          "space": 20,
+          "center": 1,
+          "mobility": -21
+        },
+        {
+          "uci": "b1b4",
+          "score": 596.3428,
+          "cnn_cp": 242.75,
+          "material": 9,
+          "space": 23,
+          "center": 1,
+          "mobility": -24
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 389.51,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC06",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 5 4",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -19.5104,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -19.5104,
+          "cnn_cp": 6.21,
+          "material": -1,
+          "space": -3,
+          "center": -1,
+          "mobility": -7
+        },
+        {
+          "uci": "c6d4",
+          "score": 0.8067,
+          "cnn_cp": 2.58,
+          "material": 0,
+          "space": -4,
+          "center": -1,
+          "mobility": -5
+        },
+        {
+          "uci": "g7g5",
+          "score": 7.1265,
+          "cnn_cp": 8.18,
+          "material": 0,
+          "space": -1,
+          "center": -1,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 655.16,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF01",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/R5K1 b - - 0 1",
+      "category": "defensive",
+      "side_to_move": "black",
+      "engine_move_uci": "g8h8",
+      "engine_move_san": "Kh8",
+      "is_legal": true,
+      "engine_top_score": 296.9277,
+      "top_candidates": [
+        {
+          "uci": "g8h8",
+          "score": 296.9277,
+          "cnn_cp": 78.77,
+          "material": 5,
+          "space": 14,
+          "center": 0,
+          "mobility": 13
+        },
+        {
+          "uci": "f7f5",
+          "score": 302.5233,
+          "cnn_cp": 88.21,
+          "material": 5,
+          "space": 11,
+          "center": 0,
+          "mobility": 12
+        },
+        {
+          "uci": "h7h6",
+          "score": 303.6326,
+          "cnn_cp": 85.27,
+          "material": 5,
+          "space": 11,
+          "center": 0,
+          "mobility": 12
+        }
+      ],
+      "explanation": [
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 406.61,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF02",
+      "fen": "6k1/5ppp/8/1q6/8/8/5PPP/6K1 w - - 0 1",
+      "category": "defensive",
+      "side_to_move": "white",
+      "engine_move_uci": "h2h3",
+      "engine_move_san": "h3",
+      "is_legal": true,
+      "engine_top_score": -555.0562,
+      "top_candidates": [
+        {
+          "uci": "h2h3",
+          "score": -555.0562,
+          "cnn_cp": -178.76,
+          "material": -9,
+          "space": -22,
+          "center": -2,
+          "mobility": 24
+        },
+        {
+          "uci": "f2f4",
+          "score": -568.4656,
+          "cnn_cp": -203.74,
+          "material": -9,
+          "space": -22,
+          "center": -2,
+          "mobility": 24
+        },
+        {
+          "uci": "g1h1",
+          "score": -573.0768,
+          "cnn_cp": -199.85,
+          "material": -9,
+          "space": -25,
+          "center": -2,
+          "mobility": 24
+        }
+      ],
+      "explanation": [
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 326.46,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF03",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2",
+      "category": "defensive",
+      "side_to_move": "black",
+      "engine_move_uci": "d7d5",
+      "engine_move_san": "d5",
+      "is_legal": true,
+      "engine_top_score": -284.5101,
+      "top_candidates": [
+        {
+          "uci": "d7d5",
+          "score": -284.5101,
+          "cnn_cp": -225.35,
+          "material": 0,
+          "space": -8,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "f8b4",
+          "score": -276.565,
+          "cnn_cp": -235.4,
+          "material": 0,
+          "space": -4,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "b8c6",
+          "score": -265.8592,
+          "cnn_cp": -206.98,
+          "material": 0,
+          "space": -5,
+          "center": 0,
+          "mobility": -12
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-5 squares)"
+      ],
+      "time_ms": 546.23,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF04",
+      "fen": "r3k2r/ppp2ppp/8/8/8/8/PPP2PPP/R3K2R w KQkq - 0 1",
+      "category": "defensive",
+      "side_to_move": "white",
+      "engine_move_uci": "e1g1",
+      "engine_move_san": "O-O",
+      "is_legal": true,
+      "engine_top_score": -44.2222,
+      "top_candidates": [
+        {
+          "uci": "e1g1",
+          "score": -44.2222,
+          "cnn_cp": -27.24,
+          "material": 0,
+          "space": 1,
+          "center": 0,
+          "mobility": 2
+        },
+        {
+          "uci": "e1c1",
+          "score": -46.7234,
+          "cnn_cp": -37.05,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "a1d1",
+          "score": -48.4577,
+          "cnn_cp": -38.09,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 542.78,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    }
+  ],
+  "pass2": [
+    {
+      "id": "OP01",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d2d4",
+      "engine_move_san": "d4",
+      "is_legal": true,
+      "engine_top_score": 92.9968,
+      "top_candidates": [
+        {
+          "uci": "d2d4",
+          "score": 92.9968,
+          "cnn_cp": 48.12,
+          "material": 0,
+          "space": 6,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "e2e4",
+          "score": 89.9728,
+          "cnn_cp": 48.98,
+          "material": 0,
+          "space": 7,
+          "center": 0,
+          "mobility": -10
+        },
+        {
+          "uci": "b1c3",
+          "score": 80.909,
+          "cnn_cp": 41.4,
+          "material": 0,
+          "space": 4,
+          "center": 0,
+          "mobility": -2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "increases board control by +6 squares"
+      ],
+      "time_ms": 513.92,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP02",
+      "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "e7e5",
+      "engine_move_san": "e5",
+      "is_legal": true,
+      "engine_top_score": 55.9358,
+      "top_candidates": [
+        {
+          "uci": "e7e5",
+          "score": 55.9358,
+          "cnn_cp": 34.09,
+          "material": 0,
+          "space": 0,
+          "center": 1,
+          "mobility": 0
+        },
+        {
+          "uci": "c7c5",
+          "score": 60.7151,
+          "cnn_cp": 35.07,
+          "material": 0,
+          "space": 4,
+          "center": 1,
+          "mobility": 8
+        },
+        {
+          "uci": "e7e6",
+          "score": 67.4128,
+          "cnn_cp": 41.47,
+          "material": 0,
+          "space": 0,
+          "center": 1,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-7 squares)"
+      ],
+      "time_ms": 636.18,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP03",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d2d4",
+      "engine_move_san": "d4",
+      "is_legal": true,
+      "engine_top_score": 128.7842,
+      "top_candidates": [
+        {
+          "uci": "d2d4",
+          "score": 128.7842,
+          "cnn_cp": 71.83,
+          "material": 0,
+          "space": 6,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "d1h5",
+          "score": 108.6635,
+          "cnn_cp": 63.63,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -13
+        },
+        {
+          "uci": "g1f3",
+          "score": 104.441,
+          "cnn_cp": 57.62,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": 2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "increases board control by +6 squares"
+      ],
+      "time_ms": 626.32,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP04",
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d1g4",
+      "engine_move_san": "Qg4",
+      "is_legal": true,
+      "engine_top_score": 199.9288,
+      "top_candidates": [
+        {
+          "uci": "d1g4",
+          "score": 199.9288,
+          "cnn_cp": 130.06,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -18
+        },
+        {
+          "uci": "d2d4",
+          "score": 149.2856,
+          "cnn_cp": 84.06,
+          "material": 0,
+          "space": 10,
+          "center": 0,
+          "mobility": -16
+        },
+        {
+          "uci": "d1h5",
+          "score": 138.9752,
+          "cnn_cp": 81.87,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -23
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 621.87,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP05",
+      "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d1h5",
+      "engine_move_san": "Qh5",
+      "is_legal": true,
+      "engine_top_score": 160.6958,
+      "top_candidates": [
+        {
+          "uci": "d1h5",
+          "score": 160.6958,
+          "cnn_cp": 99.58,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "d1g4",
+          "score": 144.6454,
+          "cnn_cp": 88.63,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "g1f3",
+          "score": 131.2504,
+          "cnn_cp": 75.65,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": 2
+        }
+      ],
+      "explanation": [
+        "increases board control by +5 squares"
+      ],
+      "time_ms": 718.42,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP06",
+      "fen": "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "d1g4",
+      "engine_move_san": "Qg4",
+      "is_legal": true,
+      "engine_top_score": 171.5554,
+      "top_candidates": [
+        {
+          "uci": "d1g4",
+          "score": 171.5554,
+          "cnn_cp": 106.2,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -19
+        },
+        {
+          "uci": "d2d4",
+          "score": 154.2207,
+          "cnn_cp": 87.66,
+          "material": 0,
+          "space": 10,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "d1h5",
+          "score": 121.0178,
+          "cnn_cp": 68.88,
+          "material": 0,
+          "space": 9,
+          "center": 0,
+          "mobility": -26
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 653.26,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP07",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "c8g4",
+      "engine_move_san": "Bg4",
+      "is_legal": true,
+      "engine_top_score": -102.1845,
+      "top_candidates": [
+        {
+          "uci": "c8g4",
+          "score": -102.1845,
+          "cnn_cp": -68.24,
+          "material": 0,
+          "space": 2,
+          "center": 1,
+          "mobility": -3
+        },
+        {
+          "uci": "b8c6",
+          "score": -11.3456,
+          "cnn_cp": -3.13,
+          "material": 0,
+          "space": -1,
+          "center": 1,
+          "mobility": 1
+        },
+        {
+          "uci": "d5c4",
+          "score": -1.753,
+          "cnn_cp": 18.64,
+          "material": -1,
+          "space": 0,
+          "center": 1,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "trades space for other compensation (-1 squares)"
+      ],
+      "time_ms": 640.61,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP08",
+      "fen": "rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "c4d5",
+      "engine_move_san": "cxd5",
+      "is_legal": true,
+      "engine_top_score": 206.6732,
+      "top_candidates": [
+        {
+          "uci": "c4d5",
+          "score": 206.6732,
+          "cnn_cp": 111.22,
+          "material": 1,
+          "space": 3,
+          "center": 1,
+          "mobility": 0
+        },
+        {
+          "uci": "b1c3",
+          "score": 151.5275,
+          "cnn_cp": 90.24,
+          "material": 0,
+          "space": 2,
+          "center": 1,
+          "mobility": -4
+        },
+        {
+          "uci": "e2e4",
+          "score": 112.3892,
+          "cnn_cp": 64.73,
+          "material": 0,
+          "space": 5,
+          "center": 1,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 636.5,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP09",
+      "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 303.6012,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 303.6012,
+          "cnn_cp": 235.52,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "d2d4",
+          "score": 115.0033,
+          "cnn_cp": 71.07,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -8
+        },
+        {
+          "uci": "h2h4",
+          "score": 100.0189,
+          "cnn_cp": 62.83,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 647.96,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP10",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "c6d4",
+      "engine_move_san": "Nd4",
+      "is_legal": true,
+      "engine_top_score": -120.1482,
+      "top_candidates": [
+        {
+          "uci": "c6d4",
+          "score": -120.1482,
+          "cnn_cp": -81.5,
+          "material": 0,
+          "space": -3,
+          "center": 1,
+          "mobility": -2
+        },
+        {
+          "uci": "f8c5",
+          "score": -44.8803,
+          "cnn_cp": -30.34,
+          "material": 0,
+          "space": 0,
+          "center": 1,
+          "mobility": -3
+        },
+        {
+          "uci": "g8f6",
+          "score": 43.2513,
+          "cnn_cp": 30.58,
+          "material": 0,
+          "space": -2,
+          "center": 1,
+          "mobility": 4
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 809.26,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP11",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 245.4052,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 245.4052,
+          "cnn_cp": 169.33,
+          "material": 1,
+          "space": 1,
+          "center": -1,
+          "mobility": -10
+        },
+        {
+          "uci": "c4f7",
+          "score": 82.2029,
+          "cnn_cp": 33.68,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -31
+        },
+        {
+          "uci": "d2d4",
+          "score": 74.5258,
+          "cnn_cp": 48.82,
+          "material": 0,
+          "space": 1,
+          "center": -1,
+          "mobility": -12
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 882.53,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP12",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 289.3398,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 289.3398,
+          "cnn_cp": 217.88,
+          "material": 1,
+          "space": 5,
+          "center": 0,
+          "mobility": -6
+        },
+        {
+          "uci": "c1f4",
+          "score": 211.9409,
+          "cnn_cp": 152.14,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": -4
+        },
+        {
+          "uci": "c1g5",
+          "score": 207.4666,
+          "cnn_cp": 146.05,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": -5
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 884.23,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP13",
+      "fen": "rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "e2e4",
+      "engine_move_san": "e4",
+      "is_legal": true,
+      "engine_top_score": 282.4052,
+      "top_candidates": [
+        {
+          "uci": "e2e4",
+          "score": 282.4052,
+          "cnn_cp": 220.74,
+          "material": 0,
+          "space": 9,
+          "center": 2,
+          "mobility": -14
+        },
+        {
+          "uci": "a2a4",
+          "score": 219.5646,
+          "cnn_cp": 145.88,
+          "material": 0,
+          "space": 5,
+          "center": 2,
+          "mobility": -7
+        },
+        {
+          "uci": "c1d2",
+          "score": 218.8569,
+          "cnn_cp": 150.73,
+          "material": 0,
+          "space": 4,
+          "center": 2,
+          "mobility": -7
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 671.91,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP14",
+      "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move_uci": "c4c5",
+      "engine_move_san": "c5",
+      "is_legal": true,
+      "engine_top_score": 238.0734,
+      "top_candidates": [
+        {
+          "uci": "c4c5",
+          "score": 238.0734,
+          "cnn_cp": 165.82,
+          "material": 0,
+          "space": 4,
+          "center": 2,
+          "mobility": 2
+        },
+        {
+          "uci": "a2a3",
+          "score": 235.5363,
+          "cnn_cp": 164.02,
+          "material": 0,
+          "space": 3,
+          "center": 2,
+          "mobility": 5
+        },
+        {
+          "uci": "g2g3",
+          "score": 176.9629,
+          "cnn_cp": 109.36,
+          "material": 0,
+          "space": 3,
+          "center": 2,
+          "mobility": 5
+        }
+      ],
+      "explanation": [
+        "expands space with a pawn advance",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 650.8,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP15",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/2P5/2N5/PP1PPPPP/R1BQKBNR b KQkq - 1 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "b8c6",
+      "engine_move_san": "Nc6",
+      "is_legal": true,
+      "engine_top_score": 5.9228,
+      "top_candidates": [
+        {
+          "uci": "b8c6",
+          "score": 5.9228,
+          "cnn_cp": 6.15,
+          "material": 0,
+          "space": -5,
+          "center": 1,
+          "mobility": -6
+        },
+        {
+          "uci": "g8f6",
+          "score": 7.7114,
+          "cnn_cp": 10.3,
+          "material": 0,
+          "space": -5,
+          "center": 1,
+          "mobility": -2
+        },
+        {
+          "uci": "e5e4",
+          "score": 16.1773,
+          "cnn_cp": 5.13,
+          "material": 0,
+          "space": -3,
+          "center": 1,
+          "mobility": -5
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "trades space for other compensation (-2 squares)"
+      ],
+      "time_ms": 708.38,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP16",
+      "fen": "rnbqkb1r/pppppppp/5n2/8/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "d7d5",
+      "engine_move_san": "d5",
+      "is_legal": true,
+      "engine_top_score": 12.6342,
+      "top_candidates": [
+        {
+          "uci": "d7d5",
+          "score": 12.6342,
+          "cnn_cp": 3.5,
+          "material": 0,
+          "space": 2,
+          "center": 1,
+          "mobility": 0
+        },
+        {
+          "uci": "h7h6",
+          "score": 20.6973,
+          "cnn_cp": 7.53,
+          "material": 0,
+          "space": 4,
+          "center": 1,
+          "mobility": 7
+        },
+        {
+          "uci": "b8c6",
+          "score": 25.6399,
+          "cnn_cp": 18.18,
+          "material": 0,
+          "space": 1,
+          "center": 1,
+          "mobility": 6
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 627.51,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP17",
+      "fen": "rnbqkbnr/ppp1pppp/8/3P4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "e7e5",
+      "engine_move_san": "e5",
+      "is_legal": true,
+      "engine_top_score": 60.933,
+      "top_candidates": [
+        {
+          "uci": "e7e5",
+          "score": 60.933,
+          "cnn_cp": 25.68,
+          "material": 1,
+          "space": -4,
+          "center": -1,
+          "mobility": -7
+        },
+        {
+          "uci": "d8d5",
+          "score": 63.7393,
+          "cnn_cp": 54.36,
+          "material": 0,
+          "space": -10,
+          "center": -1,
+          "mobility": -18
+        },
+        {
+          "uci": "c8g4",
+          "score": 79.2375,
+          "cnn_cp": 31.95,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -6
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-7 squares)"
+      ],
+      "time_ms": 710.7,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "OP18",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move_uci": "c6d4",
+      "engine_move_san": "Nxd4",
+      "is_legal": true,
+      "engine_top_score": -43.2555,
+      "top_candidates": [
+        {
+          "uci": "c6d4",
+          "score": -43.2555,
+          "cnn_cp": -11.76,
+          "material": -1,
+          "space": -2,
+          "center": 1,
+          "mobility": -1
+        },
+        {
+          "uci": "e5d4",
+          "score": 20.1425,
+          "cnn_cp": 28.48,
+          "material": -1,
+          "space": 1,
+          "center": 1,
+          "mobility": 5
+        },
+        {
+          "uci": "d7d6",
+          "score": 109.8244,
+          "cnn_cp": 65.25,
+          "material": 0,
+          "space": 1,
+          "center": 1,
+          "mobility": 2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-5 squares)"
+      ],
+      "time_ms": 948.09,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG01",
+      "fen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N2/PP1P1PPP/RNBQR1K1 w - - 1 9",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "b3d5",
+      "engine_move_san": "Bd5",
+      "is_legal": true,
+      "engine_top_score": 93.1729,
+      "top_candidates": [
+        {
+          "uci": "b3d5",
+          "score": 93.1729,
+          "cnn_cp": 59.08,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -1
+        },
+        {
+          "uci": "f3d4",
+          "score": 92.7003,
+          "cnn_cp": 62.17,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -3
+        },
+        {
+          "uci": "f3e5",
+          "score": 90.613,
+          "cnn_cp": 38.35,
+          "material": 1,
+          "space": 1,
+          "center": 0,
+          "mobility": -4
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 575.53,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG02",
+      "fen": "rnbqk2r/1p2bppp/p2p1n2/4p3/4P3/1NN1B3/PPP2PPP/R2QKB1R w KQkq - 2 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "d1d6",
+      "engine_move_san": "Qxd6",
+      "is_legal": true,
+      "engine_top_score": 270.1478,
+      "top_candidates": [
+        {
+          "uci": "d1d6",
+          "score": 270.1478,
+          "cnn_cp": 162.04,
+          "material": 1,
+          "space": 15,
+          "center": -1,
+          "mobility": -28
+        },
+        {
+          "uci": "c3d5",
+          "score": 106.0691,
+          "cnn_cp": 69.51,
+          "material": 0,
+          "space": 8,
+          "center": -1,
+          "mobility": -19
+        },
+        {
+          "uci": "e3c5",
+          "score": 101.7851,
+          "cnn_cp": 64.64,
+          "material": 0,
+          "space": 5,
+          "center": -1,
+          "mobility": -12
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +8 squares"
+      ],
+      "time_ms": 992.04,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG03",
+      "fen": "rnbq1rk1/p1p1bpp1/1p2pn1p/3p4/2PP3B/2N1PN2/PP3PPP/R2QKB1R w KQ - 0 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "h4f6",
+      "engine_move_san": "Bxf6",
+      "is_legal": true,
+      "engine_top_score": 286.3418,
+      "top_candidates": [
+        {
+          "uci": "h4f6",
+          "score": 286.3418,
+          "cnn_cp": 119.14,
+          "material": 3,
+          "space": 3,
+          "center": 2,
+          "mobility": -14
+        },
+        {
+          "uci": "c4d5",
+          "score": 236.252,
+          "cnn_cp": 131.48,
+          "material": 1,
+          "space": 4,
+          "center": 2,
+          "mobility": -6
+        },
+        {
+          "uci": "c3d5",
+          "score": 202.5428,
+          "cnn_cp": 107.08,
+          "material": 1,
+          "space": 4,
+          "center": 2,
+          "mobility": -4
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 856.47,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG04",
+      "fen": "rnbqk2r/pp2nppp/4p3/2ppP3/3P4/P1P5/2P2PPP/R1BQKBNR w KQkq - 1 7",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f1d3",
+      "engine_move_san": "Bd3",
+      "is_legal": true,
+      "engine_top_score": 108.7068,
+      "top_candidates": [
+        {
+          "uci": "f1d3",
+          "score": 108.7068,
+          "cnn_cp": 63.09,
+          "material": 0,
+          "space": 10,
+          "center": -1,
+          "mobility": -7
+        },
+        {
+          "uci": "d1e2",
+          "score": 105.9665,
+          "cnn_cp": 62.41,
+          "material": 0,
+          "space": 8,
+          "center": -1,
+          "mobility": -2
+        },
+        {
+          "uci": "g1f3",
+          "score": 104.2901,
+          "cnn_cp": 65.6,
+          "material": 0,
+          "space": 6,
+          "center": -1,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "increases board control by +3 squares"
+      ],
+      "time_ms": 778.37,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG05",
+      "fen": "r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQR1K1 w - - 0 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 200.5783,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 200.5783,
+          "cnn_cp": 113.82,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": 0
+        },
+        {
+          "uci": "c1g5",
+          "score": 143.274,
+          "cnn_cp": 92.86,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": -1
+        },
+        {
+          "uci": "d3d4",
+          "score": 114.6676,
+          "cnn_cp": 71.51,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": -4
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 1013.69,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG06",
+      "fen": "r1bq1rk1/pppn1pbp/3p1np1/3Pp3/2P1P3/2N2N2/PP2BPPP/R1BQK2R w KQ - 1 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Nxe5",
+      "is_legal": true,
+      "engine_top_score": 140.6099,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 140.6099,
+          "cnn_cp": 63.96,
+          "material": 1,
+          "space": 8,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "h2h4",
+          "score": 104.133,
+          "cnn_cp": 64.13,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -14
+        },
+        {
+          "uci": "e1g1",
+          "score": 103.0685,
+          "cnn_cp": 62.17,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -10
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "increases board control by +5 squares"
+      ],
+      "time_ms": 665.98,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG07",
+      "fen": "r2qkbnr/pp1nppp1/2p3bp/8/3P3P/5NN1/PPP2PP1/R1BQKB1R w KQkq - 2 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3e5",
+      "engine_move_san": "Ne5",
+      "is_legal": true,
+      "engine_top_score": 265.5088,
+      "top_candidates": [
+        {
+          "uci": "f3e5",
+          "score": 265.5088,
+          "cnn_cp": 211.6,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -15
+        },
+        {
+          "uci": "g3e4",
+          "score": 179.3032,
+          "cnn_cp": 124.18,
+          "material": 0,
+          "space": 3,
+          "center": 0,
+          "mobility": -13
+        },
+        {
+          "uci": "d1e2",
+          "score": 164.5639,
+          "cnn_cp": 106.43,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +5 squares"
+      ],
+      "time_ms": 943.32,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG08",
+      "fen": "rnbqk2r/1p3ppp/p3pn2/2b5/2B5/4PN2/PP3PPP/RNBQ1RK1 w kq - 0 8",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move_uci": "d1d8",
+      "engine_move_san": "Qxd8+",
+      "is_legal": true,
+      "engine_top_score": 447.9019,
+      "top_candidates": [
+        {
+          "uci": "d1d8",
+          "score": 447.9019,
+          "cnn_cp": 96.36,
+          "material": 9,
+          "space": 11,
+          "center": 0,
+          "mobility": -42
+        },
+        {
+          "uci": "c4e6",
+          "score": 322.8125,
+          "cnn_cp": 265.43,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": 2
+        },
+        {
+          "uci": "d1d6",
+          "score": 286.5958,
+          "cnn_cp": 250.72,
+          "material": 0,
+          "space": 8,
+          "center": 0,
+          "mobility": -15
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "delivers a check to the opponent king",
+        "increases board control by +10 squares"
+      ],
+      "time_ms": 949.44,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG09",
+      "fen": "r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/1BP2N1P/PP1P1PP1/RNBQR1K1 b - - 0 9",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -3.1569,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -3.1569,
+          "cnn_cp": 14.31,
+          "material": -1,
+          "space": -6,
+          "center": 0,
+          "mobility": -5
+        },
+        {
+          "uci": "c8h3",
+          "score": 29.6538,
+          "cnn_cp": 39.47,
+          "material": -1,
+          "space": -3,
+          "center": 0,
+          "mobility": -5
+        },
+        {
+          "uci": "c6a5",
+          "score": 31.3512,
+          "cnn_cp": 19.98,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -2
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-4 squares)"
+      ],
+      "time_ms": 659.47,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG10",
+      "fen": "rnbqk2r/1p2bppp/p2p1n2/4p3/4P3/1NN1BP2/PPP3PP/R2QKB1R b KQkq - 0 8",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -20.2561,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -20.2561,
+          "cnn_cp": 3.58,
+          "material": -1,
+          "space": 1,
+          "center": -1,
+          "mobility": 9
+        },
+        {
+          "uci": "b8c6",
+          "score": 19.0493,
+          "cnn_cp": 12.6,
+          "material": 0,
+          "space": 4,
+          "center": -1,
+          "mobility": 11
+        },
+        {
+          "uci": "d8c7",
+          "score": 21.8387,
+          "cnn_cp": 14.49,
+          "material": 0,
+          "space": 4,
+          "center": -1,
+          "mobility": 9
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-4 squares)"
+      ],
+      "time_ms": 933.1,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG11",
+      "fen": "rnbq1rk1/p1p1bpp1/1p2pn1p/3P4/3P3B/2N1PN2/PP3PPP/R2QKB1R b KQ - 0 8",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6d5",
+      "engine_move_san": "exd5",
+      "is_legal": true,
+      "engine_top_score": 46.0807,
+      "top_candidates": [
+        {
+          "uci": "e6d5",
+          "score": 46.0807,
+          "cnn_cp": 21.69,
+          "material": 0,
+          "space": 0,
+          "center": 2,
+          "mobility": 5
+        },
+        {
+          "uci": "f6d5",
+          "score": 104.599,
+          "cnn_cp": 54.12,
+          "material": 0,
+          "space": 2,
+          "center": 2,
+          "mobility": 5
+        },
+        {
+          "uci": "d8d5",
+          "score": 126.8078,
+          "cnn_cp": 83.36,
+          "material": 0,
+          "space": -4,
+          "center": 2,
+          "mobility": -9
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "captures an opponent piece",
+        "trades space for other compensation (-4 squares)"
+      ],
+      "time_ms": 1005.94,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "MG12",
+      "fen": "r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2PP1N2/PP1N1PPP/R1BQR1K1 b - - 1 8",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -45.0925,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -45.0925,
+          "cnn_cp": -11.48,
+          "material": -1,
+          "space": -5,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "c8g4",
+          "score": 5.7366,
+          "cnn_cp": 5.08,
+          "material": 0,
+          "space": -3,
+          "center": 0,
+          "mobility": -12
+        },
+        {
+          "uci": "c5e3",
+          "score": 20.5734,
+          "cnn_cp": 13.53,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 875.59,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG01",
+      "fen": "8/8/8/4k3/8/4K3/4P3/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "e3d3",
+      "engine_move_san": "Kd3",
+      "is_legal": true,
+      "engine_top_score": 350.4861,
+      "top_candidates": [
+        {
+          "uci": "e3d3",
+          "score": 350.4861,
+          "cnn_cp": 431.69,
+          "material": 1,
+          "space": 2,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e3f2",
+          "score": 332.578,
+          "cnn_cp": 373.0,
+          "material": 1,
+          "space": 1,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e3f3",
+          "score": 326.6392,
+          "cnn_cp": 314.18,
+          "material": 1,
+          "space": 2,
+          "center": -1,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 346.28,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG02",
+      "fen": "8/8/8/4k3/8/4K3/4P3/8 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e5d5",
+      "engine_move_san": "Kd5",
+      "is_legal": true,
+      "engine_top_score": 240.6818,
+      "top_candidates": [
+        {
+          "uci": "e5d5",
+          "score": 240.6818,
+          "cnn_cp": 153.83,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e5f5",
+          "score": 268.4753,
+          "cnn_cp": 179.38,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -1
+        },
+        {
+          "uci": "e5e6",
+          "score": 276.6353,
+          "cnn_cp": 189.9,
+          "material": 1,
+          "space": 0,
+          "center": -1,
+          "mobility": -1
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 273.9,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG03",
+      "fen": "8/8/4k3/8/8/4K3/8/4R3 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "e3d3",
+      "engine_move_san": "Kd3+",
+      "is_legal": true,
+      "engine_top_score": 498.7064,
+      "top_candidates": [
+        {
+          "uci": "e3d3",
+          "score": 498.7064,
+          "cnn_cp": 471.56,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -14
+        },
+        {
+          "uci": "e3e4",
+          "score": 493.6636,
+          "cnn_cp": 369.92,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "e3d4",
+          "score": 492.0222,
+          "cnn_cp": 394.37,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -13
+        }
+      ],
+      "explanation": [
+        "delivers a check to the opponent king",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 307.25,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG04",
+      "fen": "8/8/4k3/8/8/4K3/8/4Q3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6f7",
+      "engine_move_san": "Kf7",
+      "is_legal": true,
+      "engine_top_score": 509.1925,
+      "top_candidates": [
+        {
+          "uci": "e6f7",
+          "score": 509.1925,
+          "cnn_cp": 137.42,
+          "material": 9,
+          "space": 13,
+          "center": 0,
+          "mobility": 15
+        },
+        {
+          "uci": "e6d5",
+          "score": 569.6949,
+          "cnn_cp": 234.98,
+          "material": 9,
+          "space": 13,
+          "center": 0,
+          "mobility": 15
+        },
+        {
+          "uci": "e6f5",
+          "score": 583.1712,
+          "cnn_cp": 251.92,
+          "material": 9,
+          "space": 13,
+          "center": 0,
+          "mobility": 15
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 364.8,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG05",
+      "fen": "8/5pk1/8/8/8/8/5PK1/R6r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "g2h1",
+      "engine_move_san": "Kxh1",
+      "is_legal": true,
+      "engine_top_score": 344.0936,
+      "top_candidates": [
+        {
+          "uci": "g2h1",
+          "score": 344.0936,
+          "cnn_cp": 117.99,
+          "material": 5,
+          "space": 9,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "a1h1",
+          "score": 293.3572,
+          "cnn_cp": 78.73,
+          "material": 5,
+          "space": 10,
+          "center": 0,
+          "mobility": -16
+        },
+        {
+          "uci": "a1a7",
+          "score": 179.5497,
+          "cnn_cp": 121.24,
+          "material": 0,
+          "space": 1,
+          "center": 0,
+          "mobility": 4
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +9 squares"
+      ],
+      "time_ms": 468.31,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG06",
+      "fen": "8/5ppk/8/8/8/8/5PPK/8 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "h2g1",
+      "engine_move_san": "Kg1",
+      "is_legal": true,
+      "engine_top_score": 71.1709,
+      "top_candidates": [
+        {
+          "uci": "h2g1",
+          "score": 71.1709,
+          "cnn_cp": 42.87,
+          "material": 0,
+          "space": 2,
+          "center": 0,
+          "mobility": 1
+        },
+        {
+          "uci": "h2h1",
+          "score": 68.7954,
+          "cnn_cp": 42.36,
+          "material": 0,
+          "space": 0,
+          "center": 0,
+          "mobility": 2
+        },
+        {
+          "uci": "f2f4",
+          "score": 66.1348,
+          "cnn_cp": 37.05,
+          "material": 0,
+          "space": 1,
+          "center": 0,
+          "mobility": 1
+        }
+      ],
+      "explanation": [
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 364.38,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG07",
+      "fen": "8/5pk1/8/8/8/2B5/5PK1/6b1 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "g7h7",
+      "engine_move_san": "Kh7",
+      "is_legal": true,
+      "engine_top_score": 104.3668,
+      "top_candidates": [
+        {
+          "uci": "g7h7",
+          "score": 104.3668,
+          "cnn_cp": 52.3,
+          "material": 0,
+          "space": 12,
+          "center": 2,
+          "mobility": 12
+        },
+        {
+          "uci": "g7g8",
+          "score": 127.8274,
+          "cnn_cp": 68.34,
+          "material": 0,
+          "space": 11,
+          "center": 2,
+          "mobility": 13
+        },
+        {
+          "uci": "g7h6",
+          "score": 147.805,
+          "cnn_cp": 81.7,
+          "material": 0,
+          "space": 12,
+          "center": 2,
+          "mobility": 11
+        }
+      ],
+      "explanation": [
+        "increases board control by +4 squares"
+      ],
+      "time_ms": 347.84,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG08",
+      "fen": "8/4kpp1/8/8/8/5N2/4KPP1/6b1 w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "f3g1",
+      "engine_move_san": "Nxg1",
+      "is_legal": true,
+      "engine_top_score": 373.6284,
+      "top_candidates": [
+        {
+          "uci": "f3g1",
+          "score": 373.6284,
+          "cnn_cp": 239.76,
+          "material": 3,
+          "space": 1,
+          "center": 2,
+          "mobility": -2
+        },
+        {
+          "uci": "e2e1",
+          "score": 308.0009,
+          "cnn_cp": 285.82,
+          "material": 0,
+          "space": 4,
+          "center": 2,
+          "mobility": 0
+        },
+        {
+          "uci": "e2f1",
+          "score": 301.5196,
+          "cnn_cp": 270.19,
+          "material": 0,
+          "space": 3,
+          "center": 2,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 408.92,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG09",
+      "fen": "8/8/4k3/8/8/4K3/8/3QR3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6e5",
+      "engine_move_san": "Ke5",
+      "is_legal": true,
+      "engine_top_score": 798.2711,
+      "top_candidates": [
+        {
+          "uci": "e6e5",
+          "score": 798.2711,
+          "cnn_cp": 778.56,
+          "material": 14,
+          "space": 18,
+          "center": 1,
+          "mobility": 23
+        },
+        {
+          "uci": "e6f5",
+          "score": 802.6923,
+          "cnn_cp": 649.36,
+          "material": 14,
+          "space": 18,
+          "center": 1,
+          "mobility": 22
+        },
+        {
+          "uci": "e6f6",
+          "score": 808.2083,
+          "cnn_cp": 695.44,
+          "material": 14,
+          "space": 18,
+          "center": 1,
+          "mobility": 21
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 414.22,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG10",
+      "fen": "8/5pk1/6p1/8/8/6P1/5PKP/R6r w - - 0 1",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move_uci": "g2h1",
+      "engine_move_san": "Kxh1",
+      "is_legal": true,
+      "engine_top_score": 268.8969,
+      "top_candidates": [
+        {
+          "uci": "g2h1",
+          "score": 268.8969,
+          "cnn_cp": 41.55,
+          "material": 6,
+          "space": 9,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a1h1",
+          "score": 246.7761,
+          "cnn_cp": 29.67,
+          "material": 6,
+          "space": 5,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "a1a7",
+          "score": 138.3876,
+          "cnn_cp": 64.66,
+          "material": 1,
+          "space": 4,
+          "center": 0,
+          "mobility": -5
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "increases board control by +6 squares"
+      ],
+      "time_ms": 458.87,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG11",
+      "fen": "8/5pk1/8/8/8/8/5PK1/R6r b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "h1a1",
+      "engine_move_san": "Rxa1",
+      "is_legal": true,
+      "engine_top_score": -204.3395,
+      "top_candidates": [
+        {
+          "uci": "h1a1",
+          "score": -204.3395,
+          "cnn_cp": -18.99,
+          "material": -5,
+          "space": -14,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "h1d1",
+          "score": -23.7276,
+          "cnn_cp": -5.98,
+          "material": 0,
+          "space": -4,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "h1b1",
+          "score": 32.0058,
+          "cnn_cp": 22.57,
+          "material": 0,
+          "space": -6,
+          "center": 0,
+          "mobility": -9
+        }
+      ],
+      "explanation": [
+        "captures an opponent piece",
+        "trades space for other compensation (-14 squares)"
+      ],
+      "time_ms": 488.06,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "EG12",
+      "fen": "8/8/4k3/8/8/4K3/8/4R3 b - - 0 1",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move_uci": "e6f7",
+      "engine_move_san": "Kf7",
+      "is_legal": true,
+      "engine_top_score": 455.6048,
+      "top_candidates": [
+        {
+          "uci": "e6f7",
+          "score": 455.6048,
+          "cnn_cp": 242.89,
+          "material": 5,
+          "space": 8,
+          "center": 0,
+          "mobility": 8
+        },
+        {
+          "uci": "e6d5",
+          "score": 457.7071,
+          "cnn_cp": 285.61,
+          "material": 5,
+          "space": 8,
+          "center": 0,
+          "mobility": 8
+        },
+        {
+          "uci": "e6f5",
+          "score": 479.3793,
+          "cnn_cp": 349.59,
+          "material": 5,
+          "space": 8,
+          "center": 0,
+          "mobility": 8
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement"
+      ],
+      "time_ms": 287.62,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC01",
+      "fen": "6k1/5ppp/8/8/8/8/8/R5K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move_uci": "a1a4",
+      "engine_move_san": "Ra4",
+      "is_legal": true,
+      "engine_top_score": 288.7012,
+      "top_candidates": [
+        {
+          "uci": "a1a4",
+          "score": 288.7012,
+          "cnn_cp": 146.1,
+          "material": 2,
+          "space": 10,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a1a7",
+          "score": 285.3932,
+          "cnn_cp": 154.81,
+          "material": 2,
+          "space": 8,
+          "center": 0,
+          "mobility": -9
+        },
+        {
+          "uci": "a1a8",
+          "score": 254.709,
+          "cnn_cp": 124.5,
+          "material": 2,
+          "space": 9,
+          "center": 0,
+          "mobility": -18
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 369.03,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC02",
+      "fen": "r5k1/8/8/8/8/8/5PPP/6K1 b - - 0 1",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move_uci": "a8a5",
+      "engine_move_san": "Ra5",
+      "is_legal": true,
+      "engine_top_score": -61.852,
+      "top_candidates": [
+        {
+          "uci": "a8a5",
+          "score": -61.852,
+          "cnn_cp": 12.98,
+          "material": -2,
+          "space": -10,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a8a4",
+          "score": -39.7191,
+          "cnn_cp": 26.51,
+          "material": -2,
+          "space": -10,
+          "center": 0,
+          "mobility": -11
+        },
+        {
+          "uci": "a8b8",
+          "score": -25.9841,
+          "cnn_cp": 27.6,
+          "material": -2,
+          "space": -8,
+          "center": 0,
+          "mobility": -9
+        }
+      ],
+      "explanation": [
+        "trades space for other compensation (-2 squares)"
+      ],
+      "time_ms": 289.96,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC03",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR b KQkq - 4 3",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move_uci": "f8b4",
+      "engine_move_san": "Bb4",
+      "is_legal": true,
+      "engine_top_score": -249.7485,
+      "top_candidates": [
+        {
+          "uci": "f8b4",
+          "score": -249.7485,
+          "cnn_cp": -194.9,
+          "material": 0,
+          "space": -2,
+          "center": 0,
+          "mobility": 5
+        },
+        {
+          "uci": "g8f6",
+          "score": -221.1394,
+          "cnn_cp": -148.63,
+          "material": 0,
+          "space": -3,
+          "center": 0,
+          "mobility": 12
+        },
+        {
+          "uci": "d7d5",
+          "score": -215.6709,
+          "cnn_cp": -139.18,
+          "material": 0,
+          "space": -8,
+          "center": 0,
+          "mobility": 1
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "trades space for other compensation (-1 squares)"
+      ],
+      "time_ms": 989.54,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC04",
+      "fen": "4r1k1/5ppp/8/4N3/8/8/5PPP/6K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move_uci": "e5f7",
+      "engine_move_san": "Nxf7",
+      "is_legal": true,
+      "engine_top_score": 149.2936,
+      "top_candidates": [
+        {
+          "uci": "e5f7",
+          "score": 149.2936,
+          "cnn_cp": 131.53,
+          "material": -1,
+          "space": -5,
+          "center": -1,
+          "mobility": 4
+        },
+        {
+          "uci": "f2f4",
+          "score": 109.9314,
+          "cnn_cp": 117.32,
+          "material": -2,
+          "space": 1,
+          "center": -1,
+          "mobility": 0
+        },
+        {
+          "uci": "e5c6",
+          "score": 103.0924,
+          "cnn_cp": 113.88,
+          "material": -2,
+          "space": -3,
+          "center": -1,
+          "mobility": 4
+        }
+      ],
+      "explanation": [
+        "develops a minor piece",
+        "captures an opponent piece",
+        "neural evaluation indicates a positional improvement",
+        "trades space for other compensation (-5 squares)"
+      ],
+      "time_ms": 351.79,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC05",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/1Q4K1 w - - 0 1",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move_uci": "b1f5",
+      "engine_move_san": "Qf5",
+      "is_legal": true,
+      "engine_top_score": 621.5958,
+      "top_candidates": [
+        {
+          "uci": "b1f5",
+          "score": 621.5958,
+          "cnn_cp": 300.54,
+          "material": 9,
+          "space": 20,
+          "center": 1,
+          "mobility": -23
+        },
+        {
+          "uci": "b1b6",
+          "score": 608.9371,
+          "cnn_cp": 292.86,
+          "material": 9,
+          "space": 20,
+          "center": 1,
+          "mobility": -21
+        },
+        {
+          "uci": "b1b4",
+          "score": 596.3428,
+          "cnn_cp": 242.75,
+          "material": 9,
+          "space": 23,
+          "center": 1,
+          "mobility": -24
+        }
+      ],
+      "explanation": [
+        "neural evaluation indicates a positional improvement",
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 371.77,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "TC06",
+      "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 5 4",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move_uci": "f6e4",
+      "engine_move_san": "Nxe4",
+      "is_legal": true,
+      "engine_top_score": -19.5104,
+      "top_candidates": [
+        {
+          "uci": "f6e4",
+          "score": -19.5104,
+          "cnn_cp": 6.21,
+          "material": -1,
+          "space": -3,
+          "center": -1,
+          "mobility": -7
+        },
+        {
+          "uci": "c6d4",
+          "score": 0.8067,
+          "cnn_cp": 2.58,
+          "material": 0,
+          "space": -4,
+          "center": -1,
+          "mobility": -5
+        },
+        {
+          "uci": "g7g5",
+          "score": 7.1265,
+          "cnn_cp": 8.18,
+          "material": 0,
+          "space": -1,
+          "center": -1,
+          "mobility": 0
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "develops a minor piece",
+        "captures an opponent piece",
+        "trades space for other compensation (-3 squares)"
+      ],
+      "time_ms": 701.32,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF01",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/R5K1 b - - 0 1",
+      "category": "defensive",
+      "side_to_move": "black",
+      "engine_move_uci": "g8h8",
+      "engine_move_san": "Kh8",
+      "is_legal": true,
+      "engine_top_score": 296.9277,
+      "top_candidates": [
+        {
+          "uci": "g8h8",
+          "score": 296.9277,
+          "cnn_cp": 78.77,
+          "material": 5,
+          "space": 14,
+          "center": 0,
+          "mobility": 13
+        },
+        {
+          "uci": "f7f5",
+          "score": 302.5233,
+          "cnn_cp": 88.21,
+          "material": 5,
+          "space": 11,
+          "center": 0,
+          "mobility": 12
+        },
+        {
+          "uci": "h7h6",
+          "score": 303.6326,
+          "cnn_cp": 85.27,
+          "material": 5,
+          "space": 11,
+          "center": 0,
+          "mobility": 12
+        }
+      ],
+      "explanation": [
+        "increases board control by +2 squares"
+      ],
+      "time_ms": 361.09,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF02",
+      "fen": "6k1/5ppp/8/1q6/8/8/5PPP/6K1 w - - 0 1",
+      "category": "defensive",
+      "side_to_move": "white",
+      "engine_move_uci": "h2h3",
+      "engine_move_san": "h3",
+      "is_legal": true,
+      "engine_top_score": -555.0562,
+      "top_candidates": [
+        {
+          "uci": "h2h3",
+          "score": -555.0562,
+          "cnn_cp": -178.76,
+          "material": -9,
+          "space": -22,
+          "center": -2,
+          "mobility": 24
+        },
+        {
+          "uci": "f2f4",
+          "score": -568.4656,
+          "cnn_cp": -203.74,
+          "material": -9,
+          "space": -22,
+          "center": -2,
+          "mobility": 24
+        },
+        {
+          "uci": "g1h1",
+          "score": -573.0768,
+          "cnn_cp": -199.85,
+          "material": -9,
+          "space": -25,
+          "center": -2,
+          "mobility": 24
+        }
+      ],
+      "explanation": [
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 354.95,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF03",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2",
+      "category": "defensive",
+      "side_to_move": "black",
+      "engine_move_uci": "d7d5",
+      "engine_move_san": "d5",
+      "is_legal": true,
+      "engine_top_score": -284.5101,
+      "top_candidates": [
+        {
+          "uci": "d7d5",
+          "score": -284.5101,
+          "cnn_cp": -225.35,
+          "material": 0,
+          "space": -8,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "f8b4",
+          "score": -276.565,
+          "cnn_cp": -235.4,
+          "material": 0,
+          "space": -4,
+          "center": 0,
+          "mobility": -17
+        },
+        {
+          "uci": "b8c6",
+          "score": -265.8592,
+          "cnn_cp": -206.98,
+          "material": 0,
+          "space": -5,
+          "center": 0,
+          "mobility": -12
+        }
+      ],
+      "explanation": [
+        "strengthens control of the center",
+        "expands space with a pawn advance",
+        "trades space for other compensation (-5 squares)"
+      ],
+      "time_ms": 552.11,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    },
+    {
+      "id": "DF04",
+      "fen": "r3k2r/ppp2ppp/8/8/8/8/PPP2PPP/R3K2R w KQkq - 0 1",
+      "category": "defensive",
+      "side_to_move": "white",
+      "engine_move_uci": "e1g1",
+      "engine_move_san": "O-O",
+      "is_legal": true,
+      "engine_top_score": -44.2222,
+      "top_candidates": [
+        {
+          "uci": "e1g1",
+          "score": -44.2222,
+          "cnn_cp": -27.24,
+          "material": 0,
+          "space": 1,
+          "center": 0,
+          "mobility": 2
+        },
+        {
+          "uci": "e1c1",
+          "score": -46.7234,
+          "cnn_cp": -37.05,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -7
+        },
+        {
+          "uci": "a1d1",
+          "score": -48.4577,
+          "cnn_cp": -38.09,
+          "material": 0,
+          "space": 5,
+          "center": 0,
+          "mobility": -8
+        }
+      ],
+      "explanation": [
+        "increases board control by +1 squares"
+      ],
+      "time_ms": 511.08,
+      "error": null,
+      "board_fen_preserved_after_call": true
+    }
+  ]
+}

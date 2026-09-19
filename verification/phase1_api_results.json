@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "generated_by": "baseline/scripts/measure_api.py",
+  "method": "flask test_client(); no live server, no network",
+  "import_app_seconds": 12.53,
+  "state_model_note": "app.py uses module-level globals for board/history/captures (app.py:13-20). Requests are therefore order-dependent and share state; these timings reflect that specific sequence.",
+  "requests": [
+    {
+      "label": "reset_initial",
+      "intent": "setup",
+      "method": "POST",
+      "path": "/reset",
+      "request_body": {},
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 352.62,
+      "error_field": null,
+      "response_keys": [
+        "captured_black",
+        "captured_white",
+        "fen",
+        "game_over",
+        "legal_map",
+        "metrics",
+        "move_history",
+        "pieces",
+        "result",
+        "turn"
+      ],
+      "response_bytes": 763,
+      "exception": null
+    },
+    {
+      "label": "index",
+      "intent": "happy path",
+      "method": "GET",
+      "path": "/",
+      "request_body": null,
+      "status_code": 200,
+      "content_type": "text/html; charset=utf-8",
+      "is_json": false,
+      "time_ms": 20.53,
+      "error_field": null,
+      "response_keys": null,
+      "response_bytes": 68386,
+      "exception": null
+    },
+    {
+      "label": "state",
+      "intent": "happy path",
+      "method": "GET",
+      "path": "/state",
+      "request_body": null,
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 121.6,
+      "error_field": null,
+      "response_keys": [
+        "captured_black",
+        "captured_white",
+        "fen",
+        "game_over",
+        "legal_map",
+        "metrics",
+        "move_history",
+        "pieces",
+        "result",
+        "turn"
+      ],
+      "response_bytes": 763,
+      "exception": null
+    },
+    {
+      "label": "model_info",
+      "intent": "happy path",
+      "method": "GET",
+      "path": "/model_info",
+      "request_body": null,
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 131.73,
+      "error_field": null,
+      "response_keys": [
+        "architecture",
+        "estimated_size_mb",
+        "input_shape",
+        "layers",
+        "total_params",
+        "trainable_params",
+        "training"
+      ],
+      "response_bytes": 1871,
+      "exception": null
+    },
+    {
+      "label": "move_legal",
+      "intent": "happy path",
+      "method": "POST",
+      "path": "/move",
+      "request_body": {
+        "uci": "e2e4"
+      },
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 281.12,
+      "error_field": null,
+      "response_keys": [
+        "captured_black",
+        "captured_white",
+        "fen",
+        "game_over",
+        "legal_map",
+        "metrics",
+        "move_history",
+        "pieces",
+        "player_move",
+        "result",
+        "turn"
+      ],
+      "response_bytes": 833,
+      "exception": null
+    },
+    {
+      "label": "engine_move",
+      "intent": "happy path",
+      "method": "POST",
+      "path": "/engine_move",
+      "request_body": {},
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 1675.56,
+      "error_field": null,
+      "response_keys": [
+        "captured_black",
+        "captured_white",
+        "engine",
+        "fen",
+        "game_over",
+        "legal_map",
+        "metrics",
+        "move_history",
+        "pieces",
+        "result",
+        "turn"
+      ],
+      "response_bytes": 1537,
+      "exception": null
+    },
+    {
+      "label": "analyse",
+      "intent": "happy path",
+      "method": "POST",
+      "path": "/analyse",
+      "request_body": {},
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 833.1,
+      "error_field": null,
+      "response_keys": [
+        "metrics",
+        "top_moves"
+      ],
+      "response_bytes": 584,
+      "exception": null
+    },
+    {
+      "label": "benchmark",
+      "intent": "happy path (uses Stockfish)",
+      "method": "POST",
+      "path": "/benchmark",
+      "request_body": {},
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 1421.85,
+      "error_field": null,
+      "response_keys": [
+        "comparison",
+        "fen",
+        "hybrid",
+        "stockfish"
+      ],
+      "response_bytes": 623,
+      "exception": null
+    },
+    {
+      "label": "game_stats",
+      "intent": "happy path",
+      "method": "POST",
+      "path": "/game_stats",
+      "request_body": {},
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 311.78,
+      "error_field": null,
+      "response_keys": [
+        "avg_center",
+        "avg_material",
+        "avg_space",
+        "black_moves",
+        "captured_black",
+        "captured_white",
+        "saliency",
+        "total_moves",
+        "white_moves"
+      ],
+      "response_bytes": 911,
+      "exception": null
+    },
+    {
+      "label": "move_illegal",
+      "intent": "invalid input",
+      "method": "POST",
+      "path": "/move",
+      "request_body": {
+        "uci": "e2e5"
+      },
+      "status_code": 400,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 0.99,
+      "error_field": "Illegal move: e2e5",
+      "response_keys": [
+        "error"
+      ],
+      "response_bytes": 31,
+      "exception": null
+    },
+    {
+      "label": "move_bad_uci",
+      "intent": "invalid input",
+      "method": "POST",
+      "path": "/move",
+      "request_body": {
+        "uci": "zzzz"
+      },
+      "status_code": 400,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 0.55,
+      "error_field": "Invalid UCI: zzzz",
+      "response_keys": [
+        "error"
+      ],
+      "response_bytes": 30,
+      "exception": null
+    },
+    {
+      "label": "move_empty_body",
+      "intent": "invalid input",
+      "method": "POST",
+      "path": "/move",
+      "request_body": {},
+      "status_code": 400,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 0.55,
+      "error_field": "Invalid UCI: ",
+      "response_keys": [
+        "error"
+      ],
+      "response_bytes": 26,
+      "exception": null
+    },
+    {
+      "label": "move_non_json",
+      "intent": "invalid input",
+      "method": "POST",
+      "path": "/move",
+      "request_body": "notjson",
+      "status_code": 415,
+      "content_type": "text/html; charset=utf-8",
+      "is_json": false,
+      "time_ms": 0.57,
+      "error_field": null,
+      "response_keys": null,
+      "response_bytes": 215,
+      "exception": null
+    },
+    {
+      "label": "move_wrong_method",
+      "intent": "invalid input",
+      "method": "GET",
+      "path": "/move",
+      "request_body": null,
+      "status_code": 405,
+      "content_type": "text/html; charset=utf-8",
+      "is_json": false,
+      "time_ms": 0.49,
+      "error_field": null,
+      "response_keys": null,
+      "response_bytes": 153,
+      "exception": null
+    },
+    {
+      "label": "forfeit",
+      "intent": "happy path",
+      "method": "POST",
+      "path": "/forfeit",
+      "request_body": {},
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 162.19,
+      "error_field": null,
+      "response_keys": [
+        "captured_black",
+        "captured_white",
+        "fen",
+        "forfeited",
+        "game_over",
+        "legal_map",
+        "metrics",
+        "move_history",
+        "pieces",
+        "result",
+        "turn"
+      ],
+      "response_bytes": 886,
+      "exception": null
+    },
+    {
+      "label": "reset_final",
+      "intent": "teardown",
+      "method": "POST",
+      "path": "/reset",
+      "request_body": {},
+      "status_code": 200,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 124.61,
+      "error_field": null,
+      "response_keys": [
+        "captured_black",
+        "captured_white",
+        "fen",
+        "game_over",
+        "legal_map",
+        "metrics",
+        "move_history",
+        "pieces",
+        "result",
+        "turn"
+      ],
+      "response_bytes": 763,
+      "exception": null
+    },
+    {
+      "label": "engine_move_wrong_turn",
+      "intent": "invalid input: after reset it is White's turn, engine plays Black",
+      "method": "POST",
+      "path": "/engine_move",
+      "request_body": {},
+      "status_code": 400,
+      "content_type": "application/json",
+      "is_json": true,
+      "time_ms": 0.58,
+      "error_field": "Not engine's turn",
+      "response_keys": [
+        "error"
+      ],
+      "response_bytes": 30,
+      "exception": null
+    }
+  ]
+}

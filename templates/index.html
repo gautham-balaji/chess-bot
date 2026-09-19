@@ -1536,13 +1536,16 @@ async function showBenchmark() {
           <div style="font-size:1.1rem;margin-top:4px" class="${c.agreement ? 'dev-agreement-yes' : 'dev-agreement-no'}">${c.agreement ? '✅ YES' : '❌ NO'}</div>
         </div>
         <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center">
-          <div class="dev-kv-label">Speedup</div>
-          <div style="font-size:1.1rem;color:var(--green);font-weight:700;margin-top:4px">${c.speedup || '—'}×</div>
+          <div class="dev-kv-label">Engine time ÷ Stockfish time</div>
+          <div style="font-size:1.1rem;color:var(--gold);font-weight:700;margin-top:4px">${c.engine_time_ratio_vs_stockfish != null ? c.engine_time_ratio_vs_stockfish + '×' : '—'}</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);margin-top:4px">&gt;1 means this engine is slower</div>
         </div>
-        <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center">
-          <div class="dev-kv-label">Time Saved</div>
-          <div style="font-size:1rem;color:var(--gold);font-weight:700;margin-top:4px">${c.time_saved_ms != null ? c.time_saved_ms + ' ms' : '—'}</div>
-        </div>
+      </div>
+      <div style="font-size:0.62rem;color:var(--text-dim);margin-bottom:12px;line-height:1.5">
+        Evaluations are shown side by side but are <strong>not directly comparable</strong>:
+        the hybrid figure is the CNN's own output, while Stockfish's is a search
+        evaluation relative to the side to move. No difference is computed.
+        Single-position timings are noisy and include Stockfish process startup.
       </div>` : ''}
       ${top3html ? `
       <div style="font-size:0.65rem;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.08em;text-transform:uppercase">Hybrid Top 3 Moves</div>
@@ -1594,10 +1597,24 @@ async function showBenchmark() {
       gap:22px;
       margin-top: 10px;
     ">
-      <img src="/static/accuracy_metrics.png" class="metric-img">
-      <img src="/static/architecture_breakdown.png" class="metric-img">
-      <img src="/static/performance_comparison.png" class="metric-img">
-      <img src="/static/training_progress.png" class="metric-img">
+      <div style="grid-column:1/-1;background:#1b1b1b;border:1px solid #3a3a3a;border-radius:8px;padding:18px 20px;line-height:1.65;color:#ccc;font-size:0.85rem">
+        <p style="margin:0 0 10px;color:#c9a84c;font-weight:700">
+          Charts removed — they were not real measurements.
+        </p>
+        <p style="margin:0 0 10px">
+          This panel previously showed four generated images. Their contents were
+          hardcoded or synthetic: the &ldquo;training curves&rdquo; were produced by an
+          exponential formula plus random noise rather than from training history,
+          and the speed comparison asserted this engine was faster than Stockfish
+          when measurement shows it is substantially slower.
+        </p>
+        <p style="margin:0">
+          Verified figures live in <code>baseline/BASELINE.md</code>. A trustworthy
+          evaluation harness has not been built yet; until it exists, no chart is
+          shown here rather than a misleading one. Use
+          <strong>&ldquo;CNN Architecture&rdquo;</strong> for live model structure.
+        </p>
+      </div>
     </div>
 
   </div>

@@ -1,0 +1,1085 @@
+{
+  "schema_version": 1,
+  "generated_by": "baseline/scripts/compare.py",
+  "position_count": 52,
+  "stockfish_depth": 8,
+  "valid_metrics": {
+    "engine_legality_rate": {
+      "value": 1.0,
+      "legal": 52,
+      "total": 52,
+      "definition": "fraction of engine moves that are legal in the position, re-checked on a fresh board from the FEN"
+    },
+    "top1_move_agreement": {
+      "value": 0.1923,
+      "agree": 10,
+      "total": 52,
+      "definition": "fraction of positions where the engine's chosen move equals Stockfish's chosen move at depth 8. Compares MOVES, so it is unit-free and POV-free."
+    },
+    "top3_containment": {
+      "value": 0.3654,
+      "hits": 19,
+      "total": 52,
+      "definition": "fraction of positions where the engine's move appears in Stockfish's MultiPV=3 list at depth 8."
+    },
+    "latency_ratio_engine_over_stockfish": {
+      "value": 121.33,
+      "engine_total_ms": 32083.4,
+      "stockfish_total_ms": 264.4,
+      "definition": "total engine wall time divided by total Stockfish wall time over the same suite. >1 means the engine is SLOWER. Same machine, same positions, sequential."
+    }
+  },
+  "chance_baseline": {
+    "note": "Agreement rates are meaningless without a chance reference. A uniform-random legal move agrees with Stockfish's top move with probability 1/legal_move_count. Positions with few legal moves (endgames) inflate agreement, so raw rates must not be compared across categories without this.",
+    "expected_top1_agreement_if_random": 0.0591,
+    "expected_top3_containment_if_random": 0.1772,
+    "by_category_expected_top1_if_random": {
+      "defensive": 0.0862,
+      "endgame": 0.1215,
+      "middlegame": 0.0284,
+      "opening": 0.0358,
+      "tactical": 0.0473
+    },
+    "mean_legal_moves": 24.87
+  },
+  "breakdowns": {
+    "by_category": {
+      "defensive": {
+        "n": 4,
+        "top1_agreement": 0.0,
+        "top3_containment": 0.5
+      },
+      "endgame": {
+        "n": 12,
+        "top1_agreement": 0.4167,
+        "top3_containment": 0.5833
+      },
+      "middlegame": {
+        "n": 12,
+        "top1_agreement": 0.1667,
+        "top3_containment": 0.25
+      },
+      "opening": {
+        "n": 18,
+        "top1_agreement": 0.1111,
+        "top3_containment": 0.3333
+      },
+      "tactical": {
+        "n": 6,
+        "top1_agreement": 0.1667,
+        "top3_containment": 0.1667
+      }
+    },
+    "by_side_to_move": {
+      "black": {
+        "n": 22,
+        "top1_agreement": 0.1364,
+        "top3_containment": 0.4091
+      },
+      "white": {
+        "n": 30,
+        "top1_agreement": 0.2333,
+        "top3_containment": 0.3333
+      }
+    }
+  },
+  "deliberately_not_computed": {
+    "average_centipawn_delta": "INVALID for this implementation. engine score is not in centipawns (tanh-squashed CNN term weighted 330.9 plus raw feature counts, engine.py:160-165), the Ridge intercept is dropped, and the POV is unstated. app.py:411 computes exactly this as 'eval_diff_cp'; that field should not be treated as a quality measure.",
+    "move_quality_regret": "The CORRECT metric, but not computed in Phase 0: it needs a second Stockfish evaluation of the post-engine-move position, which the existing repository never performs. Recommended for a later phase."
+  },
+  "caveats": [
+    "Top-1 agreement against a depth-8 reference is a weak notion of quality: many positions have several near-equal good moves, and a disagreement is not necessarily an error.",
+    "Stockfish ran with default UCI options (Threads/Hash not pinned), so the reference moves are not guaranteed bit-reproducible across runs.",
+    "The 52-position suite is a fixed comparison set, not a statistically representative sample; rates carry no confidence interval."
+  ],
+  "per_position": [
+    {
+      "id": "OP01",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "d2d4",
+      "engine_legal": true,
+      "stockfish_move": "e2e4",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "e2e4",
+        "d2d4",
+        "g1f3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 20,
+      "engine_time_ms": 1018.19,
+      "stockfish_time_ms": 18.05
+    },
+    {
+      "id": "OP02",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move": "e7e5",
+      "engine_legal": true,
+      "stockfish_move": "d7d6",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "d7d6",
+        "c7c5",
+        "e7e5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 20,
+      "engine_time_ms": 648.65,
+      "stockfish_time_ms": 8.45
+    },
+    {
+      "id": "OP03",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "d2d4",
+      "engine_legal": true,
+      "stockfish_move": "g1f3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "g1f3",
+        "b1c3",
+        "f1c4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 29,
+      "engine_time_ms": 632.89,
+      "stockfish_time_ms": 3.09
+    },
+    {
+      "id": "OP04",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "d1g4",
+      "engine_legal": true,
+      "stockfish_move": "g1f3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "g1f3",
+        "b1c3",
+        "c2c3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 30,
+      "engine_time_ms": 684.05,
+      "stockfish_time_ms": 5.6
+    },
+    {
+      "id": "OP05",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "d1h5",
+      "engine_legal": true,
+      "stockfish_move": "g1f3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "b1c3",
+        "d2d4",
+        "g1f3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 30,
+      "engine_time_ms": 617.62,
+      "stockfish_time_ms": 3.36
+    },
+    {
+      "id": "OP06",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "d1g4",
+      "engine_legal": true,
+      "stockfish_move": "d2d4",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "d2d4",
+        "g1f3",
+        "b1c3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 30,
+      "engine_time_ms": 598.32,
+      "stockfish_time_ms": 2.76
+    },
+    {
+      "id": "OP07",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move": "c8g4",
+      "engine_legal": true,
+      "stockfish_move": "e7e6",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e7e6",
+        "d5c4",
+        "g8f6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 28,
+      "engine_time_ms": 722.45,
+      "stockfish_time_ms": 5.76
+    },
+    {
+      "id": "OP08",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "c4d5",
+      "engine_legal": true,
+      "stockfish_move": "e2e3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "g1f3",
+        "e2e3",
+        "b1c3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 30,
+      "engine_time_ms": 846.28,
+      "stockfish_time_ms": 4.07
+    },
+    {
+      "id": "OP09",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "f3e5",
+      "engine_legal": true,
+      "stockfish_move": "f3e5",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "f3e5",
+        "d2d4",
+        "b1c3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 27,
+      "engine_time_ms": 665.34,
+      "stockfish_time_ms": 2.87
+    },
+    {
+      "id": "OP10",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move": "c6d4",
+      "engine_legal": true,
+      "stockfish_move": "g8f6",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "g8e7",
+        "g8f6",
+        "f8c5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 30,
+      "engine_time_ms": 1004.9,
+      "stockfish_time_ms": 6.3
+    },
+    {
+      "id": "OP11",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "f3e5",
+      "engine_legal": true,
+      "stockfish_move": "d2d4",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "d2d4",
+        "d1e2",
+        "d2d3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 33,
+      "engine_time_ms": 750.33,
+      "stockfish_time_ms": 4.48
+    },
+    {
+      "id": "OP12",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "f3e5",
+      "engine_legal": true,
+      "stockfish_move": "b1d2",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "c2c3",
+        "b1c3",
+        "b1d2"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 38,
+      "engine_time_ms": 850.65,
+      "stockfish_time_ms": 15.39
+    },
+    {
+      "id": "OP13",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "e2e4",
+      "engine_legal": true,
+      "stockfish_move": "e2e4",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "e2e4",
+        "g1f3",
+        "a2a4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 33,
+      "engine_time_ms": 629.29,
+      "stockfish_time_ms": 7.49
+    },
+    {
+      "id": "OP14",
+      "category": "opening",
+      "side_to_move": "white",
+      "engine_move": "c4c5",
+      "engine_legal": true,
+      "stockfish_move": "g1f3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "c1d2",
+        "e2e3",
+        "g1f3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 27,
+      "engine_time_ms": 643.17,
+      "stockfish_time_ms": 9.94
+    },
+    {
+      "id": "OP15",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move": "b8c6",
+      "engine_legal": true,
+      "stockfish_move": "g8f6",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "f8b4",
+        "g8f6",
+        "b8c6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 30,
+      "engine_time_ms": 615.37,
+      "stockfish_time_ms": 6.49
+    },
+    {
+      "id": "OP16",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move": "d7d5",
+      "engine_legal": true,
+      "stockfish_move": "e7e6",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e7e6",
+        "d7d6",
+        "g7g6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 22,
+      "engine_time_ms": 610.56,
+      "stockfish_time_ms": 2.33
+    },
+    {
+      "id": "OP17",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move": "e7e5",
+      "engine_legal": true,
+      "stockfish_move": "d8d5",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "g8f6",
+        "d8d5",
+        "g7g6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 28,
+      "engine_time_ms": 717.35,
+      "stockfish_time_ms": 3.27
+    },
+    {
+      "id": "OP18",
+      "category": "opening",
+      "side_to_move": "black",
+      "engine_move": "c6d4",
+      "engine_legal": true,
+      "stockfish_move": "e5d4",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "e5d4",
+        "d7d6",
+        "c6d4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 32,
+      "engine_time_ms": 867.26,
+      "stockfish_time_ms": 3.94
+    },
+    {
+      "id": "MG01",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "b3d5",
+      "engine_legal": true,
+      "stockfish_move": "h2h3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "h2h3",
+        "a2a4",
+        "d2d3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 27,
+      "engine_time_ms": 670.58,
+      "stockfish_time_ms": 5.14
+    },
+    {
+      "id": "MG02",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "d1d6",
+      "engine_legal": true,
+      "stockfish_move": "d1d2",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "d1d2",
+        "f1e2",
+        "b3d2"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 48,
+      "engine_time_ms": 915.62,
+      "stockfish_time_ms": 12.65
+    },
+    {
+      "id": "MG03",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "h4f6",
+      "engine_legal": true,
+      "stockfish_move": "a1c1",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "f1d3",
+        "d1c2",
+        "c4d5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 38,
+      "engine_time_ms": 807.72,
+      "stockfish_time_ms": 4.44
+    },
+    {
+      "id": "MG04",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "f1d3",
+      "engine_legal": true,
+      "stockfish_move": "d1g4",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "d1g4",
+        "g1f3",
+        "f1d3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 33,
+      "engine_time_ms": 745.66,
+      "stockfish_time_ms": 5.69
+    },
+    {
+      "id": "MG05",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "f3e5",
+      "engine_legal": true,
+      "stockfish_move": "a2a4",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "d3d4",
+        "h2h3",
+        "b2b4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 37,
+      "engine_time_ms": 941.53,
+      "stockfish_time_ms": 18.0
+    },
+    {
+      "id": "MG06",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "f3e5",
+      "engine_legal": true,
+      "stockfish_move": "a1b1",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "f3d2",
+        "d1c2",
+        "e2d3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 37,
+      "engine_time_ms": 660.63,
+      "stockfish_time_ms": 15.51
+    },
+    {
+      "id": "MG07",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "f3e5",
+      "engine_legal": true,
+      "stockfish_move": "c1f4",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "c1f4",
+        "f1c4",
+        "f1d3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 36,
+      "engine_time_ms": 758.15,
+      "stockfish_time_ms": 11.24
+    },
+    {
+      "id": "MG08",
+      "category": "middlegame",
+      "side_to_move": "white",
+      "engine_move": "d1d8",
+      "engine_legal": true,
+      "stockfish_move": "d1d8",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "d1d8",
+        "c4d3",
+        "b1c3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 40,
+      "engine_time_ms": 979.63,
+      "stockfish_time_ms": 3.23
+    },
+    {
+      "id": "MG09",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move": "f6e4",
+      "engine_legal": true,
+      "stockfish_move": "d6d5",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "c6a5",
+        "d6d5",
+        "a6a5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 30,
+      "engine_time_ms": 679.17,
+      "stockfish_time_ms": 3.41
+    },
+    {
+      "id": "MG10",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move": "f6e4",
+      "engine_legal": true,
+      "stockfish_move": "c8e6",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "c8e6",
+        "e8g8",
+        "b8c6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 32,
+      "engine_time_ms": 1112.25,
+      "stockfish_time_ms": 2.33
+    },
+    {
+      "id": "MG11",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move": "e6d5",
+      "engine_legal": true,
+      "stockfish_move": "e6d5",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "f6d5",
+        "e6d5",
+        "g7g5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 34,
+      "engine_time_ms": 1015.67,
+      "stockfish_time_ms": 3.52
+    },
+    {
+      "id": "MG12",
+      "category": "middlegame",
+      "side_to_move": "black",
+      "engine_move": "f6e4",
+      "engine_legal": true,
+      "stockfish_move": "f6g4",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "f6g4",
+        "c5a7",
+        "h7h6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 39,
+      "engine_time_ms": 877.58,
+      "stockfish_time_ms": 2.21
+    },
+    {
+      "id": "EG01",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move": "e3d3",
+      "engine_legal": true,
+      "stockfish_move": "e3d3",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "e3d3",
+        "e3f3",
+        "e3d2"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 4,
+      "engine_time_ms": 293.8,
+      "stockfish_time_ms": 12.84
+    },
+    {
+      "id": "EG02",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move": "e5d5",
+      "engine_legal": true,
+      "stockfish_move": "e5d6",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e5e6",
+        "e5f6",
+        "e5d6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 5,
+      "engine_time_ms": 260.81,
+      "stockfish_time_ms": 3.09
+    },
+    {
+      "id": "EG03",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move": "e3d3",
+      "engine_legal": true,
+      "stockfish_move": "e3d2",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e3f2",
+        "e3e4",
+        "e3f4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 16,
+      "engine_time_ms": 294.15,
+      "stockfish_time_ms": 2.36
+    },
+    {
+      "id": "EG04",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move": "e6f7",
+      "engine_legal": true,
+      "stockfish_move": "e6e5",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e6e5",
+        "e6d5",
+        "e6f6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 8,
+      "engine_time_ms": 337.68,
+      "stockfish_time_ms": 2.6
+    },
+    {
+      "id": "EG05",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move": "g2h1",
+      "engine_legal": true,
+      "stockfish_move": "g2h1",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "g2h1",
+        "a1h1",
+        "a1a4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 19,
+      "engine_time_ms": 422.13,
+      "stockfish_time_ms": 2.15
+    },
+    {
+      "id": "EG06",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move": "h2g1",
+      "engine_legal": true,
+      "stockfish_move": "h2g3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "h2g3",
+        "h2h3",
+        "g2g4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 8,
+      "engine_time_ms": 265.48,
+      "stockfish_time_ms": 3.52
+    },
+    {
+      "id": "EG07",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move": "g7h7",
+      "engine_legal": true,
+      "stockfish_move": "g7h6",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "g7h7",
+        "g7g6",
+        "f7f6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 6,
+      "engine_time_ms": 277.29,
+      "stockfish_time_ms": 3.71
+    },
+    {
+      "id": "EG08",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move": "f3g1",
+      "engine_legal": true,
+      "stockfish_move": "f3g1",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "e2f1",
+        "f3g1",
+        "g2g3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 16,
+      "engine_time_ms": 394.24,
+      "stockfish_time_ms": 4.21
+    },
+    {
+      "id": "EG09",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move": "e6e5",
+      "engine_legal": true,
+      "stockfish_move": "e6f5",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "e6e5",
+        "e6e7",
+        "e6f5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 5,
+      "engine_time_ms": 330.74,
+      "stockfish_time_ms": 1.98
+    },
+    {
+      "id": "EG10",
+      "category": "endgame",
+      "side_to_move": "white",
+      "engine_move": "g2h1",
+      "engine_legal": true,
+      "stockfish_move": "g2h1",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "g2h1",
+        "a1h1",
+        "a1f1"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 22,
+      "engine_time_ms": 410.72,
+      "stockfish_time_ms": 1.88
+    },
+    {
+      "id": "EG11",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move": "h1a1",
+      "engine_legal": true,
+      "stockfish_move": "h1a1",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "h1a1",
+        "h1h8",
+        "h1h7"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 23,
+      "engine_time_ms": 432.49,
+      "stockfish_time_ms": 3.42
+    },
+    {
+      "id": "EG12",
+      "category": "endgame",
+      "side_to_move": "black",
+      "engine_move": "e6f7",
+      "engine_legal": true,
+      "stockfish_move": "e6f5",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e6d5",
+        "e6f5",
+        "e6e5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 8,
+      "engine_time_ms": 275.69,
+      "stockfish_time_ms": 1.66
+    },
+    {
+      "id": "TC01",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move": "a1a4",
+      "engine_legal": true,
+      "stockfish_move": "a1a8",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "a1a8",
+        "a1f1",
+        "a1a5"
+      ],
+      "stockfish_is_mate_score": true,
+      "legal_move_count": 17,
+      "engine_time_ms": 257.08,
+      "stockfish_time_ms": 1.4
+    },
+    {
+      "id": "TC02",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move": "a8a5",
+      "engine_legal": true,
+      "stockfish_move": "a8a1",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "a8a1",
+        "a8a4",
+        "a8d8"
+      ],
+      "stockfish_is_mate_score": true,
+      "legal_move_count": 17,
+      "engine_time_ms": 403.89,
+      "stockfish_time_ms": 0.98
+    },
+    {
+      "id": "TC03",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move": "f8b4",
+      "engine_legal": true,
+      "stockfish_move": "g8f6",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "g8f6",
+        "d8f6",
+        "f7f5"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 31,
+      "engine_time_ms": 937.39,
+      "stockfish_time_ms": 2.24
+    },
+    {
+      "id": "TC04",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move": "e5f7",
+      "engine_legal": true,
+      "stockfish_move": "e5f3",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e5d3",
+        "e5f3",
+        "f2f4"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 16,
+      "engine_time_ms": 427.82,
+      "stockfish_time_ms": 1.56
+    },
+    {
+      "id": "TC05",
+      "category": "tactical",
+      "side_to_move": "white",
+      "engine_move": "b1f5",
+      "engine_legal": true,
+      "stockfish_move": "b1b8",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "b1b8",
+        "f2f3",
+        "h2h3"
+      ],
+      "stockfish_is_mate_score": true,
+      "legal_move_count": 27,
+      "engine_time_ms": 367.15,
+      "stockfish_time_ms": 1.19
+    },
+    {
+      "id": "TC06",
+      "category": "tactical",
+      "side_to_move": "black",
+      "engine_move": "f6e4",
+      "engine_legal": true,
+      "stockfish_move": "f6e4",
+      "top1_agree": true,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "f6e4",
+        "f8c5",
+        "d7d6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 29,
+      "engine_time_ms": 662.17,
+      "stockfish_time_ms": 3.16
+    },
+    {
+      "id": "DF01",
+      "category": "defensive",
+      "side_to_move": "black",
+      "engine_move": "g8h8",
+      "engine_legal": true,
+      "stockfish_move": "h7h6",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "g7g6",
+        "g7g5",
+        "h7h6"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 8,
+      "engine_time_ms": 325.92,
+      "stockfish_time_ms": 1.72
+    },
+    {
+      "id": "DF02",
+      "category": "defensive",
+      "side_to_move": "white",
+      "engine_move": "h2h3",
+      "engine_legal": true,
+      "stockfish_move": "h2h4",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "h2h3",
+        "g2g3",
+        "f2f3"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 7,
+      "engine_time_ms": 322.4,
+      "stockfish_time_ms": 1.52
+    },
+    {
+      "id": "DF03",
+      "category": "defensive",
+      "side_to_move": "black",
+      "engine_move": "d7d5",
+      "engine_legal": true,
+      "stockfish_move": "d8h4",
+      "top1_agree": false,
+      "in_stockfish_top3": true,
+      "stockfish_top3": [
+        "d8h4",
+        "h7h5",
+        "d7d5"
+      ],
+      "stockfish_is_mate_score": true,
+      "legal_move_count": 30,
+      "engine_time_ms": 531.46,
+      "stockfish_time_ms": 1.16
+    },
+    {
+      "id": "DF04",
+      "category": "defensive",
+      "side_to_move": "white",
+      "engine_move": "e1g1",
+      "engine_legal": true,
+      "stockfish_move": "e1c1",
+      "top1_agree": false,
+      "in_stockfish_top3": false,
+      "stockfish_top3": [
+        "e1c1",
+        "a1d1",
+        "e1e2"
+      ],
+      "stockfish_is_mate_score": false,
+      "legal_move_count": 23,
+      "engine_time_ms": 566.05,
+      "stockfish_time_ms": 5.07
+    }
+  ]
+}

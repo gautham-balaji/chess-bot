@@ -103,7 +103,9 @@ def board_to_planes(board):
 
 ### 2. CNN Position Evaluator
 
-A **Convolutional Neural Network** is trained to predict Stockfish centipawn evaluations directly from the board tensor. Stockfish (depth 8) was used to label ~50,000 positions sampled from real games in the dataset.
+A **Convolutional Neural Network** is trained to predict Stockfish centipawn evaluations directly from the board tensor. Stockfish (depth 8) was used to label **10,000 positions** sampled from real games in the dataset.
+
+> **Training distribution matters here.** Every training position was taken at **exactly ply 20** (after 10 full moves), so the model saw no endgames and no late middlegames. Labels were clipped to ±1500 cp. Source: `chess_model_FINAL.ipynb` cell 14 (`df.sample(10000, random_state=42)`, retained output `Collected: 10000 valid positions`).
 
 **Architecture:**
 
@@ -119,9 +121,12 @@ Input: (8, 8, 12)
 
 The CNN learns spatial patterns across the board — which piece configurations tend to be good or bad — without any hand-crafted rules. It outputs a raw centipawn score for any position.
 
-**Performance against Stockfish:**
-- Pearson correlation: **0.506** on a held-out test set of 50 positions
-- The CNN agrees with Stockfish on the best move in starting-position tests (both recommend `e2e4`)
+**How well does the CNN fit its training target?**
+- Pearson correlation **0.708** between CNN output and Stockfish depth-8 centipawn labels, on the held-out 20% split (**~2,000 positions**). Source: `chess_model_FINAL.ipynb` cell 16, retained output.
+
+This measures how closely the CNN reproduces its *training labels* on positions drawn from the same ply-20 distribution. **It is not a measure of playing strength**, and it does not generalise to endgames, which the model never saw.
+
+For how the full engine compares to Stockfish on move selection, see [Measured Performance](#measured-performance) below.
 
 ---
 
@@ -311,35 +316,45 @@ The Ridge weight model also contributes to interpretability: its learned coeffic
 
 ```
 chess-bot/
-├── app.py                    # Flask server — routes, game state, saliency
-├── engine.py                 # ML pipeline — evaluation, reranking, explanations
-├── chess_model_FINAL.ipynb   # Training notebook — full pipeline with outputs
-├── requirements.txt          # Python dependencies
-├── games.csv                 # Lichess game dataset used for training
+├── app.py                      # Flask server — routes, game state, saliency
+├── engine.py                   # ML pipeline — evaluation, reranking, explanations
+├── config.py                   # Repo-relative paths + Stockfish resolution
+├── chess_model_FINAL.ipynb     # Training notebook — full pipeline with outputs
+├── requirements.txt            # Runtime dependencies (pinned)
+├── requirements-notebook.txt   # Extra deps for re-running the notebook
+├── .env.example                # Template for machine-specific config
 │
-├── models/                   # Serialised model files
-│   ├── cnn_model.keras        # Trained CNN evaluator
-│   ├── rf_model.pkl           # Random Forest space-control predictor
-│   ├── mlp_model.pkl          # MLP game-outcome classifier
-│   ├── scaler.pkl             # StandardScaler for MLP features
-│   └── weight_model.pkl       # Ridge regression weight model
+├── models/
+│   ├── cnn_model.keras          # CNN evaluator            (loaded at runtime)
+│   ├── weight_model.pkl         # Ridge fusion weights     (loaded at runtime)
+│   ├── rf_model.pkl             # training artifact — not loaded at runtime
+│   ├── mlp_model.pkl            # training artifact — not loaded at runtime
+│   └── scaler.pkl               # training artifact — not loaded at runtime
 │
-├── templates/
-│   └── index.html            # Single-page frontend (vanilla JS, no framework)
+├── templates/index.html        # Single-page frontend (vanilla JS, no framework)
+├── static/                     # logo.png, titlelogo.png
 │
-└── static/
-    ├── logo.png
-    └── titlelogo.png
+├── docs/
+│   ├── REPRODUCIBILITY.md       # Setup, environment, known limitations
+│   └── PHASE_1_REPORT.md        # What the integrity pass changed
+│
+├── baseline/                   # Measured "before" reference (BASELINE.md + JSON)
+├── verification/               # Behaviour-preservation checks
+└── archive/                    # Preserved invalid benchmark artifacts + why
 ```
+
+> `games.csv` is gitignored and not distributed. `venv/` is gitignored.
 
 
 ## Installation & Local Setup
 
+> Full setup, environment variables and known limitations: **[`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md)**.
+
 ### Prerequisites
 
-- Python 3.10 or higher
+- **Python 3.12** (verified on 3.12.10). The dependency set is pinned to this version; older pins in earlier revisions of this file were incorrect
 - `pip`
-- Stockfish binary (only needed to re-run training — not required to play)
+- Stockfish binary — **optional**. Gameplay never calls Stockfish; it is used only by `/benchmark` and to re-run training
 
 ### Steps
 
@@ -368,25 +383,43 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-**4. Add model files**
+**4. Model files**
 
-Place all five model files into a `models/` folder at the project root (generate via notebook or download from Releases):
+The models are committed to this repository under `models/`. Only **two** are needed at
+runtime:
 
 ```
-models/cnn_model.keras
-models/rf_model.pkl
-models/mlp_model.pkl
-models/scaler.pkl
-models/weight_model.pkl
+models/cnn_model.keras     # CNN position evaluator          (required)
+models/weight_model.pkl    # Ridge fusion weights            (required)
+
+models/rf_model.pkl        # training artifact - NOT loaded at runtime
+models/mlp_model.pkl       # training artifact - NOT loaded at runtime
+models/scaler.pkl          # training artifact - NOT loaded at runtime
 ```
 
-**5. Run the server**
+Model paths resolve relative to the repository, not to your shell's working directory,
+so the app can be started from anywhere.
+
+**5. (Optional) Configure Stockfish**
+
+Only needed for `/benchmark`.
+
+```bash
+cp .env.example .env
+# then set STOCKFISH_PATH in .env
+```
+
+If unset, the app looks for `stockfish` on `PATH`, then common install locations. When it
+cannot be found, `/benchmark` returns `{"stockfish": {"available": false, ...}}` and
+everything else works normally.
+
+**6. Run the server**
 
 ```bash
 python app.py
 ```
 
-**6. Open in browser**
+**7. Open in browser**
 
 ```
 http://127.0.0.1:5000
@@ -410,6 +443,16 @@ All endpoints are served by Flask on port 5000.
 | `POST` | `/forfeit` | Player resigns |
 | `POST` | `/game_stats` | Returns post-game stats + saliency map |
 | `POST` | `/reset` | Reset board to starting position |
+| `POST` | `/benchmark` | Compare engine vs Stockfish on the current position (requires Stockfish; degrades gracefully) |
+| `GET` | `/model_info` | Live CNN architecture, layer shapes and parameter counts |
+
+> **State model:** the server keeps a **single game in module-level globals**, so all
+> clients share one board and requests are order-dependent. This is a known limitation,
+> not a design feature.
+
+> **Known API quirk:** a `POST /move` with a non-JSON body returns **415 with an HTML
+> body**, unlike every other error path which returns `{"error": ...}` as JSON. Confirmed
+> in [`baseline/api_results.json`](baseline/api_results.json); not yet fixed.
 
 **Example — make a move:**
 
@@ -449,17 +492,65 @@ curl -X POST http://127.0.0.1:5000/move \
 
 ---
 
-## Model Performance
+## Measured Performance
 
-| Model | Task | Metric | Value |
-|---|---|---|---|
-| CNN | Centipawn evaluation | Pearson r vs Stockfish | **0.506** |
-| CNN | Best move (starting pos) | Agreement with Stockfish | ✅ (`e2e4`) |
-| Random Forest | Space control prediction (move 20) | — | 500 trees, depth 12 |
-| MLP | Game outcome classification | — | 256→128→64 hidden layers |
-| Ridge | Hybrid weight fitting | Fitted on Stockfish CP targets | 5-feature linear model |
+All figures below come from a reproducible measurement run. Method, raw data and
+caveats: [`baseline/BASELINE.md`](baseline/BASELINE.md).
 
-The CNN's 0.506 correlation with Stockfish is meaningful for a lightweight model trained without tree search. Stockfish uses alpha-beta search to depth 20+ with hand-tuned evaluation; this engine replaces search depth with pattern recognition and principled heuristics while staying interpretable.
+**Reference:** Stockfish 17.1 at depth 8 (Threads=1, Hash=16).
+**Suite:** 52 fixed FEN positions ([`baseline/fens.json`](baseline/fens.json)) spanning
+opening / middlegame / endgame / tactical / defensive, 30 White to move and 22 Black to move.
+
+### Engine vs Stockfish — move selection
+
+| Metric | Value | Random-move baseline |
+|---|---:|---:|
+| Legal move returned | **52 / 52 (100%)** | — |
+| Top-1 move agreement | **19.2%** (10/52) | 5.9% |
+| Engine move in Stockfish's top 3 | **36.5%** (19/52) | 17.7% |
+| Determinism (2 passes, same process) | **52 / 52 identical** | — |
+
+Top-1 agreement is roughly **3.3× better than picking a legal move at random**, so the
+engine is clearly doing something. It is *not* an accuracy score: chess positions often
+have several near-equal good moves, and disagreeing with Stockfish is not automatically
+an error. These rates describe **this 52-position suite** — it is a fixed comparison set,
+not a statistically representative sample, and no confidence intervals are implied.
+
+### Speed
+
+| | Mean | Median | p95 |
+|---|---:|---:|---:|
+| This engine | 617 ms | 638 ms | 1,005 ms |
+| Stockfish (depth 8) | 5.1 ms | 3.4 ms | 15.4 ms |
+
+**This engine is roughly 121× slower than Stockfish at depth 8** on identical positions
+and hardware. Earlier versions of this README and its charts claimed the opposite; that
+claim was never measured and has been removed. The engine runs ~400 CNN forward passes
+per move in Python (batched candidate evaluation plus a 1-ply reply scan), against
+optimised C++ with alpha-beta pruning.
+
+### Component models
+
+| Model | Task | What is actually known |
+|---|---|---|
+| CNN | Centipawn evaluation | Pearson **r = 0.708** vs depth-8 labels on a ~2,000-position holdout (notebook cell 16). Label fit, not playing strength |
+| Ridge | Fuses CNN + 4 heuristics | 5-feature linear model fitted on Stockfish CP targets. Learned weights `[330.9, 32.4, 0.79, 5.17, 0.019]` |
+| Random Forest | Space-control prediction at move 20 | R² **0.5146**, RMSE **5.03** (notebook cell 6). **Not used by the engine at runtime** |
+| MLP | Game-outcome classification | Accuracy **0.7228** (notebook cell 8); never predicts the draw class (f1 = 0.00). **Not used by the engine at runtime** |
+
+> **What is not yet measured.** There is no move-quality (centipawn-loss) metric, no MAE,
+> no Elo estimate, and no playing-strength result. Building a proper evaluation harness is
+> planned work. Until it exists, this README does not report those numbers.
+
+### A note on the Ridge weights
+
+The learned coefficient on the CNN term is **330.9**, while a full pawn of material is
+worth **32.4**. The hand-crafted move bonuses elsewhere in the engine are worth 0.2–0.5,
+against observed score ranges of roughly 55–240. In other words the Ridge layer learned
+that **the CNN dominates**, and the hand-written heuristics contribute well under 1% of
+the final score. The explanations the UI shows are therefore best understood as
+*post-hoc rationalisation of a neural decision*, not a description of the scoring
+function.
 
 ---
 
@@ -469,7 +560,9 @@ The CNN's 0.506 correlation with Stockfish is meaningful for a lightweight model
 
 The dataset contains real online chess games with player ratings, move sequences in SAN notation, and game outcomes. Features were extracted at move 10, 15, and 20 for each game to study how early positional factors predict late-game outcomes.
 
-Stockfish (depth 8) was used to generate centipawn labels for ~50,000 board positions sampled from this dataset for CNN training.
+Stockfish (depth 8) was used to generate centipawn labels for **10,000** board positions sampled from this dataset for CNN training, each taken at ply 20.
+
+> `games.csv` is **not distributed with this repository** (it is gitignored). The training notebook therefore cannot be re-run from a clean clone without obtaining the dataset separately. See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md).
 
 ---
 
