@@ -55,12 +55,17 @@ from pathlib import Path
 import numpy as np
 
 CP_CLIP_LEGACY = 1500
+# Mirrors training/labels.py, for use in the A1 policy summary text only.
+MATE_BASE = 2000
+MATE_STEP = 10
+MATE_MAX_D = 49
 DEFAULT_SPLIT_SEED = 42
 DEFAULT_TEST_FRACTION = 0.2
 
 LABEL_POLICY_LEGACY = "legacy_notebook"
+LABEL_POLICY_CORRECTED_MATE = "corrected_mate_legacy_perspective"
 LABEL_POLICY_C6PREP = "c6prep"
-LABEL_POLICIES = (LABEL_POLICY_LEGACY, LABEL_POLICY_C6PREP)
+LABEL_POLICIES = (LABEL_POLICY_LEGACY, LABEL_POLICY_CORRECTED_MATE, LABEL_POLICY_C6PREP)
 
 
 # ============================================================ loading
@@ -112,11 +117,45 @@ def legacy_notebook_label(raw_value: int, clip: int = CP_CLIP_LEGACY) -> int:
     return int(np.clip(int(raw_value), -clip, clip))
 
 
+def corrected_mate_legacy_perspective_label(raw_value: int, eval_type: str,
+                                            clip: int = CP_CLIP_LEGACY) -> int:
+    """A1: the C6-Prep mate mapping, with the LEGACY side-to-move perspective.
+
+    Isolates exactly one change from A0 - how mate scores are represented:
+
+        cp   : clip(raw_stm_value, +/-1500)        IDENTICAL to A0
+        mate : the repaired magnitude scale        CHANGED from A0
+
+    The mate value reuses `labels.mate_to_white_positive(d, side_to_move_is_white=True)`
+    rather than reimplementing anything. That call is exact here, not a hack: when
+    the side to move IS White, "White-positive" and "side-to-move-relative" are the
+    same frame by definition, so passing True yields the stm-relative signed
+    magnitude. Sign semantics, verified:
+
+        d > 0  -> side to move delivers mate      -> +magnitude
+        d < 0  -> side to move gets mated         -> -magnitude
+        d == 0 -> side to move is checkmated      -> -magnitude  (C6-Prep policy)
+
+    NO perspective normalisation is applied. Black-to-move labels keep the legacy
+    sign, exactly as in A0. Flipping them to White-positive is A2, and a test
+    asserts A1 and A2 are distinguishable.
+    """
+    from training import labels as _labels
+
+    if eval_type == _labels.EVAL_TYPE_MATE:
+        return _labels.mate_to_white_positive(raw_value, side_to_move_is_white=True)
+    return _labels.clip_cp(raw_value, clip)
+
+
 def apply_label_policy(records: list[dict], policy: str) -> np.ndarray:
     """Derive the label vector for an arm. Never mutates `records`."""
     if policy == LABEL_POLICY_LEGACY:
         return np.array([legacy_notebook_label(r["raw_stockfish_value"])
                          for r in records], dtype=np.float32)
+    if policy == LABEL_POLICY_CORRECTED_MATE:
+        return np.array([corrected_mate_legacy_perspective_label(
+            r["raw_stockfish_value"], r["eval_type"]) for r in records],
+            dtype=np.float32)
     if policy == LABEL_POLICY_C6PREP:
         return np.array([r["label"] for r in records], dtype=np.float32)
     raise ValueError(f"unknown label policy {policy!r}; expected one of {LABEL_POLICIES}")
@@ -138,6 +177,30 @@ def label_policy_summary(policy: str) -> dict:
                     "historical labels themselves are unrecoverable (unknown "
                     "Stockfish version, order-dependent, never persisted).",
         }
+    if policy == LABEL_POLICY_CORRECTED_MATE:
+        return {
+            "name": LABEL_POLICY_CORRECTED_MATE,
+            "perspective": "side_to_move (UNCHANGED from A0 - NOT normalised to White)",
+            "mate_handling": (
+                f"repaired: magnitude = {MATE_BASE} - {MATE_STEP} * "
+                f"min(|d|, {MATE_MAX_D}), signed relative to the side to move; "
+                f"mate == 0 means the side to move is checkmated (negative)"
+            ),
+            "clip": [-CP_CLIP_LEGACY, CP_CLIP_LEGACY],
+            "clip_applies_to": "cp labels only; mate labels are never clipped",
+            "derivation": (
+                "cp -> clip(raw_stockfish_value, +/-1500) [identical to A0]; "
+                "mate -> labels.mate_to_white_positive(d, side_to_move_is_white=True)"
+            ),
+            "changed_from_a0": "mate-label representation ONLY",
+            "unchanged_from_a0": [
+                "perspective / sign convention", "cp label values",
+                "clip bounds", "representation (12 planes)",
+            ],
+            "is_control_arm": False,
+            "applies_perspective_normalisation": False,
+            "reproduces_historical_labels": False,
+        }
     if policy == LABEL_POLICY_C6PREP:
         return {
             "name": LABEL_POLICY_C6PREP,
@@ -146,7 +209,9 @@ def label_policy_summary(policy: str) -> dict:
             "clip": [-CP_CLIP_LEGACY, CP_CLIP_LEGACY],
             "clip_applies_to": "cp labels only",
             "derivation": "the stored `label` field",
+            "changed_from_a0": "mate representation AND perspective normalisation",
             "is_control_arm": False,
+            "applies_perspective_normalisation": True,
             "reproduces_historical_labels": False,
         }
     raise ValueError(f"unknown label policy {policy!r}")

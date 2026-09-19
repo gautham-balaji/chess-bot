@@ -85,6 +85,14 @@ ARMS = {
         "representation": "planes12",
         "description": "control / noise floor: pre-C6 label policy, 12 planes",
     },
+    "A1": {
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE,
+        "representation": "planes12",
+        "description": (
+            "mate-label correction only: repaired mate scale, LEGACY "
+            "side-to-move perspective retained, 12 planes"
+        ),
+    },
 }
 
 

@@ -32,10 +32,6 @@ def test_a0_does_not_use_the_c6prep_label_policy():
     assert T.ARMS["A0"]["label_policy"] != D.LABEL_POLICY_C6PREP
 
 
-def test_only_a0_is_implemented_so_far():
-    assert sorted(T.ARMS) == ["A0"]
-
-
 def test_hyperparameters_match_the_documented_original_pipeline():
     hp = T.HP
     assert hp["loss"] == "huber"
@@ -194,3 +190,30 @@ def test_determinism_config_reports_what_it_seeded():
 
 def test_determinism_config_is_json_serialisable():
     json.dumps(T.configure_determinism(1, op_determinism=False))
+
+
+# ==================================================================== A1 arm
+
+def test_a1_is_registered_with_the_corrected_mate_policy():
+    spec = T.ARMS["A1"]
+    assert spec["label_policy"] == D.LABEL_POLICY_CORRECTED_MATE
+    assert spec["representation"] == "planes12", "A1 must stay 12-plane"
+
+
+def test_a1_does_not_use_the_a2_perspective_policy():
+    assert T.ARMS["A1"]["label_policy"] != D.LABEL_POLICY_C6PREP
+
+
+def test_a0_still_selects_legacy_labels():
+    """A1's addition must not have disturbed the control arm."""
+    assert T.ARMS["A0"]["label_policy"] == D.LABEL_POLICY_LEGACY
+
+
+def test_a0_and_a1_differ_only_in_label_policy():
+    a0, a1 = T.ARMS["A0"], T.ARMS["A1"]
+    assert a0["representation"] == a1["representation"]
+    assert a0["label_policy"] != a1["label_policy"]
+
+
+def test_a2_is_not_implemented_yet():
+    assert sorted(T.ARMS) == ["A0", "A1"]
