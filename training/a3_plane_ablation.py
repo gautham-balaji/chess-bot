@@ -78,6 +78,9 @@ GROUPS_BY_REPRESENTATION = {
     "planes16p": {
         "placebo_constants": [12, 13, 14, 15],
     },
+    "planes16r": {
+        "placebo_hash_bits": [12, 13, 14, 15],
+    },
 }
 
 # Kept for backwards compatibility with the A3 report's documented behaviour.
@@ -186,7 +189,8 @@ def main(argv=None) -> int:
 
     if out["summary"]:
         total_key = next(k for k in ("all_six_added", "all_four_added",
-                                     "castling", "placebo_constants")
+                                     "castling", "placebo_constants",
+                                     "placebo_hash_bits")
                          if k in out["summary"])
         used = out["summary"][total_key]["mean"]
         out["model_uses_added_planes"] = bool(used > 1.0)

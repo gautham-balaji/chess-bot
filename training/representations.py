@@ -14,21 +14,26 @@ encoder module exposes the same surface:
 `planes16` is planes12 plus the four castling-right planes only, used by A13.
 `planes16p` is planes12 plus four information-free constant planes, the A13P
 control: same shape and parameter count as planes16, no chess content.
+`planes16r` is planes12 plus four hash-derived planes that vary across positions,
+the A13R control that repairs A13P's BatchNorm flat-direction flaw.
 """
 from __future__ import annotations
 
 from training import representation as _planes12
 from training import representation16 as _planes16
 from training import representation16p as _planes16p
+from training import representation16r as _planes16r
 from training import representation18 as _planes18
 
 PLANES12 = "planes12"
 PLANES16 = "planes16"
 PLANES16P = "planes16p"
+PLANES16R = "planes16r"
 PLANES18 = "planes18"
 
 REGISTRY = {PLANES12: _planes12, PLANES16: _planes16,
-            PLANES16P: _planes16p, PLANES18: _planes18}
+            PLANES16P: _planes16p, PLANES16R: _planes16r,
+            PLANES18: _planes18}
 NAMES = tuple(REGISTRY)
 
 

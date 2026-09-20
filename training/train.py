@@ -112,6 +112,16 @@ ARMS = {
             "en passant). Differs from A2 ONLY in representation"
         ),
     },
+    "A13R": {
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+        "representation": "planes16r",
+        "description": (
+            "variation-matched placebo control for A13: same 16-channel shape "
+            "and parameter count, four added planes that are spatially constant "
+            "per board and vary across boards like A13's castling planes, but "
+            "derived from a hash of the FEN and carrying no chess information"
+        ),
+    },
     "A13P": {
         "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
         "representation": "planes16p",
