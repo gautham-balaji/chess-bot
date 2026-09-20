@@ -112,6 +112,16 @@ ARMS = {
             "en passant). Differs from A2 ONLY in representation"
         ),
     },
+    "A13P": {
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+        "representation": "planes16p",
+        "description": (
+            "placebo control for A13: same 16-channel shape and parameter "
+            "count, but the four added planes are fixed constants carrying no "
+            "chess information. Differs from A13 ONLY in what those four "
+            "channels contain"
+        ),
+    },
     "A13": {
         "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
         "representation": "planes16",

@@ -205,7 +205,7 @@ def test_encode_many_stacks_in_order():
 
 def test_a3_is_the_only_eighteen_plane_arm():
     from training import train as T
-    assert sorted(T.ARMS) == ["A0", "A1", "A13", "A2", "A3"]
+    assert sorted(T.ARMS) == ["A0", "A1", "A13", "A13P", "A2", "A3"]
     assert T.ARMS["A3"]["representation"] == "planes18"
     for arm in ("A0", "A1", "A2"):
         assert T.ARMS[arm]["representation"] == "planes12"

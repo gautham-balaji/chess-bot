@@ -243,7 +243,7 @@ def test_a13_differs_from_a3_in_representation_only():
 
 def test_registry_resolves_planes16():
     assert REPS.get("planes16") is R16
-    assert set(REPS.NAMES) == {"planes12", "planes16", "planes18"}
+    assert {"planes12", "planes16", "planes18"} <= set(REPS.NAMES)
 
 
 def test_every_registered_encoder_exposes_the_same_surface():

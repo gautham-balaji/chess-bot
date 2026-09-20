@@ -72,6 +72,12 @@ GROUPS_BY_REPRESENTATION = {
     "planes16": {
         "castling": [12, 13, 14, 15],
     },
+    # planes16p's added channels are information-free constants. Zeroing them
+    # is still meaningful: it measures how much the network's output depends on
+    # the fixed pattern they inject into the first conv layer.
+    "planes16p": {
+        "placebo_constants": [12, 13, 14, 15],
+    },
 }
 
 # Kept for backwards compatibility with the A3 report's documented behaviour.
@@ -179,7 +185,8 @@ def main(argv=None) -> int:
             print(f"  {name:18s} {[round(v, 2) for v in vals]}   mean {st.fmean(vals):8.2f} cp")
 
     if out["summary"]:
-        total_key = next(k for k in ("all_six_added", "all_four_added", "castling")
+        total_key = next(k for k in ("all_six_added", "all_four_added",
+                                     "castling", "placebo_constants")
                          if k in out["summary"])
         used = out["summary"][total_key]["mean"]
         out["model_uses_added_planes"] = bool(used > 1.0)
