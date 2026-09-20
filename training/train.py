@@ -46,6 +46,7 @@ import numpy as np  # noqa: E402
 
 from training import dataset as D  # noqa: E402
 from training import representation as R  # noqa: E402
+from training import representations as REPS  # noqa: E402
 
 HARNESS_VERSION = "a0-1"
 
@@ -102,6 +103,15 @@ ARMS = {
             "perspective"
         ),
     },
+    "A3": {
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+        "representation": "planes18",
+        "description": (
+            "representation completion: A2's labels unchanged, board encoding "
+            "extended to the audit's 18 planes (side to move, castling rights, "
+            "en passant). Differs from A2 ONLY in representation"
+        ),
+    },
 }
 
 
@@ -139,12 +149,17 @@ def configure_determinism(seed: int, op_determinism: bool) -> dict:
 
 # ============================================================ model
 
-def build_model():
-    """Rebuild the architecture verified from models/cnn_model.keras."""
+def build_model(rep=R):
+    """Rebuild the architecture verified from models/cnn_model.keras.
+
+    `rep` is the encoder module for the arm, which fixes the input shape. Only
+    the first Conv2D kernel changes with the plane count (3x3xCx64), so every
+    downstream layer is identical across representations.
+    """
     from keras import layers, models
 
     model = models.Sequential([
-        layers.Input(shape=R.BOARD_SHAPE),
+        layers.Input(shape=rep.BOARD_SHAPE),
         layers.Conv2D(64, (3, 3), activation="relu", padding="same"),
         layers.BatchNormalization(),
         layers.Conv2D(128, (3, 3), activation="relu", padding="same"),
@@ -315,12 +330,14 @@ def run(arm: str, seed: int, dataset_path: Path, manifest_path: Path,
     print(f"  seeding  : op_determinism={determinism['op_determinism_enabled']}")
 
     # --- encode ----------------------------------------------------------------
-    X = R.encode_many(r["fen"] for r in records)
+    rep = REPS.get(arm_spec["representation"])
+    print(f"  encoding : {arm_spec['representation']} {rep.BOARD_SHAPE}")
+    X = rep.encode_many(r["fen"] for r in records)
     X_train, X_test = X[data.split.train_index], X[data.split.test_index]
     y_train, y_test = data.y_train, data.y_test
 
     # --- train -----------------------------------------------------------------
-    model = build_model()
+    model = build_model(rep)
     epochs = max_epochs or HP["max_epochs"]
     started = time.perf_counter()
     history = model.fit(
@@ -375,7 +392,7 @@ def run(arm: str, seed: int, dataset_path: Path, manifest_path: Path,
             "source_sha256": manifest["dataset"]["source_sha256"],
             "n_records": validation["n_records"],
         },
-        "representation": R.representation_summary(),
+        "representation": rep.representation_summary(),
         "label_policy": D.label_policy_summary(arm_spec["label_policy"]),
         "label_stats": data.label_stats(),
         "split": data.split.summary(),

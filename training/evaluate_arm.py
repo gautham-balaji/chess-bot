@@ -73,14 +73,31 @@ def stage_models_dir(experiment_model: Path, staging: Path,
     return staging
 
 
-def run_suite(models_dir: Path, suite: str, out_prefix: Path) -> int:
+def run_suite(models_dir: Path, suite: str, out_prefix: Path,
+              representation: str = "planes12") -> int:
+    """Run the Phase 3 evaluator against the staged model.
+
+    `representation` defaults to "planes12", which invokes
+    `evaluation/evaluate.py` directly - the exact path every A0, A1 and A2 run
+    used, and the one the existing tests pin.
+
+    An 18-plane arm cannot use that path: `engine.board_to_planes` hardcodes 12
+    channels, so the evaluator would raise a shape error. Those arms go through
+    `training/evaluate18_runner.py`, which imports the SAME unmodified evaluator
+    after rebinding that one encoder in-process. No file is modified either way.
+    """
     env = dict(os.environ)
     env["CHESS_BOT_MODELS_DIR"] = str(models_dir)
     env.setdefault("PYTHONIOENCODING", "utf-8")
 
-    cmd = [sys.executable, str(REPO_ROOT / "evaluation" / "evaluate.py"),
-           "--dataset", str(SUITES[suite]),
-           "--out-prefix", str(out_prefix)]
+    if representation == "planes18":
+        cmd = [sys.executable, "-m", "training.evaluate18_runner",
+               "--dataset", str(SUITES[suite]),
+               "--out-prefix", str(out_prefix)]
+    else:
+        cmd = [sys.executable, str(REPO_ROOT / "evaluation" / "evaluate.py"),
+               "--dataset", str(SUITES[suite]),
+               "--out-prefix", str(out_prefix)]
     print(f"  -> {suite}: {' '.join(cmd[-4:])}", flush=True)
     proc = subprocess.run(cmd, cwd=REPO_ROOT, env=env)
     return proc.returncode
@@ -106,11 +123,15 @@ def main() -> int:
     eval_dir = run_dir / "evaluation"
     eval_dir.mkdir(parents=True, exist_ok=True)
 
+    from training import train as T
+    representation = T.ARMS.get(args.arm, {}).get("representation", "planes12")
+
     with tempfile.TemporaryDirectory(prefix="chessbot_arm_models_") as tmp:
         models_dir = stage_models_dir(model, Path(tmp))
         print(f"injecting via CHESS_BOT_MODELS_DIR={models_dir}")
+        print(f"representation: {representation}")
         for suite in args.suites:
-            rc = run_suite(models_dir, suite, eval_dir / suite)
+            rc = run_suite(models_dir, suite, eval_dir / suite, representation)
             if rc != 0:
                 raise SystemExit(f"ERROR: evaluation failed for {suite} (exit {rc})")
 
