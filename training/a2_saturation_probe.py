@@ -135,7 +135,9 @@ def main(argv=None) -> int:
     encoded = {}
 
     def encode_for(arm):
-        rep_name = T.ARMS[arm]["representation"]
+        # Arms defined outside train.ARMS (C8a lives in train_v2.ARMS) default to
+        # planes12, matching evaluate_arm.run_suite's existing dispatch.
+        rep_name = T.ARMS.get(arm, {}).get("representation", "planes12")
         if rep_name not in encoded:
             encoded[rep_name] = REPS.get(rep_name).encode_many(fens)
             print(f"encoded {len(fens)} candidates as {rep_name} "
