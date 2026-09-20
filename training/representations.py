@@ -16,6 +16,11 @@ encoder module exposes the same surface:
 control: same shape and parameter count as planes16, no chess content.
 `planes16r` is planes12 plus four hash-derived planes that vary across positions,
 the A13R control that repairs A13P's BatchNorm flat-direction flaw.
+`planes12c4` is A14: the SAME 12 convolutional planes as planes12, with the four
+castling rights carried alongside as scalars for the dense head rather than as
+convolutional channels. Its tensor is 16 channels wide only because every caller
+moves a position through the network as one array; the model slices channels
+12-15 off before the first Conv2D. See training/representation12c4.py.
 """
 from __future__ import annotations
 
@@ -23,6 +28,7 @@ from training import representation as _planes12
 from training import representation16 as _planes16
 from training import representation16p as _planes16p
 from training import representation16r as _planes16r
+from training import representation12c4 as _planes12c4
 from training import representation18 as _planes18
 
 PLANES12 = "planes12"
@@ -30,10 +36,11 @@ PLANES16 = "planes16"
 PLANES16P = "planes16p"
 PLANES16R = "planes16r"
 PLANES18 = "planes18"
+PLANES12C4 = "planes12c4"
 
 REGISTRY = {PLANES12: _planes12, PLANES16: _planes16,
             PLANES16P: _planes16p, PLANES16R: _planes16r,
-            PLANES18: _planes18}
+            PLANES18: _planes18, PLANES12C4: _planes12c4}
 NAMES = tuple(REGISTRY)
 
 

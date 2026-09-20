@@ -52,6 +52,7 @@ EXP = REPO_ROOT / "training" / "experiments"
 OUT = EXP / "A2" / "saturation_probe.json"
 SEEDS = (0, 1, 2)
 ARMS = ("A0", "A1", "A2")
+CONTRAST = ("A1", "A2")   # (src, dst) for the verdict
 SUITES = ("extended", "phase0_52")
 TANH_DIVISOR = 200.0
 SATURATED = 0.95
@@ -94,11 +95,26 @@ def describe(v: np.ndarray) -> dict:
             "min": round(float(v.min()), 4), "max": round(float(v.max()), 4)}
 
 
-def main() -> int:
+def main(argv=None) -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(
+        description="Fusion saturation and within-position CNN separation, per arm.")
+    ap.add_argument("--arms", nargs="+", default=list(ARMS))
+    ap.add_argument("--contrast", default=f"{CONTRAST[0]}:{CONTRAST[1]}",
+                    help="SRC:DST pair for the verdict, e.g. A2:A3")
+    ap.add_argument("--out", type=Path, default=OUT)
+    args = ap.parse_args(argv)
+
+    arms = tuple(args.arms)
+    src_arm, dst_arm = args.contrast.split(":", 1)
+    out_path = args.out
+
     os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
     import keras
 
-    from training import representation as R
+    from training import representations as REPS
+    from training import train as T
 
     positions = candidate_positions()
     print(f"positions: {len(positions)} "
@@ -114,14 +130,23 @@ def main() -> int:
         groups.append((len(fens), len(fens) + len(kids)))
         fens.extend(kids)
         is_white_parent.append(white)
-    X = R.encode_many(fens)
-    print(f"candidate child positions encoded: {X.shape}")
+    # Arms may use different board encodings, so encode once PER REPRESENTATION
+    # and reuse. The candidate positions themselves are identical for every arm.
+    encoded = {}
+
+    def encode_for(arm):
+        rep_name = T.ARMS[arm]["representation"]
+        if rep_name not in encoded:
+            encoded[rep_name] = REPS.get(rep_name).encode_many(fens)
+            print(f"encoded {len(fens)} candidates as {rep_name} "
+                  f"{encoded[rep_name].shape}")
+        return encoded[rep_name]
 
     out = {"stage": "C6-A2 saturation probe",
            "status": "EXPLORATORY - not pre-registered",
            "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
            "n_parent_positions": len(groups),
-           "n_candidate_positions": int(X.shape[0]),
+           "n_candidate_positions": len(fens),
            "tanh_divisor": TANH_DIVISOR,
            "saturation_threshold": SATURATED,
            "per_run": {}}
@@ -132,14 +157,15 @@ def main() -> int:
     print(f"\n{header}")
     print(f"{'':8s}{'':11s}{'':10s}{'':9s}{'':8s}{'(white / black parents)':>24s}")
 
-    for arm in ARMS:
+    for arm in arms:
         for seed in SEEDS:
             model_path = EXP / arm / f"seed_{seed}" / "models" / "cnn_model.keras"
             if not model_path.is_file():
                 print(f"  {arm} s{seed}: MISSING {model_path}")
                 continue
             model = keras.models.load_model(model_path, compile=False)
-            raw = np.asarray(model.predict(X, verbose=0, batch_size=512)).reshape(-1)
+            raw = np.asarray(model.predict(encode_for(arm), verbose=0,
+                                           batch_size=512)).reshape(-1)
             squashed = np.tanh(raw / TANH_DIVISOR)
             sat = float((np.abs(squashed) > SATURATED).mean())
 
@@ -177,28 +203,35 @@ def main() -> int:
         return float(np.mean(vals)) if vals else float("nan")
 
     print(f"\n{'-' * 72}\nVERDICT\n{'-' * 72}")
-    sat_by_arm = {a: arm_mean(a, ["saturated_fraction"]) for a in ARMS}
+    sat_by_arm = {a: arm_mean(a, ["saturated_fraction"]) for a in arms}
     spr_by_arm = {a: arm_mean(a, ["within_position_tanh_spread", "mean_white_to_move"])
-                  for a in ARMS}
-    for a in ARMS:
+                  for a in arms}
+    for a in arms:
         print(f"  {a}: saturated {100 * sat_by_arm[a]:5.1f}%   "
               f"within-position tanh spread (White to move) {spr_by_arm[a]:.4f}")
 
-    supported = (sat_by_arm["A2"] > sat_by_arm["A1"]
-                 and spr_by_arm["A2"] < spr_by_arm["A1"])
-    out["saturation_by_arm"] = {a: round(sat_by_arm[a], 6) for a in ARMS}
-    out["white_within_position_spread_by_arm"] = {a: round(spr_by_arm[a], 6) for a in ARMS}
+    supported = (sat_by_arm[dst_arm] > sat_by_arm[src_arm]
+                 and spr_by_arm[dst_arm] < spr_by_arm[src_arm])
+    out["contrast"] = {"src": src_arm, "dst": dst_arm}
+    out["saturation_by_arm"] = {a: round(sat_by_arm[a], 6) for a in arms}
+    out["white_within_position_spread_by_arm"] = {a: round(spr_by_arm[a], 6) for a in arms}
     out["hypothesis_supported"] = bool(supported)
     out["verdict"] = (
-        "SUPPORTED: A2 saturates more and separates White-to-move candidates less"
+        f"SUPPORTED: {dst_arm} saturates more and separates White-to-move "
+        f"candidates less than {src_arm}"
         if supported else
-        "NOT SUPPORTED: A2 does not both saturate more and separate less than A1; "
-        "the White-to-move regression is not explained by tanh saturation")
+        f"NOT SUPPORTED: {dst_arm} does not both saturate more and separate less "
+        f"than {src_arm}; the White-to-move regression is not explained by tanh "
+        f"saturation")
     print(f"\n  {out['verdict']}")
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
-    print(f"\nWROTE {OUT.relative_to(REPO_ROOT).as_posix()}")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
+    try:
+        shown = out_path.resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:          # an --out outside the repo, e.g. a scratch dir
+        shown = str(out_path.resolve().as_posix())
+    print(f"\nWROTE {shown}")
     return 0
 
 

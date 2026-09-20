@@ -81,6 +81,13 @@ GROUPS_BY_REPRESENTATION = {
     "planes16r": {
         "placebo_hash_bits": [12, 13, 14, 15],
     },
+    # planes12c4 (A14) transports the four castling rights in channels 12-15,
+    # but the model reads them as scalars AFTER the convolutional stack. Zeroing
+    # them therefore ablates the dense head's castling input and nothing else -
+    # the convolutional path is bit-identical with or without it.
+    "planes12c4": {
+        "castling_scalars": [12, 13, 14, 15],
+    },
 }
 
 # Kept for backwards compatibility with the A3 report's documented behaviour.
@@ -188,10 +195,14 @@ def main(argv=None) -> int:
             print(f"  {name:18s} {[round(v, 2) for v in vals]}   mean {st.fmean(vals):8.2f} cp")
 
     if out["summary"]:
-        total_key = next(k for k in ("all_six_added", "all_four_added",
-                                     "castling", "placebo_constants",
-                                     "placebo_hash_bits")
-                         if k in out["summary"])
+        # The "total" group is the one covering every added channel. Fall back to
+        # the widest group present so a new representation cannot crash the
+        # script after its numbers have already been computed.
+        widest = max(out["summary"], key=lambda k: len(groups[k]))
+        total_key = next((k for k in ("all_six_added", "all_four_added",
+                                      "castling", "castling_scalars",
+                                      "placebo_constants", "placebo_hash_bits")
+                          if k in out["summary"]), widest)
         used = out["summary"][total_key]["mean"]
         out["model_uses_added_planes"] = bool(used > 1.0)
         out["verdict"] = (

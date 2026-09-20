@@ -50,6 +50,15 @@ from training import representations as REPS  # noqa: E402
 
 HARNESS_VERSION = "a0-1"
 
+# --- architectures ---------------------------------------------------------
+# Every arm up to and including A13R uses ARCH_SEQUENTIAL, the Sequential net
+# verified against models/cnn_model.keras. A14 is the first arm that changes the
+# WIRING rather than the input, so the architecture becomes an explicit arm
+# property instead of an implicit constant.
+ARCH_SEQUENTIAL = "sequential_conv_dense"
+ARCH_POSTCONV_CASTLING = "postconv_castling_concat"
+ARCHITECTURES = (ARCH_SEQUENTIAL, ARCH_POSTCONV_CASTLING)
+
 DEFAULT_DATASET = REPO_ROOT / "training" / "artifacts" / "dataset_v1.jsonl"
 DEFAULT_MANIFEST = REPO_ROOT / "training" / "artifacts" / "dataset_v1.manifest.json"
 EXPERIMENTS_DIR = REPO_ROOT / "training" / "experiments"
@@ -132,6 +141,19 @@ ARMS = {
             "channels contain"
         ),
     },
+    "A14": {
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+        "representation": "planes12c4",
+        "architecture": ARCH_POSTCONV_CASTLING,
+        "description": (
+            "post-convolution castling injection: A2's labels, A2's 12 piece "
+            "planes and A2's Conv/BN stack are all unchanged; the four castling "
+            "rights are concatenated to the flattened CNN feature vector as "
+            "scalars instead of being added as convolutional input channels. "
+            "Differs from A2 ONLY in where castling enters the network, and "
+            "from A13 ONLY in that same respect"
+        ),
+    },
     "A13": {
         "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
         "representation": "planes16",
@@ -179,12 +201,27 @@ def configure_determinism(seed: int, op_determinism: bool) -> dict:
 
 # ============================================================ model
 
-def build_model(rep=R):
-    """Rebuild the architecture verified from models/cnn_model.keras.
+def build_model(rep=R, architecture=ARCH_SEQUENTIAL):
+    """Build the architecture for an arm.
 
-    `rep` is the encoder module for the arm, which fixes the input shape. Only
-    the first Conv2D kernel changes with the plane count (3x3xCx64), so every
-    downstream layer is identical across representations.
+    `rep` is the encoder module for the arm, which fixes the input shape.
+    `architecture` selects the wiring; it defaults to ARCH_SEQUENTIAL, which is
+    byte-for-byte the net every arm through A13R used, so this dispatch cannot
+    change any existing arm.
+    """
+    if architecture == ARCH_POSTCONV_CASTLING:
+        return build_model_postconv_castling(rep)
+    if architecture != ARCH_SEQUENTIAL:
+        raise ValueError(f"unknown architecture {architecture!r}; "
+                         f"expected one of {ARCHITECTURES}")
+    return _build_model_sequential(rep)
+
+
+def _build_model_sequential(rep):
+    """The architecture verified from models/cnn_model.keras.
+
+    Only the first Conv2D kernel changes with the plane count (3x3xCx64), so
+    every downstream layer is identical across representations.
     """
     from keras import layers, models
 
@@ -203,6 +240,63 @@ def build_model(rep=R):
         layers.Dropout(0.2),
         layers.Dense(1),
     ])
+    import keras
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=HP["learning_rate"]),
+                  loss=HP["loss"])
+    return model
+
+
+def build_model_postconv_castling(rep):
+    """A14: the SAME Conv/BN stack, with castling injected after Flatten.
+
+    `rep` must be `training.representation12c4`, whose (8, 8, 16) tensor is a
+    transport container: channels 0-11 are the piece planes, channels 12-15
+    broadcast the four castling bits so they can ride in the same array (every
+    caller in this repo, engine included, feeds the CNN one numpy array).
+
+    The split is the FIRST thing the graph does:
+
+        planes   = x[:, :, :, :12]   -> (None, 8, 8, 12) -> Conv/BN stack
+        castling = x[:, 0, 0, 12:]   -> (None, 4)        -> concat after Flatten
+
+    so the convolutional input shape is (None, 8, 8, 12), identical to A2, and
+    no castling value ever reaches a convolution. Reading the scalars from cell
+    (0, 0) is exact because the encoder broadcasts one value over all 64 cells;
+    that constancy is asserted over the whole dataset and both evaluation suites
+    by tests/unit/test_training_representation12c4.py.
+
+    The Conv2D/BatchNormalization layers below are created with the same
+    arguments, in the same order, as `_build_model_sequential`, so the
+    convolutional parameters are preserved exactly. The only parameter
+    difference against A2 is Dense(256)'s kernel, whose fan-in grows from 8192
+    to 8196: +4*256 = +1,024 parameters, and nothing else.
+    """
+    from keras import layers, models
+
+    if getattr(rep, "CONV_PLANES", None) is None:
+        raise ValueError(f"{rep.__name__} does not declare CONV_PLANES; "
+                         f"{ARCH_POSTCONV_CASTLING} needs a transport encoder")
+
+    n_conv = rep.CONV_PLANES
+    inputs = layers.Input(shape=rep.BOARD_SHAPE, name="board")
+    planes = inputs[:, :, :, :n_conv]
+    castling = inputs[:, 0, 0, n_conv:]
+
+    x = layers.Conv2D(64, (3, 3), activation="relu", padding="same")(planes)
+    x = layers.BatchNormalization()(x)
+    x = layers.Conv2D(128, (3, 3), activation="relu", padding="same")(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Conv2D(128, (3, 3), activation="relu", padding="same")(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Flatten()(x)
+    x = layers.Concatenate(axis=-1, name="inject_castling")([x, castling])
+    x = layers.Dense(256, activation="relu")(x)
+    x = layers.Dropout(0.3)(x)
+    x = layers.Dense(128, activation="relu")(x)
+    x = layers.Dropout(0.2)(x)
+    outputs = layers.Dense(1)(x)
+
+    model = models.Model(inputs=inputs, outputs=outputs, name="a14_postconv_castling")
     import keras
     model.compile(optimizer=keras.optimizers.Adam(learning_rate=HP["learning_rate"]),
                   loss=HP["loss"])
@@ -367,7 +461,9 @@ def run(arm: str, seed: int, dataset_path: Path, manifest_path: Path,
     y_train, y_test = data.y_train, data.y_test
 
     # --- train -----------------------------------------------------------------
-    model = build_model(rep)
+    architecture = arm_spec.get("architecture", ARCH_SEQUENTIAL)
+    print(f"  arch     : {architecture}")
+    model = build_model(rep, architecture)
     epochs = max_epochs or HP["max_epochs"]
     started = time.perf_counter()
     history = model.fit(
@@ -422,6 +518,7 @@ def run(arm: str, seed: int, dataset_path: Path, manifest_path: Path,
             "source_sha256": manifest["dataset"]["source_sha256"],
             "n_records": validation["n_records"],
         },
+        "architecture": architecture,
         "representation": rep.representation_summary(),
         "label_policy": D.label_policy_summary(arm_spec["label_policy"]),
         "label_stats": data.label_stats(),
