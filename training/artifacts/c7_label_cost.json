@@ -1,0 +1,85 @@
+{
+  "probe_version": "c7-cost-1",
+  "generated_at_utc": "2026-09-20T07:30:37+00:00",
+  "seed": 20260920,
+  "stockfish": {
+    "version": "Stockfish 17.1 by the Stockfish developers (see AUTHORS file)",
+    "depth": 8,
+    "threads": 1,
+    "hash_mb": 16,
+    "clear_hash_per_position": true
+  },
+  "label_policy": {
+    "label_perspective": "white",
+    "cp_policy": "raw Stockfish centipawns, side-to-move-relative, converted to White-positive, then clipped",
+    "mate_policy": "magnitude = 2000 - 10 * min(|mate_distance|, 49); signed so that positive means White wins. Monotonic in mate distance and strictly above the centipawn clip bound.",
+    "mate_zero_policy": "mate == 0 means the SIDE TO MOVE is checkmated and has lost; the sign is taken from the side to move, not from the value, because zero carries no sign. Magnitude is the maximum (2000).",
+    "clip_bounds": [
+      -1500,
+      1500
+    ],
+    "clip_applies_to": "cp labels only; mate labels are never clipped",
+    "ordering": "mate mapping -> perspective normalisation -> clipping (cp only)",
+    "mate_score_base": 2000,
+    "mate_score_step": 10,
+    "mate_max_distance": 49
+  },
+  "per_phase": {
+    "opening": {
+      "n": 100,
+      "mean_ms": 6.096,
+      "median_ms": 5.451,
+      "p90_ms": 9.585,
+      "max_ms": 16.019,
+      "positions_per_second": 164.03,
+      "eval_type_counts": {
+        "cp": 98,
+        "mate": 2
+      },
+      "mate_fraction": 0.02,
+      "clipped": 0,
+      "label_mean": 23.63
+    },
+    "middlegame": {
+      "n": 100,
+      "mean_ms": 6.604,
+      "median_ms": 5.618,
+      "p90_ms": 9.575,
+      "max_ms": 28.655,
+      "positions_per_second": 151.43,
+      "eval_type_counts": {
+        "cp": 95,
+        "mate": 5
+      },
+      "mate_fraction": 0.05,
+      "clipped": 0,
+      "label_mean": 93.7
+    },
+    "endgame": {
+      "n": 100,
+      "mean_ms": 6.715,
+      "median_ms": 6.205,
+      "p90_ms": 10.044,
+      "max_ms": 21.992,
+      "positions_per_second": 148.91,
+      "eval_type_counts": {
+        "cp": 92,
+        "mate": 8
+      },
+      "mate_fraction": 0.08,
+      "clipped": 0,
+      "label_mean": -60.05
+    }
+  },
+  "overall": {
+    "n": 300,
+    "mean_ms": 6.472,
+    "positions_per_second": 154.51
+  },
+  "projected_wall_clock_minutes": {
+    "20000": 2.2,
+    "50000": 5.4,
+    "100000": 10.8,
+    "200000": 21.6
+  }
+}

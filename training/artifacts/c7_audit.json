@@ -1,0 +1,2525 @@
+{
+  "audit_version": "c7-audit-1",
+  "generated_at_utc": "2026-09-20T07:41:14+00:00",
+  "source": {
+    "path": "C:/Users/vsriv/OneDrive/Desktop/Chess Bot/games.csv",
+    "sha256": "e7aadff104a610afb5403caf81c1461babecb0dc87760ff5eea7dc0e7a4a8129",
+    "size_bytes": 7672655,
+    "rows_audited": 20058,
+    "columns": [
+      "id",
+      "rated",
+      "created_at",
+      "last_move_at",
+      "turns",
+      "victory_status",
+      "winner",
+      "increment_code",
+      "white_id",
+      "white_rating",
+      "black_id",
+      "black_rating",
+      "moves",
+      "opening_eco",
+      "opening_name",
+      "opening_ply"
+    ]
+  },
+  "identifiers": {
+    "row_count": 20058,
+    "id_column_present": true,
+    "unique_ids": 19113,
+    "ids_appearing_more_than_once": 813,
+    "rows_involved_in_duplicate_ids": 1758,
+    "max_rows_sharing_one_id": 5,
+    "id_is_unique_per_row": false,
+    "distinct_move_strings": 18920,
+    "move_strings_appearing_more_than_once": 846,
+    "rows_involved_in_duplicate_move_strings": 1984
+  },
+  "game_lengths": {
+    "declared_turns_column": {
+      "n": 20058,
+      "min": 1,
+      "max": 349,
+      "mean": 60.466,
+      "median": 55,
+      "p10": 22,
+      "p25": 37,
+      "p75": 79,
+      "p90": 107,
+      "p99": 157
+    },
+    "san_tokens_in_moves_column": {
+      "n": 20058,
+      "min": 1,
+      "max": 349,
+      "mean": 60.466,
+      "median": 55,
+      "p10": 22,
+      "p25": 37,
+      "p75": 79,
+      "p90": 107,
+      "p99": 157
+    },
+    "legally_replayed_plies": {
+      "n": 20058,
+      "min": 1,
+      "max": 349,
+      "mean": 60.466,
+      "median": 55,
+      "p10": 22,
+      "p25": 37,
+      "p75": 79,
+      "p90": 107,
+      "p99": 157
+    },
+    "total_legally_replayed_plies": 1212827,
+    "games_with_zero_plies": 0,
+    "games_with_bad_san": 0,
+    "games_reaching_ply": {
+      "1": 20058,
+      "10": 19441,
+      "20": 18397,
+      "30": 16715,
+      "40": 14383,
+      "60": 8907,
+      "80": 4900,
+      "100": 2622,
+      "150": 311
+    },
+    "ply_histogram_head": {
+      "1": 18,
+      "2": 185,
+      "3": 87,
+      "4": 52,
+      "5": 40,
+      "6": 35,
+      "7": 70,
+      "8": 54,
+      "9": 76,
+      "10": 64,
+      "11": 96,
+      "12": 77,
+      "13": 85,
+      "14": 98,
+      "15": 124,
+      "16": 110,
+      "17": 133,
+      "18": 107,
+      "19": 150,
+      "20": 134,
+      "21": 149,
+      "22": 129,
+      "23": 195,
+      "24": 152,
+      "25": 161,
+      "26": 169,
+      "27": 200,
+      "28": 170,
+      "29": 223,
+      "30": 223
+    }
+  },
+  "duplicates_all_plies": {
+    "exact": {
+      "unique_keys_across_corpus": 1024317,
+      "within_game_duplicate_plies": 0,
+      "keys_appearing_in_more_than_one_game": 58539,
+      "fraction_of_keys_in_multiple_games": 0.057149
+    },
+    "position": {
+      "unique_keys_across_corpus": 1014353,
+      "within_game_duplicate_plies": 4421,
+      "keys_appearing_in_more_than_one_game": 59127,
+      "fraction_of_keys_in_multiple_games": 0.05829
+    },
+    "placement": {
+      "unique_keys_across_corpus": 1013462,
+      "within_game_duplicate_plies": 4689,
+      "keys_appearing_in_more_than_one_game": 59368,
+      "fraction_of_keys_in_multiple_games": 0.058579
+    }
+  },
+  "ply_uniqueness_profile": {
+    "1": {
+      "games_reaching_ply": 20058,
+      "distinct_placements": 20,
+      "uniqueness": 0.000997,
+      "rows_sharing_a_placement": 20058,
+      "max_games_sharing_one_placement": 12598
+    },
+    "2": {
+      "games_reaching_ply": 20040,
+      "distinct_placements": 215,
+      "uniqueness": 0.010729,
+      "rows_sharing_a_placement": 19996,
+      "max_games_sharing_one_placement": 6029
+    },
+    "3": {
+      "games_reaching_ply": 19855,
+      "distinct_placements": 901,
+      "uniqueness": 0.045379,
+      "rows_sharing_a_placement": 19482,
+      "max_games_sharing_one_placement": 4236
+    },
+    "4": {
+      "games_reaching_ply": 19768,
+      "distinct_placements": 2226,
+      "uniqueness": 0.112606,
+      "rows_sharing_a_placement": 18598,
+      "max_games_sharing_one_placement": 2803
+    },
+    "5": {
+      "games_reaching_ply": 19716,
+      "distinct_placements": 3930,
+      "uniqueness": 0.19933,
+      "rows_sharing_a_placement": 17291,
+      "max_games_sharing_one_placement": 1099
+    },
+    "6": {
+      "games_reaching_ply": 19676,
+      "distinct_placements": 6146,
+      "uniqueness": 0.31236,
+      "rows_sharing_a_placement": 15501,
+      "max_games_sharing_one_placement": 416
+    },
+    "7": {
+      "games_reaching_ply": 19641,
+      "distinct_placements": 8347,
+      "uniqueness": 0.424978,
+      "rows_sharing_a_placement": 13545,
+      "max_games_sharing_one_placement": 348
+    },
+    "8": {
+      "games_reaching_ply": 19571,
+      "distinct_placements": 10557,
+      "uniqueness": 0.539421,
+      "rows_sharing_a_placement": 11401,
+      "max_games_sharing_one_placement": 279
+    },
+    "9": {
+      "games_reaching_ply": 19517,
+      "distinct_placements": 12521,
+      "uniqueness": 0.641543,
+      "rows_sharing_a_placement": 9301,
+      "max_games_sharing_one_placement": 265
+    },
+    "10": {
+      "games_reaching_ply": 19441,
+      "distinct_placements": 14183,
+      "uniqueness": 0.729541,
+      "rows_sharing_a_placement": 7347,
+      "max_games_sharing_one_placement": 170
+    },
+    "11": {
+      "games_reaching_ply": 19377,
+      "distinct_placements": 15433,
+      "uniqueness": 0.79646,
+      "rows_sharing_a_placement": 5841,
+      "max_games_sharing_one_placement": 41
+    },
+    "12": {
+      "games_reaching_ply": 19281,
+      "distinct_placements": 16398,
+      "uniqueness": 0.850475,
+      "rows_sharing_a_placement": 4502,
+      "max_games_sharing_one_placement": 39
+    },
+    "13": {
+      "games_reaching_ply": 19204,
+      "distinct_placements": 17011,
+      "uniqueness": 0.885805,
+      "rows_sharing_a_placement": 3577,
+      "max_games_sharing_one_placement": 30
+    },
+    "14": {
+      "games_reaching_ply": 19119,
+      "distinct_placements": 17415,
+      "uniqueness": 0.910874,
+      "rows_sharing_a_placement": 2907,
+      "max_games_sharing_one_placement": 24
+    },
+    "15": {
+      "games_reaching_ply": 19021,
+      "distinct_placements": 17611,
+      "uniqueness": 0.925871,
+      "rows_sharing_a_placement": 2489,
+      "max_games_sharing_one_placement": 13
+    },
+    "16": {
+      "games_reaching_ply": 18897,
+      "distinct_placements": 17684,
+      "uniqueness": 0.93581,
+      "rows_sharing_a_placement": 2164,
+      "max_games_sharing_one_placement": 15
+    },
+    "17": {
+      "games_reaching_ply": 18787,
+      "distinct_placements": 17692,
+      "uniqueness": 0.941715,
+      "rows_sharing_a_placement": 1985,
+      "max_games_sharing_one_placement": 14
+    },
+    "18": {
+      "games_reaching_ply": 18654,
+      "distinct_placements": 17650,
+      "uniqueness": 0.946178,
+      "rows_sharing_a_placement": 1835,
+      "max_games_sharing_one_placement": 8
+    },
+    "19": {
+      "games_reaching_ply": 18547,
+      "distinct_placements": 17598,
+      "uniqueness": 0.948833,
+      "rows_sharing_a_placement": 1749,
+      "max_games_sharing_one_placement": 7
+    },
+    "20": {
+      "games_reaching_ply": 18397,
+      "distinct_placements": 17502,
+      "uniqueness": 0.951351,
+      "rows_sharing_a_placement": 1660,
+      "max_games_sharing_one_placement": 5
+    },
+    "25": {
+      "games_reaching_ply": 17638,
+      "distinct_placements": 16827,
+      "uniqueness": 0.95402,
+      "rows_sharing_a_placement": 1508,
+      "max_games_sharing_one_placement": 5
+    },
+    "30": {
+      "games_reaching_ply": 16715,
+      "distinct_placements": 15959,
+      "uniqueness": 0.954771,
+      "rows_sharing_a_placement": 1415,
+      "max_games_sharing_one_placement": 5
+    },
+    "35": {
+      "games_reaching_ply": 15626,
+      "distinct_placements": 14924,
+      "uniqueness": 0.955075,
+      "rows_sharing_a_placement": 1318,
+      "max_games_sharing_one_placement": 5
+    },
+    "40": {
+      "games_reaching_ply": 14383,
+      "distinct_placements": 13727,
+      "uniqueness": 0.954391,
+      "rows_sharing_a_placement": 1230,
+      "max_games_sharing_one_placement": 5
+    },
+    "45": {
+      "games_reaching_ply": 13049,
+      "distinct_placements": 12451,
+      "uniqueness": 0.954173,
+      "rows_sharing_a_placement": 1119,
+      "max_games_sharing_one_placement": 5
+    },
+    "50": {
+      "games_reaching_ply": 11683,
+      "distinct_placements": 11144,
+      "uniqueness": 0.953865,
+      "rows_sharing_a_placement": 1004,
+      "max_games_sharing_one_placement": 5
+    },
+    "55": {
+      "games_reaching_ply": 10232,
+      "distinct_placements": 9750,
+      "uniqueness": 0.952893,
+      "rows_sharing_a_placement": 901,
+      "max_games_sharing_one_placement": 4
+    },
+    "60": {
+      "games_reaching_ply": 8907,
+      "distinct_placements": 8483,
+      "uniqueness": 0.952397,
+      "rows_sharing_a_placement": 791,
+      "max_games_sharing_one_placement": 4
+    },
+    "65": {
+      "games_reaching_ply": 7666,
+      "distinct_placements": 7303,
+      "uniqueness": 0.952648,
+      "rows_sharing_a_placement": 681,
+      "max_games_sharing_one_placement": 4
+    },
+    "70": {
+      "games_reaching_ply": 6632,
+      "distinct_placements": 6314,
+      "uniqueness": 0.952051,
+      "rows_sharing_a_placement": 598,
+      "max_games_sharing_one_placement": 4
+    },
+    "75": {
+      "games_reaching_ply": 5678,
+      "distinct_placements": 5409,
+      "uniqueness": 0.952624,
+      "rows_sharing_a_placement": 508,
+      "max_games_sharing_one_placement": 4
+    },
+    "80": {
+      "games_reaching_ply": 4900,
+      "distinct_placements": 4665,
+      "uniqueness": 0.952041,
+      "rows_sharing_a_placement": 441,
+      "max_games_sharing_one_placement": 4
+    },
+    "85": {
+      "games_reaching_ply": 4230,
+      "distinct_placements": 4020,
+      "uniqueness": 0.950355,
+      "rows_sharing_a_placement": 392,
+      "max_games_sharing_one_placement": 4
+    },
+    "90": {
+      "games_reaching_ply": 3603,
+      "distinct_placements": 3424,
+      "uniqueness": 0.950319,
+      "rows_sharing_a_placement": 331,
+      "max_games_sharing_one_placement": 4
+    },
+    "95": {
+      "games_reaching_ply": 3089,
+      "distinct_placements": 2939,
+      "uniqueness": 0.951441,
+      "rows_sharing_a_placement": 276,
+      "max_games_sharing_one_placement": 4
+    },
+    "100": {
+      "games_reaching_ply": 2622,
+      "distinct_placements": 2491,
+      "uniqueness": 0.950038,
+      "rows_sharing_a_placement": 240,
+      "max_games_sharing_one_placement": 4
+    },
+    "105": {
+      "games_reaching_ply": 2204,
+      "distinct_placements": 2093,
+      "uniqueness": 0.949637,
+      "rows_sharing_a_placement": 204,
+      "max_games_sharing_one_placement": 4
+    },
+    "110": {
+      "games_reaching_ply": 1844,
+      "distinct_placements": 1756,
+      "uniqueness": 0.952278,
+      "rows_sharing_a_placement": 160,
+      "max_games_sharing_one_placement": 4
+    },
+    "115": {
+      "games_reaching_ply": 1504,
+      "distinct_placements": 1441,
+      "uniqueness": 0.958112,
+      "rows_sharing_a_placement": 117,
+      "max_games_sharing_one_placement": 4
+    },
+    "120": {
+      "games_reaching_ply": 1192,
+      "distinct_placements": 1146,
+      "uniqueness": 0.961409,
+      "rows_sharing_a_placement": 86,
+      "max_games_sharing_one_placement": 4
+    }
+  },
+  "game_level_split": {
+    "method": "rows grouped by game CONTENT (sha256 of the move string), units sorted, seeded permutation, first test_fraction to test; positions are extracted AFTER the split",
+    "split_unit": "game move-sequence content, not the id column",
+    "split_seed": 42,
+    "test_fraction": 0.2,
+    "n_rows": 20058,
+    "n_game_units": 18920,
+    "n_train_units": 15136,
+    "n_test_units": 3784,
+    "n_train_rows": 16084,
+    "n_test_rows": 3974,
+    "train_units_intersect_test_units": 0,
+    "train_ids_intersect_test_ids": 0,
+    "game_list_sha256": "b90881bf3c6245ba3634800da8879ccf8ecb9a64fb41f5116c5439983dc64e62",
+    "train_game_sha256": "cb1308d9af1ee45709f272492c0a22a02b8e7026f055d8ff43e1d81f881c19fb",
+    "test_game_sha256": "d8632c3ac89be36bced244f4370eec09c3c80b2e6a0fe841f62ca67df97809f3"
+  },
+  "canonical_rows": 18920,
+  "sampling_policies": {
+    "v1_one_per_game": {
+      "description": "dataset_v1: one position per game, board after <=20 plies",
+      "positions_total": 18920,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 6,
+          "suite_keys_in_selected_test": 3,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 6,
+          "suite_keys_in_selected_test": 3,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 6,
+          "suite_keys_in_selected_test": 3,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 15136,
+      "positions_test": 3784,
+      "games_contributing": 18920,
+      "positions_per_game": {
+        "n": 18920,
+        "min": 1,
+        "max": 1,
+        "mean": 1.0,
+        "median": 1,
+        "p10": 1,
+        "p25": 1,
+        "p75": 1,
+        "p90": 1,
+        "p99": 1
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 0,
+        "placement": 0
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 18920
+      },
+      "phase_fractions": {
+        "opening": 1.0
+      },
+      "side_to_move_counts": {
+        "black": 777,
+        "white": 18143
+      },
+      "side_to_move_fractions": {
+        "black": 0.0411,
+        "white": 0.9589
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 18871,
+          "duplicate_rows_total": 49,
+          "keys_in_both_train_and_test": 15,
+          "test_rows_whose_key_also_appears_in_train": 16,
+          "leaked_test_fraction": 0.004228,
+          "deduped_train_positions": 15103,
+          "deduped_test_positions": 3783,
+          "scrubbed_test_positions": 3768,
+          "scrub_cost_fraction": 0.003965
+        },
+        "position": {
+          "unique_keys": 18858,
+          "duplicate_rows_total": 62,
+          "keys_in_both_train_and_test": 18,
+          "test_rows_whose_key_also_appears_in_train": 19,
+          "leaked_test_fraction": 0.005021,
+          "deduped_train_positions": 15093,
+          "deduped_test_positions": 3783,
+          "scrubbed_test_positions": 3765,
+          "scrub_cost_fraction": 0.004758
+        },
+        "placement": {
+          "unique_keys": 18858,
+          "duplicate_rows_total": 62,
+          "keys_in_both_train_and_test": 18,
+          "test_rows_whose_key_also_appears_in_train": 19,
+          "leaked_test_fraction": 0.005021,
+          "deduped_train_positions": 15093,
+          "deduped_test_positions": 3783,
+          "scrubbed_test_positions": 3765,
+          "scrub_cost_fraction": 0.004758
+        }
+      }
+    },
+    "evenly_spaced_2_minply1": {
+      "description": "<=2 evenly spaced plies per game from ply 1",
+      "positions_total": 37700,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 6,
+          "suite_keys_in_selected_test": 4,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 6,
+          "suite_keys_in_selected_test": 4,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 6,
+          "suite_keys_in_selected_test": 4,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 30155,
+      "positions_test": 7545,
+      "games_contributing": 18920,
+      "positions_per_game": {
+        "n": 18920,
+        "min": 1,
+        "max": 2,
+        "mean": 1.993,
+        "median": 2,
+        "p10": 2,
+        "p25": 2,
+        "p75": 2,
+        "p90": 2,
+        "p99": 2
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 0,
+        "placement": 0
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 20269,
+        "middlegame": 12548,
+        "endgame": 4883
+      },
+      "phase_fractions": {
+        "opening": 0.5376,
+        "middlegame": 0.3328,
+        "endgame": 0.1295
+      },
+      "side_to_move_counts": {
+        "black": 28580,
+        "white": 9120
+      },
+      "side_to_move_fractions": {
+        "black": 0.7581,
+        "white": 0.2419
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 18931,
+          "duplicate_rows_total": 18769,
+          "keys_in_both_train_and_test": 20,
+          "test_rows_whose_key_also_appears_in_train": 3762,
+          "leaked_test_fraction": 0.498608,
+          "deduped_train_positions": 15148,
+          "deduped_test_positions": 3803,
+          "scrubbed_test_positions": 3783,
+          "scrub_cost_fraction": 0.005259
+        },
+        "position": {
+          "unique_keys": 18899,
+          "duplicate_rows_total": 18801,
+          "keys_in_both_train_and_test": 27,
+          "test_rows_whose_key_also_appears_in_train": 3770,
+          "leaked_test_fraction": 0.499669,
+          "deduped_train_positions": 15125,
+          "deduped_test_positions": 3801,
+          "scrubbed_test_positions": 3774,
+          "scrub_cost_fraction": 0.007103
+        },
+        "placement": {
+          "unique_keys": 18899,
+          "duplicate_rows_total": 18801,
+          "keys_in_both_train_and_test": 27,
+          "test_rows_whose_key_also_appears_in_train": 3770,
+          "leaked_test_fraction": 0.499669,
+          "deduped_train_positions": 15125,
+          "deduped_test_positions": 3801,
+          "scrubbed_test_positions": 3774,
+          "scrub_cost_fraction": 0.007103
+        }
+      }
+    },
+    "evenly_spaced_4_minply1": {
+      "description": "<=4 evenly spaced plies per game from ply 1",
+      "positions_total": 74621,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 49,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 53,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 54,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 59681,
+      "positions_test": 14940,
+      "games_contributing": 18920,
+      "positions_per_game": {
+        "n": 18920,
+        "min": 1,
+        "max": 4,
+        "mean": 3.944,
+        "median": 4,
+        "p10": 4,
+        "p25": 4,
+        "p75": 4,
+        "p90": 4,
+        "p99": 4
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 3,
+        "placement": 3
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 32954,
+        "middlegame": 35227,
+        "endgame": 6440
+      },
+      "phase_fractions": {
+        "opening": 0.4416,
+        "middlegame": 0.4721,
+        "endgame": 0.0863
+      },
+      "side_to_move_counts": {
+        "black": 43682,
+        "white": 30939
+      },
+      "side_to_move_fractions": {
+        "black": 0.5854,
+        "white": 0.4146
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 55455,
+          "duplicate_rows_total": 19166,
+          "keys_in_both_train_and_test": 107,
+          "test_rows_whose_key_also_appears_in_train": 3879,
+          "leaked_test_fraction": 0.259639,
+          "deduped_train_positions": 44396,
+          "deduped_test_positions": 11166,
+          "scrubbed_test_positions": 11059,
+          "scrub_cost_fraction": 0.009583
+        },
+        "position": {
+          "unique_keys": 55384,
+          "duplicate_rows_total": 19237,
+          "keys_in_both_train_and_test": 122,
+          "test_rows_whose_key_also_appears_in_train": 3895,
+          "leaked_test_fraction": 0.26071,
+          "deduped_train_positions": 44344,
+          "deduped_test_positions": 11162,
+          "scrubbed_test_positions": 11040,
+          "scrub_cost_fraction": 0.01093
+        },
+        "placement": {
+          "unique_keys": 55379,
+          "duplicate_rows_total": 19242,
+          "keys_in_both_train_and_test": 125,
+          "test_rows_whose_key_also_appears_in_train": 3898,
+          "leaked_test_fraction": 0.26091,
+          "deduped_train_positions": 44342,
+          "deduped_test_positions": 11162,
+          "scrubbed_test_positions": 11037,
+          "scrub_cost_fraction": 0.011199
+        }
+      }
+    },
+    "evenly_spaced_1": {
+      "description": "1 ply per game from ply 12 (the ~20k target)",
+      "positions_total": 18388,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 14702,
+      "positions_test": 3686,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 1,
+        "mean": 1.0,
+        "median": 1,
+        "p10": 1,
+        "p25": 1,
+        "p75": 1,
+        "p90": 1,
+        "p99": 1
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 0,
+        "placement": 0
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 957,
+        "middlegame": 12548,
+        "endgame": 4883
+      },
+      "phase_fractions": {
+        "opening": 0.052,
+        "middlegame": 0.6824,
+        "endgame": 0.2656
+      },
+      "side_to_move_counts": {
+        "black": 9488,
+        "white": 8900
+      },
+      "side_to_move_fractions": {
+        "black": 0.516,
+        "white": 0.484
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 18387,
+          "duplicate_rows_total": 1,
+          "keys_in_both_train_and_test": 1,
+          "test_rows_whose_key_also_appears_in_train": 1,
+          "leaked_test_fraction": 0.000271,
+          "deduped_train_positions": 14702,
+          "deduped_test_positions": 3686,
+          "scrubbed_test_positions": 3685,
+          "scrub_cost_fraction": 0.000271
+        },
+        "position": {
+          "unique_keys": 18357,
+          "duplicate_rows_total": 31,
+          "keys_in_both_train_and_test": 7,
+          "test_rows_whose_key_also_appears_in_train": 8,
+          "leaked_test_fraction": 0.00217,
+          "deduped_train_positions": 14680,
+          "deduped_test_positions": 3684,
+          "scrubbed_test_positions": 3677,
+          "scrub_cost_fraction": 0.0019
+        },
+        "placement": {
+          "unique_keys": 18357,
+          "duplicate_rows_total": 31,
+          "keys_in_both_train_and_test": 7,
+          "test_rows_whose_key_also_appears_in_train": 8,
+          "leaked_test_fraction": 0.00217,
+          "deduped_train_positions": 14680,
+          "deduped_test_positions": 3684,
+          "scrubbed_test_positions": 3677,
+          "scrub_cost_fraction": 0.0019
+        }
+      }
+    },
+    "evenly_spaced_2": {
+      "description": "<=2 evenly spaced plies per game from ply 12, min gap 4",
+      "positions_total": 36413,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 22,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 24,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 24,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 29112,
+      "positions_test": 7301,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 2,
+        "mean": 1.98,
+        "median": 2,
+        "p10": 2,
+        "p25": 2,
+        "p75": 2,
+        "p90": 2,
+        "p99": 2
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 1,
+        "placement": 1
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 18982,
+        "middlegame": 12548,
+        "endgame": 4883
+      },
+      "phase_fractions": {
+        "opening": 0.5213,
+        "middlegame": 0.3446,
+        "endgame": 0.1341
+      },
+      "side_to_move_counts": {
+        "black": 9488,
+        "white": 26925
+      },
+      "side_to_move_fractions": {
+        "black": 0.2606,
+        "white": 0.7394
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 34785,
+          "duplicate_rows_total": 1628,
+          "keys_in_both_train_and_test": 341,
+          "test_rows_whose_key_also_appears_in_train": 436,
+          "leaked_test_fraction": 0.059718,
+          "deduped_train_positions": 27947,
+          "deduped_test_positions": 7179,
+          "scrubbed_test_positions": 6838,
+          "scrub_cost_fraction": 0.0475
+        },
+        "position": {
+          "unique_keys": 34413,
+          "duplicate_rows_total": 2000,
+          "keys_in_both_train_and_test": 423,
+          "test_rows_whose_key_also_appears_in_train": 541,
+          "leaked_test_fraction": 0.074099,
+          "deduped_train_positions": 27687,
+          "deduped_test_positions": 7149,
+          "scrubbed_test_positions": 6726,
+          "scrub_cost_fraction": 0.059169
+        },
+        "placement": {
+          "unique_keys": 34412,
+          "duplicate_rows_total": 2001,
+          "keys_in_both_train_and_test": 423,
+          "test_rows_whose_key_also_appears_in_train": 541,
+          "leaked_test_fraction": 0.074099,
+          "deduped_train_positions": 27686,
+          "deduped_test_positions": 7149,
+          "scrubbed_test_positions": 6726,
+          "scrub_cost_fraction": 0.059169
+        }
+      }
+    },
+    "evenly_spaced_3": {
+      "description": "<=3 evenly spaced plies per game from ply 12 (the ~50k target)",
+      "positions_total": 53971,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 22,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 24,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 24,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 43152,
+      "positions_test": 10819,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 3,
+        "mean": 2.935,
+        "median": 3,
+        "p10": 3,
+        "p25": 3,
+        "p75": 3,
+        "p90": 3,
+        "p99": 3
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 2,
+        "placement": 2
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 20580,
+        "middlegame": 27902,
+        "endgame": 5489
+      },
+      "phase_fractions": {
+        "opening": 0.3813,
+        "middlegame": 0.517,
+        "endgame": 0.1017
+      },
+      "side_to_move_counts": {
+        "black": 13713,
+        "white": 40258
+      },
+      "side_to_move_fractions": {
+        "black": 0.2541,
+        "white": 0.7459
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 52343,
+          "duplicate_rows_total": 1628,
+          "keys_in_both_train_and_test": 341,
+          "test_rows_whose_key_also_appears_in_train": 436,
+          "leaked_test_fraction": 0.040299,
+          "deduped_train_positions": 41987,
+          "deduped_test_positions": 10697,
+          "scrubbed_test_positions": 10356,
+          "scrub_cost_fraction": 0.031878
+        },
+        "position": {
+          "unique_keys": 51970,
+          "duplicate_rows_total": 2001,
+          "keys_in_both_train_and_test": 423,
+          "test_rows_whose_key_also_appears_in_train": 541,
+          "leaked_test_fraction": 0.050005,
+          "deduped_train_positions": 41726,
+          "deduped_test_positions": 10667,
+          "scrubbed_test_positions": 10244,
+          "scrub_cost_fraction": 0.039655
+        },
+        "placement": {
+          "unique_keys": 51969,
+          "duplicate_rows_total": 2002,
+          "keys_in_both_train_and_test": 423,
+          "test_rows_whose_key_also_appears_in_train": 541,
+          "leaked_test_fraction": 0.050005,
+          "deduped_train_positions": 41725,
+          "deduped_test_positions": 10667,
+          "scrubbed_test_positions": 10244,
+          "scrub_cost_fraction": 0.039655
+        }
+      }
+    },
+    "evenly_spaced_4": {
+      "description": "<=4 evenly spaced plies per game from ply 12, min gap 4",
+      "positions_total": 70955,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 22,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 56729,
+      "positions_test": 14226,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 4,
+        "mean": 3.859,
+        "median": 4,
+        "p10": 4,
+        "p25": 4,
+        "p75": 4,
+        "p90": 4,
+        "p99": 4
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 10,
+        "placement": 10
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 22457,
+        "middlegame": 41677,
+        "endgame": 6821
+      },
+      "phase_fractions": {
+        "opening": 0.3165,
+        "middlegame": 0.5874,
+        "endgame": 0.0961
+      },
+      "side_to_move_counts": {
+        "black": 29230,
+        "white": 41725
+      },
+      "side_to_move_fractions": {
+        "black": 0.412,
+        "white": 0.588
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 69322,
+          "duplicate_rows_total": 1633,
+          "keys_in_both_train_and_test": 344,
+          "test_rows_whose_key_also_appears_in_train": 439,
+          "leaked_test_fraction": 0.030859,
+          "deduped_train_positions": 55562,
+          "deduped_test_positions": 14104,
+          "scrubbed_test_positions": 13760,
+          "scrub_cost_fraction": 0.02439
+        },
+        "position": {
+          "unique_keys": 68941,
+          "duplicate_rows_total": 2014,
+          "keys_in_both_train_and_test": 426,
+          "test_rows_whose_key_also_appears_in_train": 544,
+          "leaked_test_fraction": 0.03824,
+          "deduped_train_positions": 55296,
+          "deduped_test_positions": 14071,
+          "scrubbed_test_positions": 13645,
+          "scrub_cost_fraction": 0.030275
+        },
+        "placement": {
+          "unique_keys": 68939,
+          "duplicate_rows_total": 2016,
+          "keys_in_both_train_and_test": 427,
+          "test_rows_whose_key_also_appears_in_train": 545,
+          "leaked_test_fraction": 0.03831,
+          "deduped_train_positions": 55295,
+          "deduped_test_positions": 14071,
+          "scrubbed_test_positions": 13644,
+          "scrub_cost_fraction": 0.030346
+        }
+      }
+    },
+    "evenly_spaced_1_minply16": {
+      "description": "1 ply per game from ply 16 (the ~20k target)",
+      "positions_total": 18025,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 14410,
+      "positions_test": 3615,
+      "games_contributing": 18025,
+      "positions_per_game": {
+        "n": 18025,
+        "min": 1,
+        "max": 1,
+        "mean": 1.0,
+        "median": 1,
+        "p10": 1,
+        "p25": 1,
+        "p75": 1,
+        "p90": 1,
+        "p99": 1
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 0,
+        "placement": 0
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 594,
+        "middlegame": 12548,
+        "endgame": 4883
+      },
+      "phase_fractions": {
+        "opening": 0.033,
+        "middlegame": 0.6961,
+        "endgame": 0.2709
+      },
+      "side_to_move_counts": {
+        "white": 8735,
+        "black": 9290
+      },
+      "side_to_move_fractions": {
+        "white": 0.4846,
+        "black": 0.5154
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 18024,
+          "duplicate_rows_total": 1,
+          "keys_in_both_train_and_test": 1,
+          "test_rows_whose_key_also_appears_in_train": 1,
+          "leaked_test_fraction": 0.000277,
+          "deduped_train_positions": 14410,
+          "deduped_test_positions": 3615,
+          "scrubbed_test_positions": 3614,
+          "scrub_cost_fraction": 0.000277
+        },
+        "position": {
+          "unique_keys": 17994,
+          "duplicate_rows_total": 31,
+          "keys_in_both_train_and_test": 7,
+          "test_rows_whose_key_also_appears_in_train": 8,
+          "leaked_test_fraction": 0.002213,
+          "deduped_train_positions": 14388,
+          "deduped_test_positions": 3613,
+          "scrubbed_test_positions": 3606,
+          "scrub_cost_fraction": 0.001937
+        },
+        "placement": {
+          "unique_keys": 17994,
+          "duplicate_rows_total": 31,
+          "keys_in_both_train_and_test": 7,
+          "test_rows_whose_key_also_appears_in_train": 8,
+          "leaked_test_fraction": 0.002213,
+          "deduped_train_positions": 14388,
+          "deduped_test_positions": 3613,
+          "scrubbed_test_positions": 3606,
+          "scrub_cost_fraction": 0.001937
+        }
+      }
+    },
+    "evenly_spaced_2_minply16": {
+      "description": "<=2 evenly spaced plies per game from ply 16",
+      "positions_total": 35583,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 28450,
+      "positions_test": 7133,
+      "games_contributing": 18025,
+      "positions_per_game": {
+        "n": 18025,
+        "min": 1,
+        "max": 2,
+        "mean": 1.974,
+        "median": 2,
+        "p10": 2,
+        "p25": 2,
+        "p75": 2,
+        "p90": 2,
+        "p99": 2
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 3,
+        "placement": 3
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 18152,
+        "middlegame": 12548,
+        "endgame": 4883
+      },
+      "phase_fractions": {
+        "opening": 0.5101,
+        "middlegame": 0.3526,
+        "endgame": 0.1372
+      },
+      "side_to_move_counts": {
+        "white": 26293,
+        "black": 9290
+      },
+      "side_to_move_fractions": {
+        "white": 0.7389,
+        "black": 0.2611
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 35312,
+          "duplicate_rows_total": 271,
+          "keys_in_both_train_and_test": 68,
+          "test_rows_whose_key_also_appears_in_train": 73,
+          "leaked_test_fraction": 0.010234,
+          "deduped_train_positions": 28258,
+          "deduped_test_positions": 7122,
+          "scrubbed_test_positions": 7054,
+          "scrub_cost_fraction": 0.009548
+        },
+        "position": {
+          "unique_keys": 35211,
+          "duplicate_rows_total": 372,
+          "keys_in_both_train_and_test": 88,
+          "test_rows_whose_key_also_appears_in_train": 96,
+          "leaked_test_fraction": 0.013459,
+          "deduped_train_positions": 28183,
+          "deduped_test_positions": 7116,
+          "scrubbed_test_positions": 7028,
+          "scrub_cost_fraction": 0.012366
+        },
+        "placement": {
+          "unique_keys": 35211,
+          "duplicate_rows_total": 372,
+          "keys_in_both_train_and_test": 88,
+          "test_rows_whose_key_also_appears_in_train": 96,
+          "leaked_test_fraction": 0.013459,
+          "deduped_train_positions": 28183,
+          "deduped_test_positions": 7116,
+          "scrubbed_test_positions": 7028,
+          "scrub_cost_fraction": 0.012366
+        }
+      }
+    },
+    "evenly_spaced_3_minply16": {
+      "description": "<=3 evenly spaced plies per game from ply 16 (the ~50k target)",
+      "positions_total": 52567,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 42027,
+      "positions_test": 10540,
+      "games_contributing": 18025,
+      "positions_per_game": {
+        "n": 18025,
+        "min": 1,
+        "max": 3,
+        "mean": 2.916,
+        "median": 3,
+        "p10": 3,
+        "p25": 3,
+        "p75": 3,
+        "p90": 3,
+        "p99": 3
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 8,
+        "placement": 8
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 18452,
+        "middlegame": 28512,
+        "endgame": 5603
+      },
+      "phase_fractions": {
+        "opening": 0.351,
+        "middlegame": 0.5424,
+        "endgame": 0.1066
+      },
+      "side_to_move_counts": {
+        "white": 39173,
+        "black": 13394
+      },
+      "side_to_move_fractions": {
+        "white": 0.7452,
+        "black": 0.2548
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 52296,
+          "duplicate_rows_total": 271,
+          "keys_in_both_train_and_test": 68,
+          "test_rows_whose_key_also_appears_in_train": 73,
+          "leaked_test_fraction": 0.006926,
+          "deduped_train_positions": 41835,
+          "deduped_test_positions": 10529,
+          "scrubbed_test_positions": 10461,
+          "scrub_cost_fraction": 0.006458
+        },
+        "position": {
+          "unique_keys": 52190,
+          "duplicate_rows_total": 377,
+          "keys_in_both_train_and_test": 88,
+          "test_rows_whose_key_also_appears_in_train": 96,
+          "leaked_test_fraction": 0.009108,
+          "deduped_train_positions": 41757,
+          "deduped_test_positions": 10521,
+          "scrubbed_test_positions": 10433,
+          "scrub_cost_fraction": 0.008364
+        },
+        "placement": {
+          "unique_keys": 52190,
+          "duplicate_rows_total": 377,
+          "keys_in_both_train_and_test": 88,
+          "test_rows_whose_key_also_appears_in_train": 96,
+          "leaked_test_fraction": 0.009108,
+          "deduped_train_positions": 41757,
+          "deduped_test_positions": 10521,
+          "scrubbed_test_positions": 10433,
+          "scrub_cost_fraction": 0.008364
+        }
+      }
+    },
+    "evenly_spaced_4_minply16": {
+      "description": "<=4 evenly spaced plies per game from ply 16",
+      "positions_total": 68901,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 55082,
+      "positions_test": 13819,
+      "games_contributing": 18025,
+      "positions_per_game": {
+        "n": 18025,
+        "min": 1,
+        "max": 4,
+        "mean": 3.823,
+        "median": 4,
+        "p10": 4,
+        "p25": 4,
+        "p75": 4,
+        "p90": 4,
+        "p99": 4
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 7,
+        "placement": 7
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 18826,
+        "middlegame": 43096,
+        "endgame": 6979
+      },
+      "phase_fractions": {
+        "opening": 0.2732,
+        "middlegame": 0.6255,
+        "endgame": 0.1013
+      },
+      "side_to_move_counts": {
+        "white": 40553,
+        "black": 28348
+      },
+      "side_to_move_fractions": {
+        "white": 0.5886,
+        "black": 0.4114
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 68630,
+          "duplicate_rows_total": 271,
+          "keys_in_both_train_and_test": 68,
+          "test_rows_whose_key_also_appears_in_train": 73,
+          "leaked_test_fraction": 0.005283,
+          "deduped_train_positions": 54890,
+          "deduped_test_positions": 13808,
+          "scrubbed_test_positions": 13740,
+          "scrub_cost_fraction": 0.004925
+        },
+        "position": {
+          "unique_keys": 68525,
+          "duplicate_rows_total": 376,
+          "keys_in_both_train_and_test": 88,
+          "test_rows_whose_key_also_appears_in_train": 96,
+          "leaked_test_fraction": 0.006947,
+          "deduped_train_positions": 54813,
+          "deduped_test_positions": 13800,
+          "scrubbed_test_positions": 13712,
+          "scrub_cost_fraction": 0.006377
+        },
+        "placement": {
+          "unique_keys": 68525,
+          "duplicate_rows_total": 376,
+          "keys_in_both_train_and_test": 88,
+          "test_rows_whose_key_also_appears_in_train": 96,
+          "leaked_test_fraction": 0.006947,
+          "deduped_train_positions": 54813,
+          "deduped_test_positions": 13800,
+          "scrubbed_test_positions": 13712,
+          "scrub_cost_fraction": 0.006377
+        }
+      }
+    },
+    "evenly_spaced_4_minply20": {
+      "description": "<=4 evenly spaced plies per game from ply 20",
+      "positions_total": 66413,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 0,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 53078,
+      "positions_test": 13335,
+      "games_contributing": 17558,
+      "positions_per_game": {
+        "n": 17558,
+        "min": 1,
+        "max": 4,
+        "mean": 3.782,
+        "median": 4,
+        "p10": 3,
+        "p25": 4,
+        "p75": 4,
+        "p90": 4,
+        "p99": 4
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 20,
+        "placement": 20
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 17111,
+        "middlegame": 42140,
+        "endgame": 7162
+      },
+      "phase_fractions": {
+        "opening": 0.2576,
+        "middlegame": 0.6345,
+        "endgame": 0.1078
+      },
+      "side_to_move_counts": {
+        "white": 39220,
+        "black": 27193
+      },
+      "side_to_move_fractions": {
+        "white": 0.5905,
+        "black": 0.4095
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 66367,
+          "duplicate_rows_total": 46,
+          "keys_in_both_train_and_test": 14,
+          "test_rows_whose_key_also_appears_in_train": 15,
+          "leaked_test_fraction": 0.001125,
+          "deduped_train_positions": 53048,
+          "deduped_test_positions": 13333,
+          "scrubbed_test_positions": 13319,
+          "scrub_cost_fraction": 0.00105
+        },
+        "position": {
+          "unique_keys": 66306,
+          "duplicate_rows_total": 107,
+          "keys_in_both_train_and_test": 22,
+          "test_rows_whose_key_also_appears_in_train": 24,
+          "leaked_test_fraction": 0.0018,
+          "deduped_train_positions": 53001,
+          "deduped_test_positions": 13327,
+          "scrubbed_test_positions": 13305,
+          "scrub_cost_fraction": 0.001651
+        },
+        "placement": {
+          "unique_keys": 66306,
+          "duplicate_rows_total": 107,
+          "keys_in_both_train_and_test": 22,
+          "test_rows_whose_key_also_appears_in_train": 24,
+          "leaked_test_fraction": 0.0018,
+          "deduped_train_positions": 53001,
+          "deduped_test_positions": 13327,
+          "scrubbed_test_positions": 13305,
+          "scrub_cost_fraction": 0.001651
+        }
+      }
+    },
+    "evenly_spaced_6": {
+      "description": "<=6 evenly spaced plies per game from ply 12, min gap 4",
+      "positions_total": 102826,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 22,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 82190,
+      "positions_test": 20636,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 6,
+        "mean": 5.592,
+        "median": 6,
+        "p10": 4,
+        "p25": 6,
+        "p75": 6,
+        "p90": 6,
+        "p99": 6
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 31,
+        "placement": 31
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 27729,
+        "middlegame": 65676,
+        "endgame": 9421
+      },
+      "phase_fractions": {
+        "opening": 0.2697,
+        "middlegame": 0.6387,
+        "endgame": 0.0916
+      },
+      "side_to_move_counts": {
+        "black": 38796,
+        "white": 64030
+      },
+      "side_to_move_fractions": {
+        "black": 0.3773,
+        "white": 0.6227
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 101183,
+          "duplicate_rows_total": 1643,
+          "keys_in_both_train_and_test": 347,
+          "test_rows_whose_key_also_appears_in_train": 442,
+          "leaked_test_fraction": 0.021419,
+          "deduped_train_positions": 81016,
+          "deduped_test_positions": 20514,
+          "scrubbed_test_positions": 20167,
+          "scrub_cost_fraction": 0.016915
+        },
+        "position": {
+          "unique_keys": 100777,
+          "duplicate_rows_total": 2049,
+          "keys_in_both_train_and_test": 430,
+          "test_rows_whose_key_also_appears_in_train": 548,
+          "leaked_test_fraction": 0.026556,
+          "deduped_train_positions": 80732,
+          "deduped_test_positions": 20475,
+          "scrubbed_test_positions": 20045,
+          "scrub_cost_fraction": 0.021001
+        },
+        "placement": {
+          "unique_keys": 100776,
+          "duplicate_rows_total": 2050,
+          "keys_in_both_train_and_test": 430,
+          "test_rows_whose_key_also_appears_in_train": 548,
+          "leaked_test_fraction": 0.026556,
+          "deduped_train_positions": 80731,
+          "deduped_test_positions": 20475,
+          "scrubbed_test_positions": 20045,
+          "scrub_cost_fraction": 0.021001
+        }
+      }
+    },
+    "evenly_spaced_6_minply16": {
+      "description": "<=6 evenly spaced plies per game from ply 16",
+      "positions_total": 99124,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 0,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 1,
+          "suite_keys_in_selected_test": 1,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 79202,
+      "positions_test": 19922,
+      "games_contributing": 18025,
+      "positions_per_game": {
+        "n": 18025,
+        "min": 1,
+        "max": 6,
+        "mean": 5.499,
+        "median": 6,
+        "p10": 4,
+        "p25": 6,
+        "p75": 6,
+        "p90": 6,
+        "p99": 6
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 42,
+        "placement": 42
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 20111,
+        "middlegame": 69333,
+        "endgame": 9680
+      },
+      "phase_fractions": {
+        "opening": 0.2029,
+        "middlegame": 0.6995,
+        "endgame": 0.0977
+      },
+      "side_to_move_counts": {
+        "white": 61830,
+        "black": 37294
+      },
+      "side_to_move_fractions": {
+        "white": 0.6238,
+        "black": 0.3762
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 98845,
+          "duplicate_rows_total": 279,
+          "keys_in_both_train_and_test": 70,
+          "test_rows_whose_key_also_appears_in_train": 75,
+          "leaked_test_fraction": 0.003765,
+          "deduped_train_positions": 79005,
+          "deduped_test_positions": 19910,
+          "scrubbed_test_positions": 19840,
+          "scrub_cost_fraction": 0.003516
+        },
+        "position": {
+          "unique_keys": 98704,
+          "duplicate_rows_total": 420,
+          "keys_in_both_train_and_test": 90,
+          "test_rows_whose_key_also_appears_in_train": 98,
+          "leaked_test_fraction": 0.004919,
+          "deduped_train_positions": 78902,
+          "deduped_test_positions": 19892,
+          "scrubbed_test_positions": 19802,
+          "scrub_cost_fraction": 0.004524
+        },
+        "placement": {
+          "unique_keys": 98704,
+          "duplicate_rows_total": 420,
+          "keys_in_both_train_and_test": 90,
+          "test_rows_whose_key_also_appears_in_train": 98,
+          "leaked_test_fraction": 0.004919,
+          "deduped_train_positions": 78902,
+          "deduped_test_positions": 19892,
+          "scrubbed_test_positions": 19802,
+          "scrub_cost_fraction": 0.004524
+        }
+      }
+    },
+    "evenly_spaced_8": {
+      "description": "<=8 evenly spaced plies per game from ply 12, min gap 4",
+      "positions_total": 131239,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 22,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 104845,
+      "positions_test": 26394,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 8,
+        "mean": 7.137,
+        "median": 8,
+        "p10": 4,
+        "p25": 7,
+        "p75": 8,
+        "p90": 8,
+        "p99": 8
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 67,
+        "placement": 68
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 32548,
+        "middlegame": 86572,
+        "endgame": 12119
+      },
+      "phase_fractions": {
+        "opening": 0.248,
+        "middlegame": 0.6597,
+        "endgame": 0.0923
+      },
+      "side_to_move_counts": {
+        "black": 57288,
+        "white": 73951
+      },
+      "side_to_move_fractions": {
+        "black": 0.4365,
+        "white": 0.5635
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 129574,
+          "duplicate_rows_total": 1665,
+          "keys_in_both_train_and_test": 358,
+          "test_rows_whose_key_also_appears_in_train": 453,
+          "leaked_test_fraction": 0.017163,
+          "deduped_train_positions": 103660,
+          "deduped_test_positions": 26272,
+          "scrubbed_test_positions": 25914,
+          "scrub_cost_fraction": 0.013627
+        },
+        "position": {
+          "unique_keys": 129129,
+          "duplicate_rows_total": 2110,
+          "keys_in_both_train_and_test": 442,
+          "test_rows_whose_key_also_appears_in_train": 560,
+          "leaked_test_fraction": 0.021217,
+          "deduped_train_positions": 103350,
+          "deduped_test_positions": 26221,
+          "scrubbed_test_positions": 25779,
+          "scrub_cost_fraction": 0.016857
+        },
+        "placement": {
+          "unique_keys": 129127,
+          "duplicate_rows_total": 2112,
+          "keys_in_both_train_and_test": 442,
+          "test_rows_whose_key_also_appears_in_train": 560,
+          "leaked_test_fraction": 0.021217,
+          "deduped_train_positions": 103348,
+          "deduped_test_positions": 26221,
+          "scrubbed_test_positions": 25779,
+          "scrub_cost_fraction": 0.016857
+        }
+      }
+    },
+    "evenly_spaced_12": {
+      "description": "<=12 evenly spaced plies per game from ply 12, min gap 4",
+      "positions_total": 175669,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 22,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 140192,
+      "positions_test": 35477,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 12,
+        "mean": 9.553,
+        "median": 12,
+        "p10": 4,
+        "p25": 7,
+        "p75": 12,
+        "p90": 12,
+        "p99": 12
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 162,
+        "placement": 164
+      },
+      "selected_pairs_closer_than_min_gap": 0,
+      "phase_counts": {
+        "opening": 39634,
+        "middlegame": 118556,
+        "endgame": 17479
+      },
+      "phase_fractions": {
+        "opening": 0.2256,
+        "middlegame": 0.6749,
+        "endgame": 0.0995
+      },
+      "side_to_move_counts": {
+        "black": 74247,
+        "white": 101422
+      },
+      "side_to_move_fractions": {
+        "black": 0.4227,
+        "white": 0.5773
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 173943,
+          "duplicate_rows_total": 1726,
+          "keys_in_both_train_and_test": 368,
+          "test_rows_whose_key_also_appears_in_train": 464,
+          "leaked_test_fraction": 0.013079,
+          "deduped_train_positions": 138962,
+          "deduped_test_positions": 35349,
+          "scrubbed_test_positions": 34981,
+          "scrub_cost_fraction": 0.01041
+        },
+        "position": {
+          "unique_keys": 173388,
+          "duplicate_rows_total": 2281,
+          "keys_in_both_train_and_test": 455,
+          "test_rows_whose_key_also_appears_in_train": 574,
+          "leaked_test_fraction": 0.016179,
+          "deduped_train_positions": 138559,
+          "deduped_test_positions": 35284,
+          "scrubbed_test_positions": 34829,
+          "scrub_cost_fraction": 0.012895
+        },
+        "placement": {
+          "unique_keys": 173381,
+          "duplicate_rows_total": 2288,
+          "keys_in_both_train_and_test": 456,
+          "test_rows_whose_key_also_appears_in_train": 575,
+          "leaked_test_fraction": 0.016208,
+          "deduped_train_positions": 138554,
+          "deduped_test_positions": 35283,
+          "scrubbed_test_positions": 34827,
+          "scrub_cost_fraction": 0.012924
+        }
+      }
+    },
+    "phase_stratified_2": {
+      "description": "<=2 per phase bucket (opening/middlegame/endgame), from ply 12",
+      "positions_total": 79803,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 22,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 24,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 24,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 63751,
+      "positions_test": 16052,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 6,
+        "mean": 4.34,
+        "median": 4,
+        "p10": 4,
+        "p25": 4,
+        "p75": 5,
+        "p90": 6,
+        "p99": 6
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 3,
+        "placement": 3
+      },
+      "selected_pairs_closer_than_min_gap": 22314,
+      "phase_counts": {
+        "opening": 36413,
+        "middlegame": 34268,
+        "endgame": 9122
+      },
+      "phase_fractions": {
+        "opening": 0.4563,
+        "middlegame": 0.4294,
+        "endgame": 0.1143
+      },
+      "side_to_move_counts": {
+        "black": 30828,
+        "white": 48975
+      },
+      "side_to_move_fractions": {
+        "black": 0.3863,
+        "white": 0.6137
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 78103,
+          "duplicate_rows_total": 1700,
+          "keys_in_both_train_and_test": 362,
+          "test_rows_whose_key_also_appears_in_train": 459,
+          "leaked_test_fraction": 0.028595,
+          "deduped_train_positions": 62537,
+          "deduped_test_positions": 15928,
+          "scrubbed_test_positions": 15566,
+          "scrub_cost_fraction": 0.022727
+        },
+        "position": {
+          "unique_keys": 77710,
+          "duplicate_rows_total": 2093,
+          "keys_in_both_train_and_test": 448,
+          "test_rows_whose_key_also_appears_in_train": 568,
+          "leaked_test_fraction": 0.035385,
+          "deduped_train_positions": 62260,
+          "deduped_test_positions": 15898,
+          "scrubbed_test_positions": 15450,
+          "scrub_cost_fraction": 0.02818
+        },
+        "placement": {
+          "unique_keys": 77705,
+          "duplicate_rows_total": 2098,
+          "keys_in_both_train_and_test": 448,
+          "test_rows_whose_key_also_appears_in_train": 568,
+          "leaked_test_fraction": 0.035385,
+          "deduped_train_positions": 62255,
+          "deduped_test_positions": 15898,
+          "scrubbed_test_positions": 15450,
+          "scrub_cost_fraction": 0.02818
+        }
+      }
+    },
+    "phase_stratified_3": {
+      "description": "<=3 per phase bucket, from ply 12",
+      "positions_total": 117311,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 23,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 93708,
+      "positions_test": 23603,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 9,
+        "mean": 6.38,
+        "median": 6,
+        "p10": 5,
+        "p25": 6,
+        "p75": 7,
+        "p90": 9,
+        "p99": 9
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 21,
+        "placement": 22
+      },
+      "selected_pairs_closer_than_min_gap": 22314,
+      "phase_counts": {
+        "opening": 53971,
+        "middlegame": 50443,
+        "endgame": 12897
+      },
+      "phase_fractions": {
+        "opening": 0.4601,
+        "middlegame": 0.43,
+        "endgame": 0.1099
+      },
+      "side_to_move_counts": {
+        "black": 44853,
+        "white": 72458
+      },
+      "side_to_move_fractions": {
+        "black": 0.3823,
+        "white": 0.6177
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 115340,
+          "duplicate_rows_total": 1971,
+          "keys_in_both_train_and_test": 430,
+          "test_rows_whose_key_also_appears_in_train": 532,
+          "leaked_test_fraction": 0.02254,
+          "deduped_train_positions": 92302,
+          "deduped_test_positions": 23468,
+          "scrubbed_test_positions": 23038,
+          "scrub_cost_fraction": 0.018323
+        },
+        "position": {
+          "unique_keys": 114859,
+          "duplicate_rows_total": 2452,
+          "keys_in_both_train_and_test": 530,
+          "test_rows_whose_key_also_appears_in_train": 657,
+          "leaked_test_fraction": 0.027835,
+          "deduped_train_positions": 91956,
+          "deduped_test_positions": 23433,
+          "scrubbed_test_positions": 22903,
+          "scrub_cost_fraction": 0.022618
+        },
+        "placement": {
+          "unique_keys": 114853,
+          "duplicate_rows_total": 2458,
+          "keys_in_both_train_and_test": 530,
+          "test_rows_whose_key_also_appears_in_train": 657,
+          "leaked_test_fraction": 0.027835,
+          "deduped_train_positions": 91950,
+          "deduped_test_positions": 23433,
+          "scrubbed_test_positions": 22903,
+          "scrub_cost_fraction": 0.022618
+        }
+      }
+    },
+    "phase_stratified_4": {
+      "description": "<=4 per phase bucket, from ply 12",
+      "positions_total": 136040,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 23,
+          "suite_keys_in_selected_test": 19,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 25,
+          "suite_keys_in_selected_test": 22,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 108635,
+      "positions_test": 27405,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 11,
+        "mean": 7.398,
+        "median": 7,
+        "p10": 5,
+        "p25": 7,
+        "p75": 8,
+        "p90": 11,
+        "p99": 11
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 43,
+        "placement": 44
+      },
+      "selected_pairs_closer_than_min_gap": 22314,
+      "phase_counts": {
+        "opening": 53971,
+        "middlegame": 65784,
+        "endgame": 16285
+      },
+      "phase_fractions": {
+        "opening": 0.3967,
+        "middlegame": 0.4836,
+        "endgame": 0.1197
+      },
+      "side_to_move_counts": {
+        "black": 48048,
+        "white": 87992
+      },
+      "side_to_move_fractions": {
+        "black": 0.3532,
+        "white": 0.6468
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 134070,
+          "duplicate_rows_total": 1970,
+          "keys_in_both_train_and_test": 429,
+          "test_rows_whose_key_also_appears_in_train": 531,
+          "leaked_test_fraction": 0.019376,
+          "deduped_train_positions": 107229,
+          "deduped_test_positions": 27270,
+          "scrubbed_test_positions": 26841,
+          "scrub_cost_fraction": 0.015732
+        },
+        "position": {
+          "unique_keys": 133566,
+          "duplicate_rows_total": 2474,
+          "keys_in_both_train_and_test": 529,
+          "test_rows_whose_key_also_appears_in_train": 656,
+          "leaked_test_fraction": 0.023937,
+          "deduped_train_positions": 106864,
+          "deduped_test_positions": 27231,
+          "scrubbed_test_positions": 26702,
+          "scrub_cost_fraction": 0.019426
+        },
+        "placement": {
+          "unique_keys": 133559,
+          "duplicate_rows_total": 2481,
+          "keys_in_both_train_and_test": 529,
+          "test_rows_whose_key_also_appears_in_train": 656,
+          "leaked_test_fraction": 0.023937,
+          "deduped_train_positions": 106857,
+          "deduped_test_positions": 27231,
+          "scrubbed_test_positions": 26702,
+          "scrub_cost_fraction": 0.019426
+        }
+      }
+    },
+    "all_plies_from_12": {
+      "description": "every ply from 12 onward (upper bound, NOT a recommendation)",
+      "positions_total": 950044,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 29,
+          "suite_keys_in_selected_test": 21,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 32,
+          "suite_keys_in_selected_test": 24,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 32,
+          "suite_keys_in_selected_test": 24,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 757397,
+      "positions_test": 192647,
+      "games_contributing": 18388,
+      "positions_per_game": {
+        "n": 18388,
+        "min": 1,
+        "max": 338,
+        "mean": 51.667,
+        "median": 46,
+        "p10": 15,
+        "p25": 28,
+        "p75": 69,
+        "p90": 97,
+        "p99": 147
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 4144,
+        "placement": 4391
+      },
+      "selected_pairs_closer_than_min_gap": 931656,
+      "phase_counts": {
+        "opening": 162077,
+        "middlegame": 646373,
+        "endgame": 141594
+      },
+      "phase_fractions": {
+        "opening": 0.1706,
+        "middlegame": 0.6804,
+        "endgame": 0.149
+      },
+      "side_to_move_counts": {
+        "white": 479472,
+        "black": 470572
+      },
+      "side_to_move_fractions": {
+        "white": 0.5047,
+        "black": 0.4953
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 945469,
+          "duplicate_rows_total": 4575,
+          "keys_in_both_train_and_test": 1046,
+          "test_rows_whose_key_also_appears_in_train": 1260,
+          "leaked_test_fraction": 0.00654,
+          "deduped_train_positions": 754163,
+          "deduped_test_positions": 192352,
+          "scrubbed_test_positions": 191306,
+          "scrub_cost_fraction": 0.005438
+        },
+        "position": {
+          "unique_keys": 939932,
+          "duplicate_rows_total": 10112,
+          "keys_in_both_train_and_test": 1405,
+          "test_rows_whose_key_also_appears_in_train": 1690,
+          "leaked_test_fraction": 0.008773,
+          "deduped_train_positions": 749960,
+          "deduped_test_positions": 191377,
+          "scrubbed_test_positions": 189972,
+          "scrub_cost_fraction": 0.007342
+        },
+        "placement": {
+          "unique_keys": 939421,
+          "duplicate_rows_total": 10623,
+          "keys_in_both_train_and_test": 1486,
+          "test_rows_whose_key_also_appears_in_train": 1789,
+          "leaked_test_fraction": 0.009286,
+          "deduped_train_positions": 749599,
+          "deduped_test_positions": 191308,
+          "scrubbed_test_positions": 189822,
+          "scrub_cost_fraction": 0.007768
+        }
+      }
+    },
+    "all_plies": {
+      "description": "every ply of every game (absolute upper bound)",
+      "positions_total": 1156064,
+      "evaluation_suite_positions_selected": {
+        "exact": {
+          "suite_keys_in_selected_train": 128,
+          "suite_keys_in_selected_test": 108,
+          "suite_keys_total": 190
+        },
+        "position": {
+          "suite_keys_in_selected_train": 135,
+          "suite_keys_in_selected_test": 115,
+          "suite_keys_total": 190
+        },
+        "placement": {
+          "suite_keys_in_selected_train": 135,
+          "suite_keys_in_selected_test": 115,
+          "suite_keys_total": 185
+        }
+      },
+      "positions_train": 922186,
+      "positions_test": 233878,
+      "games_contributing": 18920,
+      "positions_per_game": {
+        "n": 18920,
+        "min": 1,
+        "max": 349,
+        "mean": 61.103,
+        "median": 56,
+        "p10": 23,
+        "p25": 38,
+        "p75": 79,
+        "p90": 107,
+        "p99": 157
+      },
+      "within_game_duplicate_rows": {
+        "exact": 0,
+        "position": 4162,
+        "placement": 4410
+      },
+      "selected_pairs_closer_than_min_gap": 1137144,
+      "phase_counts": {
+        "opening": 368097,
+        "middlegame": 646373,
+        "endgame": 141594
+      },
+      "phase_fractions": {
+        "opening": 0.3184,
+        "middlegame": 0.5591,
+        "endgame": 0.1225
+      },
+      "side_to_move_counts": {
+        "black": 582932,
+        "white": 573132
+      },
+      "side_to_move_fractions": {
+        "black": 0.5042,
+        "white": 0.4958
+      },
+      "leakage": {
+        "exact": {
+          "unique_keys": 1024317,
+          "duplicate_rows_total": 131747,
+          "keys_in_both_train_and_test": 8004,
+          "test_rows_whose_key_also_appears_in_train": 28920,
+          "leaked_test_fraction": 0.123654,
+          "deduped_train_positions": 819774,
+          "deduped_test_positions": 212547,
+          "scrubbed_test_positions": 204543,
+          "scrub_cost_fraction": 0.037658
+        },
+        "position": {
+          "unique_keys": 1014353,
+          "duplicate_rows_total": 141711,
+          "keys_in_both_train_and_test": 8549,
+          "test_rows_whose_key_also_appears_in_train": 30317,
+          "leaked_test_fraction": 0.129627,
+          "deduped_train_positions": 812115,
+          "deduped_test_positions": 210787,
+          "scrubbed_test_positions": 202238,
+          "scrub_cost_fraction": 0.040558
+        },
+        "placement": {
+          "unique_keys": 1013462,
+          "duplicate_rows_total": 142602,
+          "keys_in_both_train_and_test": 8673,
+          "test_rows_whose_key_also_appears_in_train": 30502,
+          "leaked_test_fraction": 0.130418,
+          "deduped_train_positions": 811466,
+          "deduped_test_positions": 210669,
+          "scrubbed_test_positions": 201996,
+          "scrub_cost_fraction": 0.041169
+        }
+      }
+    }
+  },
+  "evaluation_suite_overlap": {
+    "suite_position_counts": {
+      "extended": 160,
+      "phase0_52": 52
+    },
+    "exact": {
+      "suite_keys": 190,
+      "present_anywhere_in_games_csv": 130,
+      "fraction_anywhere": 0.684211,
+      "present_at_ply_12_or_later": 31,
+      "fraction_from_min_ply": 0.163158
+    },
+    "position": {
+      "suite_keys": 190,
+      "present_anywhere_in_games_csv": 138,
+      "fraction_anywhere": 0.726316,
+      "present_at_ply_12_or_later": 34,
+      "fraction_from_min_ply": 0.178947
+    },
+    "placement": {
+      "suite_keys": 185,
+      "present_anywhere_in_games_csv": 138,
+      "fraction_anywhere": 0.745946,
+      "present_at_ply_12_or_later": 34,
+      "fraction_from_min_ply": 0.183784
+    },
+    "dataset_v1_vs_suites": {
+      "exact": {
+        "overlapping_keys": 6,
+        "suite_keys": 190,
+        "fraction": 0.031579
+      },
+      "position": {
+        "overlapping_keys": 6,
+        "suite_keys": 190,
+        "fraction": 0.031579
+      },
+      "placement": {
+        "overlapping_keys": 6,
+        "suite_keys": 185,
+        "fraction": 0.032432
+      }
+    }
+  },
+  "dataset_v1": {
+    "records": 9667,
+    "distinct_game_ids": 9667,
+    "max_records_from_one_game": 1,
+    "one_position_per_game": true,
+    "distinct_exact_fens": 9667,
+    "distinct_positions_first_four_fields": 9662,
+    "distinct_placements": 9662,
+    "placements_appearing_more_than_once": 5,
+    "records_sharing_a_placement": 10,
+    "side_to_move_counts": {
+      "white": 9260,
+      "black": 407
+    },
+    "eval_type_counts": {
+      "cp": 9479,
+      "mate": 188
+    },
+    "plies_played": {
+      "n": 9667,
+      "min": 1,
+      "max": 20,
+      "mean": 19.42,
+      "median": 20,
+      "p10": 20,
+      "p25": 20,
+      "p75": 20,
+      "p90": 20,
+      "p99": 20
+    },
+    "label_stats": {
+      "min": -2000,
+      "max": 2000,
+      "mean": 76.361
+    }
+  },
+  "definitions": {
+    "exact": "board.fen(): placement, stm, castling, ep, halfmove, fullmove",
+    "position": "first four FEN fields (move counters dropped)",
+    "placement": "piece-placement field only - WHAT THE 12-PLANE MODEL SEES",
+    "phase_classifier": "endgame if piece_count <= 12; else opening if ply <= 20; else middlegame. Audit-only heuristic.",
+    "near_duplicate_ply_gap": 4,
+    "ply_0_excluded": "the initial position is never recorded"
+  }
+}
