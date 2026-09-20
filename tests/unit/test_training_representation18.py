@@ -205,10 +205,14 @@ def test_encode_many_stacks_in_order():
 
 def test_a3_is_the_only_eighteen_plane_arm():
     from training import train as T
-    assert sorted(T.ARMS) == ["A0", "A1", "A2", "A3"]
+    assert sorted(T.ARMS) == ["A0", "A1", "A13", "A2", "A3"]
     assert T.ARMS["A3"]["representation"] == "planes18"
     for arm in ("A0", "A1", "A2"):
         assert T.ARMS[arm]["representation"] == "planes12"
+    # A13 is 16 planes, so A3 remains the only 18-plane arm
+    assert T.ARMS["A13"]["representation"] == "planes16"
+    assert [a for a, spec in T.ARMS.items()
+            if spec["representation"] == "planes18"] == ["A3"]
 
 
 def test_a3_differs_from_a2_in_representation_only():
@@ -262,10 +266,20 @@ def test_engine_resolves_board_to_planes_through_the_module_global(monkeypatch):
 
 
 def test_shim_targets_the_unmodified_evaluator():
-    from training import evaluate18_runner as RUN
+    """The implementation moved to evaluate_planes_runner when A13 added a
+    16-plane arm; the mechanism is unchanged."""
+    from training import evaluate_planes_runner as RUN
     source = Path(RUN.__file__).read_text(encoding="utf-8")
     assert "from evaluation import evaluate as ev" in source
     assert "ev.main()" in source
+
+
+def test_eighteen_plane_entry_point_delegates_to_the_generic_shim():
+    """docs/C6_A3_REPORT.md documents `python -m training.evaluate18_runner`."""
+    from training import evaluate18_runner as OLD
+    from training import evaluate_planes_runner as RUN
+    assert OLD.REPRESENTATION == "planes18"
+    assert OLD._runner is RUN
 
 
 def test_run_suite_defaults_to_the_direct_evaluator_path():
@@ -276,4 +290,4 @@ def test_run_suite_defaults_to_the_direct_evaluator_path():
     assert sig.parameters["representation"].default == "planes12"
     source = inspect.getsource(EA.run_suite)
     assert 'evaluation" / "evaluate.py"' in source
-    assert "training.evaluate18_runner" in source
+    assert "training.evaluate_planes_runner" in source

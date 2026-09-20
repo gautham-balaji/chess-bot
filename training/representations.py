@@ -11,16 +11,19 @@ encoder module exposes the same surface:
 
 `planes12` is what A0, A1 and A2 used and is identical to `engine.board_to_planes`.
 `planes18` is the C6 representation from the audit's section K, used by A3.
+`planes16` is planes12 plus the four castling-right planes only, used by A13.
 """
 from __future__ import annotations
 
 from training import representation as _planes12
+from training import representation16 as _planes16
 from training import representation18 as _planes18
 
 PLANES12 = "planes12"
+PLANES16 = "planes16"
 PLANES18 = "planes18"
 
-REGISTRY = {PLANES12: _planes12, PLANES18: _planes18}
+REGISTRY = {PLANES12: _planes12, PLANES16: _planes16, PLANES18: _planes18}
 NAMES = tuple(REGISTRY)
 
 

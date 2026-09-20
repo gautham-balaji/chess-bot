@@ -81,21 +81,28 @@ def run_suite(models_dir: Path, suite: str, out_prefix: Path,
     `evaluation/evaluate.py` directly - the exact path every A0, A1 and A2 run
     used, and the one the existing tests pin.
 
-    An 18-plane arm cannot use that path: `engine.board_to_planes` hardcodes 12
-    channels, so the evaluator would raise a shape error. Those arms go through
-    `training/evaluate18_runner.py`, which imports the SAME unmodified evaluator
-    after rebinding that one encoder in-process. No file is modified either way.
+    Any arm with a different channel count cannot use that path:
+    `engine.board_to_planes` hardcodes 12 channels, so the evaluator would raise
+    a shape error. Those arms go through `training/evaluate_planes_runner.py`,
+    which imports the SAME unmodified evaluator after rebinding that one encoder
+    in-process. No file is modified either way.
+
+    The choice keys off the encoder's actual plane count rather than a hardcoded
+    name, so a future representation needs no change here.
     """
+    from training import representations as REPS
+
     env = dict(os.environ)
     env["CHESS_BOT_MODELS_DIR"] = str(models_dir)
     env.setdefault("PYTHONIOENCODING", "utf-8")
 
-    if representation == "planes18":
-        cmd = [sys.executable, "-m", "training.evaluate18_runner",
+    if REPS.get(representation).N_PLANES == 12:
+        cmd = [sys.executable, str(REPO_ROOT / "evaluation" / "evaluate.py"),
                "--dataset", str(SUITES[suite]),
                "--out-prefix", str(out_prefix)]
     else:
-        cmd = [sys.executable, str(REPO_ROOT / "evaluation" / "evaluate.py"),
+        cmd = [sys.executable, "-m", "training.evaluate_planes_runner",
+               "--representation", representation,
                "--dataset", str(SUITES[suite]),
                "--out-prefix", str(out_prefix)]
     print(f"  -> {suite}: {' '.join(cmd[-4:])}", flush=True)

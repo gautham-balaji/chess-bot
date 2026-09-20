@@ -51,20 +51,31 @@ os.chdir(REPO_ROOT)
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
 
 from training import dataset as D  # noqa: E402
-from training import representation18 as R18  # noqa: E402
+from training import representations as REPS  # noqa: E402
 
 EXP = REPO_ROOT / "training" / "experiments"
 OUT = EXP / "A3" / "plane_ablation.json"
 DATASET = REPO_ROOT / "training" / "artifacts" / "dataset_v1.jsonl"
 SEEDS = (0, 1, 2)
 
-# Plane groups to ablate, by channel index.
-GROUPS = {
-    "side_to_move": [12],
-    "castling": [13, 14, 15, 16],
-    "en_passant": [17],
-    "all_six_added": [12, 13, 14, 15, 16, 17],
+# Plane groups to ablate, by channel index, per representation. Indices differ
+# between representations because planes18 puts side-to-move at 12 and castling
+# at 13-16, while planes16 has no side-to-move plane and castling starts at 12.
+GROUPS_BY_REPRESENTATION = {
+    "planes18": {
+        "side_to_move": [12],
+        "castling": [13, 14, 15, 16],
+        "en_passant": [17],
+        "all_six_added": [12, 13, 14, 15, 16, 17],
+    },
+    # planes16 adds only castling, so one group covers everything added.
+    "planes16": {
+        "castling": [12, 13, 14, 15],
+    },
 }
+
+# Kept for backwards compatibility with the A3 report's documented behaviour.
+GROUPS = GROUPS_BY_REPRESENTATION["planes18"]
 
 
 def metrics(y_true, y_pred) -> dict:
@@ -75,8 +86,27 @@ def metrics(y_true, y_pred) -> dict:
             "pearson_r": round(r, 6)}
 
 
-def main() -> int:
+def main(argv=None) -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(
+        description="Zero each added plane group and measure the effect.")
+    ap.add_argument("--arm", default="A3")
+    ap.add_argument("--out", type=Path, default=None,
+                    help="default: training/experiments/<arm>/plane_ablation.json")
+    args = ap.parse_args(argv)
+
     import keras
+
+    from training import train as T
+
+    arm = args.arm
+    rep_name = T.ARMS[arm]["representation"]
+    rep = REPS.get(rep_name)
+    groups = GROUPS_BY_REPRESENTATION.get(rep_name)
+    if not groups:
+        raise SystemExit(f"ERROR: no ablation groups defined for {rep_name}")
+    out_path = args.out or (EXP / arm / "plane_ablation.json")
 
     records = D.load_records(DATASET)
     split = D.make_split(records)
@@ -84,24 +114,26 @@ def main() -> int:
     y = D.apply_label_policy(
         test_records, D.LABEL_POLICY_CORRECTED_MATE_WHITE).astype(np.float64)
 
-    X = R18.encode_many(r["fen"] for r in test_records)
-    print(f"held-out positions: {X.shape}")
+    X = rep.encode_many(r["fen"] for r in test_records)
+    print(f"arm {arm} / {rep_name}   held-out positions: {X.shape}")
 
-    out = {"stage": "C6-A3 plane ablation",
+    out = {"stage": f"C6-{arm} plane ablation",
+           "arm": arm,
+           "representation": rep_name,
            "status": "EXPLORATORY - not pre-registered",
            "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
            "n_positions": int(X.shape[0]),
            "ablation": "zero the plane group (a valid in-distribution value for "
                        "every added plane)",
-           "groups": {k: v for k, v in GROUPS.items()},
+           "groups": {k: v for k, v in groups.items()},
            "per_seed": {}}
 
     print(f"\n{'seed':6s}{'ablation':18s}{'MAE':>10s}{'dMAE':>9s}"
           f"{'pearson':>10s}{'d pearson':>11s}{'mean |dpred|':>14s}{'max |dpred|':>13s}")
 
-    summary = {g: [] for g in GROUPS}
+    summary = {g: [] for g in groups}
     for seed in SEEDS:
-        path = EXP / "A3" / f"seed_{seed}" / "models" / "cnn_model.keras"
+        path = EXP / arm / f"seed_{seed}" / "models" / "cnn_model.keras"
         if not path.is_file():
             print(f"  seed {seed}: MISSING {path}")
             continue
@@ -113,7 +145,7 @@ def main() -> int:
               f"{base['pearson_r']:10.4f}")
         row = {"baseline": base, "ablations": {}}
 
-        for name, channels in GROUPS.items():
+        for name, channels in groups.items():
             X_ab = X.copy()
             X_ab[:, :, :, channels] = 0.0
             pred = model.predict(X_ab, verbose=0, batch_size=512).reshape(-1).astype(np.float64)
@@ -147,18 +179,24 @@ def main() -> int:
             print(f"  {name:18s} {[round(v, 2) for v in vals]}   mean {st.fmean(vals):8.2f} cp")
 
     if out["summary"]:
-        used = out["summary"]["all_six_added"]["mean"]
+        total_key = next(k for k in ("all_six_added", "all_four_added", "castling")
+                         if k in out["summary"])
+        used = out["summary"][total_key]["mean"]
         out["model_uses_added_planes"] = bool(used > 1.0)
         out["verdict"] = (
             f"the added planes DO affect predictions (mean |change| {used:.1f} cp "
-            f"when all six are zeroed)"
+            f"when {total_key.replace('_', ' ')} is zeroed)"
             if used > 1.0 else
             f"the added planes are effectively IGNORED (mean |change| {used:.1f} cp)")
         print(f"\n  {out['verdict']}")
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
-    print(f"\nWROTE {OUT.relative_to(REPO_ROOT).as_posix()}")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
+    try:
+        shown = out_path.resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        shown = str(out_path.resolve().as_posix())
+    print(f"\nWROTE {shown}")
     return 0
 
 

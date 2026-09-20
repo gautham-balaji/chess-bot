@@ -112,6 +112,16 @@ ARMS = {
             "en passant). Differs from A2 ONLY in representation"
         ),
     },
+    "A13": {
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+        "representation": "planes16",
+        "description": (
+            "castling rights only: A2's labels unchanged, board encoding "
+            "extended by the four castling planes and NOTHING else. Isolates "
+            "the one component of A3's addition that had measured signal. "
+            "Differs from A2 ONLY in representation"
+        ),
+    },
 }
 
 
