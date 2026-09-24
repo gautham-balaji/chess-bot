@@ -87,6 +87,21 @@ ARMS = {
             "A2 ONLY in the dataset - in both its SIZE and its COMPOSITION"
         ),
     },
+    "C8b": {
+        "dataset_prefix": "training/artifacts/dataset_v2_k6",
+        "label_policy": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+        "representation": "planes12",
+        "description": (
+            "dataset SCALING: identical in every respect to C8a - same "
+            "architecture, representation, label policy, recipe, seeds, fusion "
+            "and evaluator - except that the training data is dataset_v2_k6 "
+            "(evenly_spaced_6_minply16, 78,901 train / 19,802 test) instead of "
+            "dataset_v2 (evenly_spaced_4_minply16, 54,812 / 13,712). Both come "
+            "from the SAME game-level split, so C8a's and C8b's train games are "
+            "the same games sampled more densely. Differs from C8a ONLY in "
+            "positions-per-game - which changes size AND composition"
+        ),
+    },
 }
 
 
@@ -346,14 +361,16 @@ def main(argv=None) -> int:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--arm", default="C8a", choices=sorted(ARMS))
     ap.add_argument("--seed", type=int, required=True)
-    ap.add_argument("--dataset-prefix", type=Path, default=DEFAULT_PREFIX)
+    ap.add_argument("--dataset-prefix", type=Path, default=None,
+                    help="override the arm's own dataset (smoke runs only)")
     ap.add_argument("--out-root", type=Path, default=EXPERIMENTS_DIR)
     ap.add_argument("--max-epochs", type=int, default=None,
                     help="override the epoch cap (smoke runs only)")
     ap.add_argument("--no-op-determinism", action="store_true")
     args = ap.parse_args(argv)
 
-    run(args.arm, args.seed, args.dataset_prefix, args.out_root,
+    prefix = args.dataset_prefix or (REPO_ROOT / ARMS[args.arm]["dataset_prefix"])
+    run(args.arm, args.seed, prefix, args.out_root,
         op_determinism=not args.no_op_determinism, max_epochs=args.max_epochs)
     return 0
 

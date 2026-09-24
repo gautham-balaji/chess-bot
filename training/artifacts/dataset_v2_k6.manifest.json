@@ -1,0 +1,350 @@
+{
+  "pipeline_version": "c8-1",
+  "dataset_name": "dataset_v2_k6",
+  "purpose": "C8 training dataset. Changes ONLY which positions are used: the architecture, representation, label policy, evaluator, Ridge and every production file are untouched.",
+  "generated_at_utc": "2026-09-24T08:12:32+00:00",
+  "generation_seconds": 775.1,
+  "timestamp_note": "generated_at_utc and generation_seconds are informational only and are NOT inputs to any hash in this manifest.",
+  "source": {
+    "filename": "games.csv",
+    "sha256": "e7aadff104a610afb5403caf81c1461babecb0dc87760ff5eea7dc0e7a4a8129",
+    "size_bytes": 7672655,
+    "row_count": 20058,
+    "matches_audited_identity": true
+  },
+  "game_split": {
+    "split_unit": "game move-sequence content (sha256 of the moves string)",
+    "why_not_id": "813 ids appear on multiple rows (verified exact duplicates) and 50 move sequences are filed under 243 different ids; keying on id would let identical content straddle the split",
+    "split_seed": 42,
+    "test_fraction": 0.2,
+    "row_order_invariant": true,
+    "n_rows": 20058,
+    "n_game_units": 18920,
+    "n_train_units": 15136,
+    "n_test_units": 3784,
+    "train_units_intersect_test_units": 0,
+    "game_list_sha256": "b90881bf3c6245ba3634800da8879ccf8ecb9a64fb41f5116c5439983dc64e62",
+    "train_game_sha256": "cb1308d9af1ee45709f272492c0a22a02b8e7026f055d8ff43e1d81f881c19fb",
+    "test_game_sha256": "d8632c3ac89be36bced244f4370eec09c3c80b2e6a0fe841f62ca67df97809f3"
+  },
+  "extraction": {
+    "policy": "evenly_spaced_6_minply16",
+    "min_ply": 16,
+    "max_positions_per_game": 6,
+    "min_gap_plies": 4,
+    "sampling_seed": null,
+    "uses_rng": false,
+    "description": "at most 6 positions per game, evenly spaced from ply 16 to the final ply, never closer than 4 plies apart; closed-form, no RNG",
+    "one_canonical_row_per_game_unit": true,
+    "record_order": "sorted by (game_content_key, ply)",
+    "selected_counts": {
+      "train": 79202,
+      "test": 19922,
+      "total": 99124
+    }
+  },
+  "deduplication": {
+    "level": "fen piece-placement field",
+    "rationale": "the 12-plane encoder reads only piece squares, so identical placements are identical CNN inputs",
+    "train": {
+      "level": "fen piece-placement field",
+      "input_rows": 79202,
+      "unique_placements": 78902,
+      "duplicate_rows_removed": 300
+    },
+    "test": {
+      "level": "fen piece-placement field",
+      "input_rows": 19922,
+      "unique_placements": 19892,
+      "duplicate_rows_removed": 30
+    }
+  },
+  "leakage_scrub": {
+    "train_test_overlap_placements": 90,
+    "reason": "placement also present in the train split",
+    "records_removed": 90,
+    "distinct_placements_removed": 90,
+    "removed_placement_sha256": [
+      "0154e70ec3e6bde1ec924919318479b13893d07182ef7b598971a654cc38adf9",
+      "0571a9908ea348db3dcd6fd281512c04b642ea8436fb629cd50809fcb1fff58b",
+      "0a0f68126a9f949ec8392930c4c959bb2a6694c7384963d925b54645c5a685c0",
+      "11c266f47f0efca3fcf260979dcaf1ea1f575596b7a70e622b508d72571f21c1",
+      "137778831ad68127c239f779c4f2ba5185174339b97c213ce195dc046ea9e806",
+      "16fa4710888412f4fc80b2d773e109eba3ba5e40f8dda7be8cadc518f28d0b42",
+      "1aaa8f3401a1107db214ef06d5794a40ece1d27b3472ca8360c85ba8d8dd71a0",
+      "1bf8e5f48ddde46889639842985a5a0ceaacd15ba1aae85b8cb606fd276ecb2c",
+      "20405fef3f55d1285831d8be4876f28c1088d5c7fc560ee67d7d8b1a1019a54f",
+      "215b31f65556e8a1d44ac32fe8fd3ea15cde84ad850184f2547c111c9b18a34d",
+      "28a1b2292267ed1539f991fd18c4da20a5bbd65a9dbdfe5a755752fdfcf42cd7",
+      "2c481e623a3d69881fd07882d1976734e2356e989de9b2b99fe23a3e4919b8b7",
+      "2cbc136ea1b225e67a0a0e58aef8d3f446ebd1fc80484f07756598c1812104d4",
+      "30206b2f08b8bb8bbb295556d3acb5cfb2c305cc589f5f75d2dd6ee6188060ab",
+      "32243751d06468f8b4fd77771a72d73a915ee4832423e44789d0d2b8a7859e2c",
+      "36b630d5e2fdd0222507aff17bc85eeeb3c466178d729258ba397c68f3351cc7",
+      "38ea866c5c11977a3397cc326fab486717c67c63c5eca80334e64b4641fcb407",
+      "395169ba664ef1e028e375f13aa6e96506fb8183307189dd51355b22a793e09c",
+      "45078af2458462856c0146047107d6ac0d4d6eac57e40c0049665354d578924a",
+      "45a8a6b2732bc2c90aad10e7564fa99e4a0df8909bd5c0c42d9bdb860d12009d",
+      "4605a6198e136a753baba47c79228ff259dd9c1db56d6e2882dd35739ed3923e",
+      "468b413ef79cdaed601fe77f0c4ed0517d6f54e806648c68afebd06e4ce3ca7e",
+      "46d767ab12cbc35ffb029c9939b46f4a801d66572b2e4bba7c4832d0a072b7a5",
+      "48ae376cd88747a21a378815f54dbf625a8375b7c5035d302fb55ad88065ac46",
+      "492105cc19f116324b713713851aefe7f45802fb26c14f441f819065f9775cb7",
+      "495ad85393bf49e7b3175fa15fb8c8225cb50ff88bb24f80baae42d0c62b6e10",
+      "4b376124a87adf14f03111070da43e53c88a04d711b0c09e9298fced360eeabf",
+      "4c4b7f71e155a67d270d651e24b62b7399f30874529cf5cccb78b68cf5d16759",
+      "4d80123283fd19c2e96e00a62a902496458e13eef6bb035cad9c823750b9dbb3",
+      "56e19eb06b7a85653eda5adad6dcba9c9cde189ab532535b95911807a831518f",
+      "56f2a0050f97e89937566960439a3f6de63a13b5ca169e8ce1013334bc20612f",
+      "6544458428b260cd72255283f48caf6530289a98264a1fe263abbc203223b6ee",
+      "66dfb90b853a5e91eb02b057b5aa1fc71db9f64e47a68fca0c3781f16bc82f89",
+      "680137bee7625fbaafdc7153a265027f4497114270251c47425b78ff02029da9",
+      "6ce41933f6691f8d2b2b3a5e316de47a43888eaff873d02b18aac638151828e5",
+      "6ff781f4395178c20dea43626431a6db56ee4700c803c364448d1c6252efa978",
+      "716dcdeed35e15ec8465c5255a0f3100840f152f7e92c0a7d5ecd07e664a5acc",
+      "73dda30144e5288df2c4b45fcec96ab62aa5cef69cfa5a28dae057df3be0656d",
+      "75df607a0acf2f74b4264a8996b25b1d792dc2d3e4bc88b31695430423571d21",
+      "7ac21d382a2d02962e2143f9815cedea916642a0f109c7bb53e303c779defd18",
+      "7f7935b282fb74e760a221d406fa486f5c22194a0875179902a463ec8ee6f493",
+      "83f056c0dd6f4aadf6d45c740640938825baa47336b599750a38bd51015e8047",
+      "8499d3c43375ff1ad8b1aa41810e865a4fc2c3eb2189ab6d539ec6cf9c4bf386",
+      "86f281591af084b5186936280e0eb4fc4c818be6a7408ce5381207b09a39f423",
+      "886878137ef7953952d2922a1ddb9f268d5ffc8a4975a9482a00f705a75227fb",
+      "89b4e7405db21724f705ba90abd6d9396f7e5b98c66c345fa2e91d8aea4e1993",
+      "8b600063ad8e34e41054286f8fea4413fc8272605cec5f76c5e19748b782de31",
+      "8da9766dcafb2cd58fc94dda3bf6663034a1e75338bca7230ab21d5f0705f25b",
+      "8e0f7e8e255c92f9528ef2f6122c4de8ab4d146a639ac5aeb90e7c730a16e732",
+      "91e2e3364c82e7397a95323027f1bf37afaf859f222baae71be93812206f3746",
+      "91e63a2ea264a5a94c09a1575ff2c79f3e8390916ae31bd49212f1202d79d7f8",
+      "93e0f86b9bdb1622fd0e589d8634e5ff052d36893dfc1169c2edef727e4e02a6",
+      "9b3d2ab2d8211e207dfecd324b99debc8c77ef29e84acc17e619236568ad4f31",
+      "9dcc042d05c3ad20e2d003472b9a1ef2dc074134fbbf0dc21e30337121d789f5",
+      "9f8b95cdfacfdab4671be1d5028e4a6a7f832b69a00dac049c0057060abeb841",
+      "a4e44e22bb7d7f4a5bc64f831b08864efe6b9284d13828773b9b7c8a22fa57bb",
+      "a5d4d19392e1379b82111457084616ca3cf1efc2dbf775d333e7eedfa630c496",
+      "a6b2055b2676e095dc66284a4d2970d3eae366ced734f77a1d3f2dd993c74f6d",
+      "ab0e99e2871b1ffeba10093f654ddecbcff2b0ed4c6c6a51fc07080c97abea53",
+      "ada1b3eb2a72ea11dfa2b3133fad726c7dd9d3a6c693467827c889adc4db48ca",
+      "b26b811c21b5b8d78c3b1e5804b7441dcccfb894a12ec94cc9c41d0b82008ec0",
+      "b3f50fdefcc49caa6c5430c340f62c517b17c3de6d7067b839638ce83be5a527",
+      "b4d4d39b28608937edfbddda373ad778bf79f95e35cd83c75c8626aa44d4dccf",
+      "b585769bd2c4e6c923390ad00921970e19d1510ad5771cf1fbddde0a7e6874e4",
+      "b591c48c6cadeb1d220871a37ad8a949ecaf5c2ae40dca51b1f603d8a53a9200",
+      "b7e3500d77f0605cc9b6b27b056b1bbcb5a4e6c6c9ae42c325d60f5cbbe9affa",
+      "b804a16b1f9321456fad3b05c9be18bdbf31b13ede6c63c601ad0f89aa8def4a",
+      "be54c43a40ad5827d4afaab04d8d3eddd8a1471e40eb8b33c0f36282b6bd411e",
+      "be668b1e077e51f625b12f8337946edf4fe5835ba919d84fc42065b846d8f281",
+      "bf3c1f4dd55598ac7f8159c2c62350cc44ffed95ba05c4284160981ce21b3d1f",
+      "c0c2cbaab3e53cbd63445c05f89bf07aee4931f4910f5bb56d374b783b16a8fa",
+      "c337d43297c794acf3d929d778789e1d731bf302693ed767457617514da317ee",
+      "c765014e4cfcba6118230d9c788cdebcda5cc250237f33be5528742f1996fdb2",
+      "c8524b086144eaf02931ecfa91b0ec9d8b69b61a3bc31097b4e7c14366b35d54",
+      "c8e1103f6632c8e8d2d76d32ce8541e725cc98b995f0c6f305c2226bc82e4647",
+      "c92554ddbfc38d1caad9b92946d90d14a0c2903994c14564850217def3e7b7af",
+      "cd998a563fb03c2bfe7730d9c3e6d546b17cd39873206c720435992276360eb6",
+      "cfd4f3644a7497a5da886623bcb484d8b9def75ae5292f93939289bccc4e49b4",
+      "d1f0efd08ab590ecb935afd99d7f4f6bebf162061ed0ccfe91049e2ce20584aa",
+      "d51d026a08c7b0288a331520a8644cfa5442fd6c8ebd418391ec54350cbc92d4",
+      "d6906e008c5ece518e2527dacc042e71098e5eeb39a8c815853501d36b2e00b7",
+      "e31def08c068801fb52eeb4ad520ca9413df9502cab5cb35147f462f167b0be1",
+      "ec41312d7a2eca191c66d398c5b7d51485dcd5d9f9ee36edfef550ba9be41a07",
+      "ed60bcff1b323b72c7275d799b3b600b6b45952078632eaadce578c1bbacb483",
+      "ef145c65b217f5db6712cda6fc954148bbaf4c17aab5f1adc4058a8078f6f466",
+      "ef985bd8d94d9c0a7964c8042fd2441e2afc8905243144643e17e0f7d73e01df",
+      "f46fdfe41838acf2cd9401d52899f8543905a259711662ad41284ebfa6579e56",
+      "f78a77b6eb2f63ad1962b0f2e811960cb73cde060e414836c206f71dbce156c6",
+      "f7d71c00b32ab706e0d70e14fea95554aef82cb3b1899fe2939839d060950e9b",
+      "f7f439fee2e7d86c6dd5bb3fef73b31c9583c5acb95e8d1cca36386152a5dd63"
+    ],
+    "policy": "remove from TEST only; the train split is never reduced to resolve train/test overlap",
+    "final_train_test_placement_overlap": 0
+  },
+  "evaluation_suite_scrub": {
+    "suites": {
+      "extended": 160,
+      "phase0_52": 52
+    },
+    "distinct_suite_placements": 185,
+    "train": {
+      "reason": "placement appears in an evaluation suite",
+      "records_removed": 1,
+      "distinct_placements_removed": 1,
+      "removed_placement_sha256": [
+        "492105cc19f116324b713713851aefe7f45802fb26c14f441f819065f9775cb7"
+      ]
+    },
+    "test": {
+      "reason": "placement appears in an evaluation suite",
+      "records_removed": 0,
+      "distinct_placements_removed": 0,
+      "removed_placement_sha256": []
+    },
+    "final_suite_overlap_train": 0,
+    "final_suite_overlap_test": 0,
+    "suites_modified": false
+  },
+  "final": {
+    "train": {
+      "records": 78901,
+      "distinct_games": 14410,
+      "side_to_move_counts": {
+        "white": 49142,
+        "black": 29759
+      },
+      "phase_counts": {
+        "opening": 15844,
+        "middlegame": 55411,
+        "endgame": 7646
+      },
+      "eval_type_counts": {
+        "cp": 72981,
+        "mate": 5920
+      },
+      "clipped": 2,
+      "checkmate_positions": 4658,
+      "ply": {
+        "min": 16,
+        "max": 349,
+        "mean": 41.614
+      },
+      "piece_count": {
+        "min": 2,
+        "max": 32
+      },
+      "label": {
+        "min": -2000,
+        "max": 2000,
+        "mean": 37.738
+      }
+    },
+    "test": {
+      "records": 19802,
+      "distinct_games": 3614,
+      "side_to_move_counts": {
+        "white": 12310,
+        "black": 7492
+      },
+      "phase_counts": {
+        "opening": 3919,
+        "middlegame": 13881,
+        "endgame": 2002
+      },
+      "eval_type_counts": {
+        "cp": 18359,
+        "mate": 1443
+      },
+      "clipped": 0,
+      "checkmate_positions": 1129,
+      "ply": {
+        "min": 16,
+        "max": 255,
+        "mean": 42.006
+      },
+      "piece_count": {
+        "min": 2,
+        "max": 32
+      },
+      "label": {
+        "min": -2000,
+        "max": 2000,
+        "mean": 37.335
+      }
+    },
+    "total_records": 98703
+  },
+  "labels": {
+    "label_perspective": "white",
+    "cp_policy": "raw Stockfish centipawns, side-to-move-relative, converted to White-positive, then clipped",
+    "mate_policy": "magnitude = 2000 - 10 * min(|mate_distance|, 49); signed so that positive means White wins. Monotonic in mate distance and strictly above the centipawn clip bound.",
+    "mate_zero_policy": "mate == 0 means the SIDE TO MOVE is checkmated and has lost; the sign is taken from the side to move, not from the value, because zero carries no sign. Magnitude is the maximum (2000).",
+    "clip_bounds": [
+      -1500,
+      1500
+    ],
+    "clip_applies_to": "cp labels only; mate labels are never clipped",
+    "ordering": "mate mapping -> perspective normalisation -> clipping (cp only)",
+    "mate_score_base": 2000,
+    "mate_score_step": 10,
+    "mate_max_distance": 49,
+    "policy_name": "corrected_mate_white_perspective",
+    "policy_source": "training/labels.py (unmodified)",
+    "cp_clip_used": 1500,
+    "counts": {
+      "eval_type_cp": 91340,
+      "eval_type_mate": 7363,
+      "clipped": 2
+    },
+    "anomalies": [],
+    "skipped": false,
+    "train_label_sha256": "ece1145b13354727bd66d571136f9209b77172bd89c5d4ce93e1db8e6c689b68",
+    "test_label_sha256": "bd5fc8d92b1e108f80cc43e7a544744529222d84399cac492d04c3737e3216c1"
+  },
+  "stockfish": {
+    "version": "Stockfish 17.1 by the Stockfish developers (see AUTHORS file)",
+    "wrapper_package": "stockfish",
+    "wrapper_version": "4.0.8",
+    "depth": 8,
+    "threads": 1,
+    "hash_mb": 16,
+    "clear_hash_per_position": true,
+    "turn_perspective_used": "True (native side-to-move relative); converted to White-positive in training/labels.py"
+  },
+  "artifact": {
+    "train_file": "dataset_v2_k6.train.jsonl",
+    "test_file": "dataset_v2_k6.test.jsonl",
+    "train_sha256": "86bc32e1721675cb6f95605b845ee841b611dd6d46cc6d749895be3bffc4e9be",
+    "test_sha256": "811e2b63a1dc77e45f7640d475ae599615229aab5b05e37d32d46f9d43fb67bd",
+    "records_format": "JSON Lines (one position per line, UTF-8, LF)",
+    "record_keys": [
+      "game_content_key",
+      "game_id",
+      "source_row_index",
+      "ply",
+      "fen",
+      "placement",
+      "side_to_move",
+      "piece_count",
+      "phase",
+      "plies_in_game",
+      "is_checkmate",
+      "is_stalemate",
+      "is_game_over",
+      "legal_move_count",
+      "eval_type",
+      "raw_stockfish_value",
+      "raw_value_perspective",
+      "label",
+      "label_perspective",
+      "was_clipped",
+      "mate_zero_consistent"
+    ]
+  },
+  "c7_expected": {
+    "game_units": 18920,
+    "train_units": 15136,
+    "test_units": 3784,
+    "selected_total": 99124,
+    "selected_train": 79202,
+    "selected_test": 19922,
+    "deduped_train": 78902,
+    "deduped_test": 19892,
+    "train_test_overlap_placements": 90,
+    "final_test": 19802,
+    "game_list_sha256": "b90881bf3c6245ba3634800da8879ccf8ecb9a64fb41f5116c5439983dc64e62",
+    "train_game_sha256": "cb1308d9af1ee45709f272492c0a22a02b8e7026f055d8ff43e1d81f881c19fb",
+    "test_game_sha256": "d8632c3ac89be36bced244f4370eec09c3c80b2e6a0fe841f62ca67df97809f3"
+  },
+  "reproducibility": {
+    "python_version": "3.12.10",
+    "platform": "Windows 11 AMD64",
+    "packages": {
+      "pandas": "2.3.3",
+      "python-chess": "1.11.2",
+      "stockfish": "4.0.8",
+      "numpy": "2.4.3"
+    },
+    "git_commit": "941bd4d59c6f8883a39559b1737865a58b676aaa",
+    "git_dirty": true,
+    "determinism": "Deterministic for a fixed games.csv, Stockfish binary/version, configuration and pipeline version. The extraction policy uses no RNG; the only seed is the game split seed."
+  }
+}

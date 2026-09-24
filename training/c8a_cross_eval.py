@@ -75,6 +75,12 @@ def load_v2_test() -> list[dict]:
     return D.load_records(ARTIFACTS / "dataset_v2.test.jsonl")
 
 
+def load_v2_k6_test() -> list[dict]:
+    """C8b's held-out split. Same game-level split as dataset_v2's, sampled more
+    densely, so it is a superset in games but not in positions."""
+    return D.load_records(ARTIFACTS / "dataset_v2_k6.test.jsonl")
+
+
 def annotate(records: list[dict]) -> dict:
     """Per-record side to move and phase, derived identically for both sets."""
     stm, phase, mated = [], [], []
@@ -105,15 +111,19 @@ def metrics(y, p) -> dict:
 def main(argv=None) -> int:
     import argparse
     ap = argparse.ArgumentParser(description="Score every arm on both held-out sets.")
-    ap.add_argument("--arms", nargs="+", default=["A2", "C8a"])
+    ap.add_argument("--arms", nargs="+", default=["A2", "C8a", "C8b"])
     ap.add_argument("--out", type=Path, default=OUT)
     args = ap.parse_args(argv)
 
     import keras
 
+    loaders = [("dataset_v1_test", load_v1_test),
+               ("dataset_v2_test", load_v2_test)]
+    if (ARTIFACTS / "dataset_v2_k6.test.jsonl").is_file():
+        loaders.append(("dataset_v2_k6_test", load_v2_k6_test))
+
     sets = {}
-    for name, loader in (("dataset_v1_test", load_v1_test),
-                         ("dataset_v2_test", load_v2_test)):
+    for name, loader in loaders:
         records = loader()
         y = D.apply_label_policy(records, POLICY)
         X = R.encode_many(r["fen"] for r in records)
@@ -198,7 +208,11 @@ def main(argv=None) -> int:
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
-    print(f"\nWROTE {args.out.relative_to(REPO_ROOT).as_posix()}")
+    try:
+        shown = args.out.resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:          # an --out outside the repo, e.g. a scratch dir
+        shown = str(args.out.resolve().as_posix())
+    print(f"\nWROTE {shown}")
     return 0
 
 

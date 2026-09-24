@@ -47,10 +47,12 @@ def test_c8a_is_registered_with_a2s_label_policy_and_representation():
     assert spec["dataset_prefix"] == "training/artifacts/dataset_v2"
 
 
-def test_c8a_is_the_only_arm_here_and_is_absent_from_train_arms():
-    """C8a must not leak into train.ARMS, whose roster other tests pin."""
-    assert sorted(V2.ARMS) == ["C8a"]
-    assert "C8a" not in T.ARMS
+def test_dataset_arms_live_here_and_never_leak_into_train_arms():
+    """The dataset arms must not leak into train.ARMS, whose roster other tests
+    pin, and train.py must stay unaware of them."""
+    assert sorted(V2.ARMS) == ["C8a", "C8b"]
+    for arm in V2.ARMS:
+        assert arm not in T.ARMS
 
 
 def test_c8a_uses_the_same_label_policy_as_a2():

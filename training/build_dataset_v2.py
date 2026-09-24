@@ -85,28 +85,14 @@ DEFAULT_OUT = REPO_ROOT / "training" / "artifacts" / "dataset_v2"
 SUITE_FILES = ("extended", "phase0_52")
 
 # --- the C7 decision, implemented verbatim -----------------------------------
+# The game split is a property of games.csv and the split seed, NOT of the
+# extraction policy, so every policy below shares it byte-for-byte.
 SPLIT_SEED = 42
 TEST_FRACTION = 0.20
-POLICY_NAME = "evenly_spaced_4_minply16"
-MIN_PLY = 16
-MAX_PER_GAME = 4
 MIN_GAP = 4
-SAMPLING_SEED = None          # the policy is closed-form; there is no RNG
+SAMPLING_SEED = None          # the policies are closed-form; there is no RNG
 
-# Counts C7 measured for this exact policy. Recorded in the manifest and checked
-# by --expect so a silent drift in pandas, python-chess or the source file is
-# caught at build time rather than in the C8 results.
-C7_EXPECTED = {
-    "game_units": 18920,
-    "train_units": 15136,
-    "test_units": 3784,
-    "selected_total": 68901,
-    "selected_train": 55082,
-    "selected_test": 13819,
-    "deduped_train": 54813,
-    "deduped_test": 13800,
-    "train_test_overlap_placements": 88,
-    "final_test": 13712,
+SPLIT_HASHES = {
     "game_list_sha256":
         "b90881bf3c6245ba3634800da8879ccf8ecb9a64fb41f5116c5439983dc64e62",
     "train_game_sha256":
@@ -114,6 +100,63 @@ C7_EXPECTED = {
     "test_game_sha256":
         "d8632c3ac89be36bced244f4370eec09c3c80b2e6a0fe841f62ca67df97809f3",
 }
+
+# Counts C7's audit measured for each policy, from training/artifacts/c7_audit.json.
+# Recorded in the manifest and checked by --expect, so a silent drift in pandas,
+# python-chess or the source file is caught at build time rather than in the
+# experiment results.
+#
+# `evenly_spaced_4_minply16` is C8a's dataset_v2 and is the DEFAULT; its values
+# are unchanged from the original single-policy builder, so a rebuild of
+# dataset_v2 with this parameterised code reproduces it byte-for-byte.
+# `evenly_spaced_6_minply16` is C8b's scaling arm.
+POLICIES = {
+    "evenly_spaced_4_minply16": {
+        "min_ply": 16, "max_per_game": 4, "min_gap": MIN_GAP,
+        "default_out": "dataset_v2",
+        "dataset_name": "dataset_v2",
+        "expected": {
+            "game_units": 18920,
+            "train_units": 15136,
+            "test_units": 3784,
+            "selected_total": 68901,
+            "selected_train": 55082,
+            "selected_test": 13819,
+            "deduped_train": 54813,
+            "deduped_test": 13800,
+            "train_test_overlap_placements": 88,
+            "final_test": 13712,
+            **SPLIT_HASHES,
+        },
+    },
+    "evenly_spaced_6_minply16": {
+        "min_ply": 16, "max_per_game": 6, "min_gap": MIN_GAP,
+        "default_out": "dataset_v2_k6",
+        "dataset_name": "dataset_v2_k6",
+        "expected": {
+            "game_units": 18920,
+            "train_units": 15136,
+            "test_units": 3784,
+            "selected_total": 99124,
+            "selected_train": 79202,
+            "selected_test": 19922,
+            "deduped_train": 78902,
+            "deduped_test": 19892,
+            "train_test_overlap_placements": 90,
+            "final_test": 19802,
+            **SPLIT_HASHES,
+        },
+    },
+}
+
+DEFAULT_POLICY = "evenly_spaced_4_minply16"
+
+# Backwards-compatible module-level names: the existing C8 tests and any caller
+# that imported these keep seeing dataset_v2's parameters.
+POLICY_NAME = DEFAULT_POLICY
+MIN_PLY = POLICIES[DEFAULT_POLICY]["min_ply"]
+MAX_PER_GAME = POLICIES[DEFAULT_POLICY]["max_per_game"]
+C7_EXPECTED = POLICIES[DEFAULT_POLICY]["expected"]
 
 RECORD_KEYS = [
     "game_content_key", "game_id", "source_row_index", "ply", "fen",
@@ -130,7 +173,9 @@ def sha256_text(text: str) -> str:
 
 # ============================================================ extraction
 
-def extract_side(df: pd.DataFrame, row_indices: set, unit_keys: list) -> list[dict]:
+def extract_side(df: pd.DataFrame, row_indices: set, unit_keys: list,
+                 min_ply: int = MIN_PLY, max_per_game: int = MAX_PER_GAME,
+                 min_gap: int = MIN_GAP) -> list[dict]:
     """Replay each game unit once and select its positions.
 
     One canonical row per game unit: `games.csv` holds 1,138 exact duplicate
@@ -149,8 +194,8 @@ def extract_side(df: pd.DataFrame, row_indices: set, unit_keys: list) -> list[di
         row = df.iloc[i]
         moves = row.get("moves")
         rep = C7.replay_game(row.get("id"), i, moves)
-        picks = C7.policy_evenly_spaced(rep, MAX_PER_GAME, min_ply=MIN_PLY,
-                                        min_gap=MIN_GAP)
+        picks = C7.policy_evenly_spaced(rep, max_per_game, min_ply=min_ply,
+                                        min_gap=min_gap)
         if not picks:
             continue
 
@@ -324,7 +369,13 @@ def describe_side(rows: list[dict]) -> dict:
 # ============================================================ build
 
 def build(source: Path, out_prefix: Path, cp_clip: int, progress_every: int,
-          skip_labels: bool, expect: bool) -> dict:
+          skip_labels: bool, expect: bool, policy: str = DEFAULT_POLICY) -> dict:
+    if policy not in POLICIES:
+        raise SystemExit(f"unknown policy {policy!r}; expected one of "
+                         f"{sorted(POLICIES)}")
+    spec = POLICIES[policy]
+    min_ply, max_per_game = spec["min_ply"], spec["max_per_game"]
+    min_gap, expected = spec["min_gap"], spec["expected"]
     started = time.perf_counter()
 
     # ---------------------------------------------------------------- source
@@ -356,14 +407,16 @@ def build(source: Path, out_prefix: Path, cp_clip: int, progress_every: int,
     print(f"split      : {len(train_units)} train / {len(test_units)} test game units "
           f"(seed {SPLIT_SEED}, test_fraction {TEST_FRACTION})")
     for name, value in split_hashes.items():
-        match = " OK" if value == C7_EXPECTED[name] else " *** DIFFERS FROM C7 ***"
+        match = " OK" if value == expected[name] else " *** DIFFERS FROM C7 ***"
         print(f"  {name:20s} {value[:16]}...{match}")
 
     # ---------------------------------------------------------------- extract
-    print(f"extract    : {POLICY_NAME} (min_ply={MIN_PLY}, max={MAX_PER_GAME}, "
-          f"min_gap={MIN_GAP}, no RNG)")
-    train = extract_side(df, train_rows_idx, unit_keys)
-    test = extract_side(df, test_rows_idx, unit_keys)
+    print(f"extract    : {policy} (min_ply={min_ply}, max={max_per_game}, "
+          f"min_gap={min_gap}, no RNG)")
+    train = extract_side(df, train_rows_idx, unit_keys, min_ply, max_per_game,
+                         min_gap)
+    test = extract_side(df, test_rows_idx, unit_keys, min_ply, max_per_game,
+                        min_gap)
     selected = {"train": len(train), "test": len(test),
                 "total": len(train) + len(test)}
     print(f"  selected : {selected['total']} "
@@ -435,7 +488,7 @@ def build(source: Path, out_prefix: Path, cp_clip: int, progress_every: int,
 
     manifest = {
         "pipeline_version": PIPELINE_VERSION,
-        "dataset_name": "dataset_v2",
+        "dataset_name": spec["dataset_name"],
         "purpose": (
             "C8 training dataset. Changes ONLY which positions are used: the "
             "architecture, representation, label policy, evaluator, Ridge and "
@@ -472,15 +525,16 @@ def build(source: Path, out_prefix: Path, cp_clip: int, progress_every: int,
             **split_hashes,
         },
         "extraction": {
-            "policy": POLICY_NAME,
-            "min_ply": MIN_PLY,
-            "max_positions_per_game": MAX_PER_GAME,
-            "min_gap_plies": MIN_GAP,
+            "policy": policy,
+            "min_ply": min_ply,
+            "max_positions_per_game": max_per_game,
+            "min_gap_plies": min_gap,
             "sampling_seed": SAMPLING_SEED,
             "uses_rng": False,
             "description": (
-                "at most 4 positions per game, evenly spaced from ply 16 to the "
-                "final ply, never closer than 4 plies apart; closed-form, no RNG"
+                f"at most {max_per_game} positions per game, evenly spaced from "
+                f"ply {min_ply} to the final ply, never closer than {min_gap} "
+                f"plies apart; closed-form, no RNG"
             ),
             "one_canonical_row_per_game_unit": True,
             "record_order": "sorted by (game_content_key, ply)",
@@ -545,7 +599,7 @@ def build(source: Path, out_prefix: Path, cp_clip: int, progress_every: int,
             "records_format": "JSON Lines (one position per line, UTF-8, LF)",
             "record_keys": RECORD_KEYS,
         },
-        "c7_expected": C7_EXPECTED,
+        "c7_expected": expected,
         "reproducibility": {
             "python_version": sys.version.split()[0],
             "platform": f"{platform.system()} {platform.release()} {platform.machine()}",
@@ -587,7 +641,7 @@ def _version(pkg):
 
 def check_expectations(manifest: dict) -> None:
     """Compare the build against C7's measured values and fail loudly on drift."""
-    gs, ex = manifest["game_split"], C7_EXPECTED
+    gs, ex = manifest["game_split"], manifest["c7_expected"]
     got = {
         "game_units": gs["n_game_units"],
         "train_units": gs["n_train_units"],
@@ -626,7 +680,9 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
-    ap.add_argument("--out", type=Path, default=DEFAULT_OUT,
+    ap.add_argument("--policy", default=DEFAULT_POLICY, choices=sorted(POLICIES),
+                    help="extraction policy; the default builds C8a's dataset_v2")
+    ap.add_argument("--out", type=Path, default=None,
                     help="prefix; writes <out>.train.jsonl, <out>.test.jsonl, "
                          "<out>.manifest.json")
     ap.add_argument("--cp-clip", type=int, default=L.CP_CLIP)
@@ -638,8 +694,10 @@ def main(argv=None) -> int:
                     help="do not check the build against C7's measured counts")
     args = ap.parse_args(argv)
 
-    build(args.source, args.out, args.cp_clip, args.progress_every,
-          args.skip_labels, expect=not args.no_expect)
+    out = args.out or (REPO_ROOT / "training" / "artifacts"
+                       / POLICIES[args.policy]["default_out"])
+    build(args.source, out, args.cp_clip, args.progress_every,
+          args.skip_labels, expect=not args.no_expect, policy=args.policy)
     return 0
 
 
