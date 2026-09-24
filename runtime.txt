@@ -1,1 +1,2 @@
 python-3.12.10
+// project requirements stated in requirements.txt and requirements-notebook.txt
