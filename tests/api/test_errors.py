@@ -1,8 +1,12 @@
 """Flask API error-path tests.
 
-These assert the contract the API ACTUALLY has today, including two places where
-that contract is poor. Phase 2 records those rather than fixing them; each is
-paired with a clearly-marked deferred test stating the intended contract.
+These assert the contract the API has: every rejected request returns HTTP 400
+with a JSON `{"error": ...}` body, and no input shape produces a 500.
+
+Phase 2 recorded two violations of that contract as paired
+characterisation/`xfail(strict)` tests rather than fixing them. C10 fixed both in
+app.py and replaced the characterisation tests with assertions on the intended
+contract. See docs/C10_FINAL_QA.md.
 """
 import chess
 import pytest
@@ -74,52 +78,89 @@ def test_wrong_http_method_returns_405(client):
     assert client.get("/move").status_code == 405
 
 
-# ---------------------------------------------------------------------------
-# Known gap: non-JSON body.
+# =============================================== malformed bodies (FIXED IN C10)
 #
-# app.py:109 reads `request.json or {}`. In Flask >= 2.1 `request.json` RAISES
-# UnsupportedMediaType when the Content-Type is not JSON, before the `or {}`
-# guard can apply. Flask converts that to a 415 with an HTML body, so this one
-# path breaks the JSON error contract every other path honours.
+# Both cases below were xfail(strict) from Phase 2 to C9.
+#
+# The /move handler read `request.json or {}`. In Flask >= 2.1 `request.json` RAISES
+# before the `or {}` guard can apply - UnsupportedMediaType (415 + HTML) for a
+# non-JSON content-type, BadRequest (400 + HTML) for a malformed JSON body - so
+# /move was the one endpoint that did not honour the "errors are 400 +
+# {'error': ...} JSON" contract every other path returns.
+#
+# C10 replaced it with get_json(silent=True), which returns None instead of
+# raising, so an unusable body falls through to the same rejection as any other
+# unusable input. The two former characterisation tests
+# (test_non_json_body_currently_returns_415_html and its pair) asserted the 415 +
+# HTML behaviour and have been REPLACED by the intended contract below.
 
-def test_non_json_body_currently_returns_415_html(client):
-    """Characterisation of today's behaviour - see the deferred test below."""
-    response = client.post("/move", data="notjson", content_type="text/plain")
-    assert response.status_code == 415
-    assert not response.is_json
-
-
-@pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4): a non-JSON body escapes via request.json raising "
-           "UnsupportedMediaType (app.py:109), yielding 415 + HTML instead of the "
-           "400 + {'error': ...} JSON contract every other error path returns. "
-           "Fix is request.get_json(silent=True) - a production change.",
-)
-def test_non_json_body_should_return_400_json(client):
+def test_non_json_body_returns_400_json(client):
     response = client.post("/move", data="notjson", content_type="text/plain")
     assert response.status_code == 400
     assert response.is_json
     assert "error" in response.get_json()
 
 
-@pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4): same root cause - malformed JSON with a JSON "
-           "content-type raises before the handler's guard.",
-)
-def test_malformed_json_body_should_return_400_json(client):
+def test_malformed_json_body_returns_400_json(client):
     response = client.post("/move", data="{not valid json", content_type="application/json")
     assert response.status_code == 400
     assert response.is_json
+    assert "error" in response.get_json()
+
+
+@pytest.mark.parametrize(
+    "data,content_type",
+    [
+        ("", "application/json"),
+        ("", "text/plain"),
+        ("<xml/>", "application/xml"),
+        ("notjson", "application/json"),
+        ("[1, 2, 3]", "application/json"),
+        ('"just a string"', "application/json"),
+        ("null", "application/json"),
+        ("17", "application/json"),
+    ],
+)
+def test_every_unusable_body_shape_returns_400_json(client, data, content_type):
+    """The contract is uniform: whatever the body, reject with 400 + JSON.
+
+    `[1, 2, 3]` and `17` matter specifically - a truthy non-dict body used to
+    reach `.get` on a list/int and raise AttributeError, i.e. a 500.
+    """
+    response = client.post("/move", data=data, content_type=content_type)
+    assert response.status_code == 400, f"{data!r} produced {response.status_code}"
+    assert response.is_json
+    assert "error" in response.get_json()
+
+
+# ------------------------------------------------- C10-A: non-string uci values
+#
+# Found during the C10 audit, not previously recorded. `data.get("uci", "")`
+# returns the JSON value as-is, so a non-string uci reached `.strip()` and raised
+# AttributeError -> HTTP 500. Confirmed against the pre-C10 expression for
+# null, 123 and true.
+
+@pytest.mark.parametrize("uci", [None, 123, True, 1.5, {"a": 1}, ["e2e4"]])
+def test_non_string_uci_is_rejected_with_400_not_500(client, uci):
+    """The regression test for C10-A."""
+    response = client.post("/move", json={"uci": uci})
+    assert response.status_code == 400, f"uci={uci!r} produced {response.status_code}"
+    assert response.is_json
+    assert "error" in response.get_json()
+
+
+def test_a_valid_move_still_works_after_the_body_parsing_change(client):
+    """Guards the happy path the C10 body-parsing fix runs through."""
+    response = client.post("/move", json={"uci": "e2e4"})
+    assert response.status_code == 200
+    assert response.get_json()["player_move"]["uci"] == "e2e4"
+
 
 
 # ==================================================================== /engine_move
 
 def test_engine_move_on_whites_turn_returns_400(client):
-    """The engine only ever plays Black (app.py:149)."""
+    """The engine only ever plays Black - /engine_move rejects White's turn."""
     response = client.post("/engine_move")
     assert response.status_code == 400
     assert response.get_json()["error"] == "Not engine's turn"

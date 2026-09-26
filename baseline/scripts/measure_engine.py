@@ -12,10 +12,13 @@ import statistics
 import sys
 import time
 
-# engine.py loads its models via paths relative to the CURRENT WORKING DIRECTORY
-# ("models/cnn_model.keras", engine.py:7). It is also not an installed package,
-# so the repo root must be on sys.path. Both are properties of the code under
-# measurement, not of this script; they are recorded as reproducibility findings.
+# engine.py is not an installed package, so the repo root must be on sys.path.
+#
+# The chdir is retained for belt-and-braces only. When this script was written for
+# Phase 0, engine.py loaded "models/cnn_model.keras" relative to the CURRENT
+# WORKING DIRECTORY; Phase 1 moved path resolution into config.py, which anchors
+# to its own file, so model loading no longer depends on the working directory.
+# Corrected in C10 - the original comment had become false.
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, REPO_ROOT)
 os.chdir(REPO_ROOT)
@@ -133,9 +136,15 @@ def main():
         "ridge_coefficients": [float(x) for x in engine.weight_model.coef_],
         "ridge_intercept": float(engine.weight_model.intercept_),
         "ridge_intercept_used_at_inference": False,
+        # Stated without line numbers: the previous wording named lines 131-132
+        # and 162-163, which had already drifted by C10. Both sites are the
+        # `w = weight_model.coef_` assignments in hybrid_score and rerank_moves.
         "ridge_intercept_note": (
-            "engine.py lines 131-132 and 162-163 use weight_model.coef_ only; "
-            "weight_model.intercept_ is never added. Verified by reading the source."
+            "Both `w = weight_model.coef_` sites (hybrid_score and rerank_moves) "
+            "use the coefficients only; weight_model.intercept_ is never added. "
+            "Known open defect C3; audited and deliberately retained in C10 - it "
+            "is an order-preserving per-position constant, so it changes no move. "
+            "See docs/C10_FINAL_QA.md."
         ),
         "position_count": len(positions),
         "latency_summary_pass1_ms": summarize(times),

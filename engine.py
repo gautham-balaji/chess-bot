@@ -1,5 +1,6 @@
 import logging
 import pickle
+from contextlib import contextmanager
 import numpy as np
 import chess
 from tensorflow.keras.models import load_model
@@ -73,11 +74,33 @@ def mobility_score(board):
     board.turn = not board.turn
     return my_moves - opp_moves
 
+# C10: push/pop must be exception-safe.
+#
+# chess.Board.push() appends to move_stack and _stack BEFORE it validates the
+# move (chess/__init__.py: the `piece_type is not None` assert fires after both
+# appends). So a move from an empty square mutates the caller's board - the
+# halfmove clock advances and a bogus frame is left on the stack - and then
+# raises, which used to skip the pop() entirely and leave the caller's board
+# corrupted.
+#
+# Unwinding to the recorded depth rather than calling pop() once means a failure
+# EARLIER in push(), which would leave no frame to unwind, cannot raise
+# IndexError here and mask the original exception.
+@contextmanager
+def _pushed(board, move):
+    depth = len(board.move_stack)
+    try:
+        board.push(move)
+        yield board
+    finally:
+        while len(board.move_stack) > depth:
+            board.pop()
+
+
 def move_impact(board, move):
     before = space_control(board)
-    board.push(move)
-    after = space_control(board)
-    board.pop()
+    with _pushed(board, move):
+        after = space_control(board)
     return after - before
 
 # ─────────────────────────────────────────────
@@ -97,8 +120,25 @@ def pawn_push_penalty(board, move):
             return -0.2
     return 0
 
+# C10 fix (C5): the central pawn pushes, both colours.
+#
+# opening_center_bonus previously listed White's three pushes only, so Black's
+# mirrored pushes scored 0 while White's scored 0.3. tactical_move_bonus already
+# listed both colours, which is what establishes the intended semantics as
+# colour-symmetric - the omission was in opening_center_bonus, not in the
+# concept. Both helpers now read the same constant so they cannot drift apart.
+#
+# The magnitude (0.3) is unchanged, and the list is exactly the union
+# tactical_move_bonus already used, so tactical_move_bonus is unaffected.
+#
+# app.py only ever lets the engine play Black (its /engine_move handler rejects
+# White's turn), so the asymmetry was
+# active in every game - the same structural argument that justified the C1 fix.
+CENTRAL_PAWN_PUSHES = ("e2e4", "d2d4", "c2c4", "e7e5", "d7d5", "c7c5")
+
+
 def opening_center_bonus(board, move):
-    if move.uci() in ["e2e4","d2d4","c2c4"]:
+    if move.uci() in CENTRAL_PAWN_PUSHES:
         return 0.3
     return 0
 
@@ -111,13 +151,12 @@ def tactical_move_bonus(board, move):
             chess.BISHOP: 0.25, chess.ROOK: 0.35, chess.QUEEN: 0.5
         }
         bonus += capture_values.get(captured.piece_type, 0.1) if captured else 0.1
-    board.push(move)
-    if board.is_check():
-        bonus += 0.2
-    board.pop()
+    with _pushed(board, move):
+        if board.is_check():
+            bonus += 0.2
     if move.promotion:
         bonus += 0.4
-    if move.uci() in ["e2e4","d2d4","c2c4","e7e5","d7d5","c7c5"]:
+    if move.uci() in CENTRAL_PAWN_PUSHES:
         bonus += 0.25
     return bonus
 
@@ -193,7 +232,13 @@ def rerank_moves(board):
             "cnn_cp": round(float(cnn_score), 2),
             "material": mat,
             "space": space,
-            "center": center_control(board),
+            # C10 fix (C4): this used to call center_control(board) HERE, which is
+            # after the board.pop() above, so the reported value was the PRE-move
+            # centre control while material/space/mobility were post-move. `center`
+            # is the post-move value captured inside the push, and is the same
+            # value the weighted score above already used - so this is a reporting
+            # fix only: no score, ordering or selection changes.
+            "center": center,
             "mobility": mob
         })
 
@@ -260,10 +305,9 @@ def explain_move(board, move, info):
             reasons.append("expands space with a pawn advance")
     if board.is_capture(move):
         reasons.append("captures an opponent piece")
-    board.push(move)
-    if board.is_check():
-        reasons.append("delivers a check to the opponent king")
-    board.pop()
+    with _pushed(board, move):
+        if board.is_check():
+            reasons.append("delivers a check to the opponent king")
     if move.promotion:
         reasons.append("promotes a pawn")
     if info.get("cnn_cp", 0) > 100:

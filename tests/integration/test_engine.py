@@ -265,18 +265,22 @@ def test_bonus_magnitude_is_preserved_and_only_the_sign_changes(
     assert checked > 0, "no bonused move found - test position is unsuitable"
 
 
-# ==================================================================== known gap C4
+# ==================================================================== C4 (FIXED IN C10)
+#
+# Was xfail(strict) since Phase 2. `"center": center_control(board)` sat after the
+# board.pop(), so it reported PRE-move centre control while material/space/mobility
+# in the same dict were POST-move. It now reports the same post-move value the
+# weighted score already consumed.
+#
+# Reporting-only: `entry["center"]` is read by baseline/scripts/measure_engine.py
+# and the UI, never by the scorer (which uses the local post-move `center`) and
+# never by evaluation/evaluate.py. Verified in C10: no score, ordering or selected
+# move changes on the 52-position baseline.
 
-@pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4, C4): the 'center' value in each candidate dict is "
-           "computed after board.pop() (engine.py:181), so it reports the PRE-move "
-           "centre control, while 'material'/'space'/'mobility' in the same dict "
-           "are POST-move. The reported metrics are internally inconsistent.",
-)
-def test_candidate_center_should_be_the_post_move_value(engine_mod, white_to_move_board):
+def test_candidate_center_is_the_post_move_value(engine_mod, white_to_move_board):
+    """The regression test for the C4 fix."""
     ranked = engine_mod.rerank_moves(white_to_move_board)
+    assert ranked, "no candidates - test position is unsuitable"
     for entry in ranked:
         board = white_to_move_board.copy()
         board.push(entry["move"])
@@ -287,9 +291,24 @@ def test_candidate_center_should_be_the_post_move_value(engine_mod, white_to_mov
         )
 
 
-def test_candidate_material_and_space_are_post_move_values(engine_mod, white_to_move_board):
-    """Characterisation: these three ARE post-move, which is what makes the
-    'center' field above inconsistent with its siblings."""
+def test_candidate_center_is_no_longer_the_pre_move_value(engine_mod, white_to_move_board):
+    """Guards the direction of the C4 fix.
+
+    The pre- and post-move centre values genuinely differ for some candidates in
+    this position, so a regression to `center_control(board)` after the pop would
+    be caught here rather than passing vacuously.
+    """
+    pre_move = engine_mod.center_control(white_to_move_board)
+    ranked = engine_mod.rerank_moves(white_to_move_board)
+    differing = [e for e in ranked if e["center"] != pre_move]
+    assert differing, (
+        "every candidate's reported centre equals the pre-move value, so this "
+        "test cannot distinguish the fix from the defect"
+    )
+
+
+def test_all_four_candidate_metrics_are_post_move_values(engine_mod, white_to_move_board):
+    """All four positional fields in a candidate dict now agree on the same board."""
     ranked = engine_mod.rerank_moves(white_to_move_board)
     for entry in ranked[:5]:
         board = white_to_move_board.copy()
@@ -297,6 +316,27 @@ def test_candidate_material_and_space_are_post_move_values(engine_mod, white_to_
         assert entry["material"] == engine_mod.material_balance(board)
         assert entry["space"] == engine_mod.space_control(board)
         assert entry["mobility"] == engine_mod.mobility_score(board)
+        assert entry["center"] == engine_mod.center_control(board)
+
+
+def test_c4_fix_does_not_change_candidate_scores(engine_mod, white_to_move_board):
+    """The scorer used the post-move `center` all along, so scores must be
+    reproducible from the reported fields plus the Ridge coefficients."""
+    import numpy as np
+
+    ranked = engine_mod.rerank_moves(white_to_move_board)
+    w = engine_mod.weight_model.coef_
+    for entry in ranked[:5]:
+        cnn_norm = np.tanh(entry["cnn_cp"] / 200)
+        weighted = (w[0] * cnn_norm + w[1] * entry["material"] + w[2] * entry["space"]
+                    + w[3] * entry["center"] + w[4] * entry["mobility"])
+        # entry["score"] also carries the bonuses and the lookahead term, which
+        # are bounded well below 2.0 in total; the weighted term must dominate and
+        # agree. A pre-move `center` would shift this by w[3] * delta (~5.2 each).
+        assert abs(entry["score"] - weighted) < 2.0, (
+            f"{entry['move'].uci()}: score {entry['score']} is not reconstructible "
+            f"from the reported fields (weighted term {weighted})"
+        )
 
 
 # ==================================================================== C2 lookahead

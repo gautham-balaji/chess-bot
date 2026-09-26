@@ -106,8 +106,20 @@ def state():
 @app.route("/move", methods=["POST"])
 def make_move():
     global board, move_history
-    data = request.json or {}
-    uci  = data.get("uci", "").strip()
+    # C10 fix: `request.json` RAISES on a non-JSON content-type (Flask >= 2.1
+    # turns that into 415 + an HTML body) and on a malformed JSON body (400 +
+    # HTML), both BEFORE the `or {}` guard and before the handler's own
+    # validation. That made /move the one endpoint that did not honour the
+    # "errors are 400 + {'error': ...} JSON" contract every other path returns.
+    #
+    # get_json(silent=True) returns None instead of raising, so a bad body falls
+    # through to the same "Invalid UCI" rejection as any other unusable input.
+    # A valid JSON body that is not an object (e.g. `[]` or `"x"`) has no .get,
+    # so it is coerced to {} for the same reason.
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        data = {}
+    uci  = str(data.get("uci") or "").strip()
 
     if board.is_game_over():
         return jsonify({"error": "Game is over"}), 400

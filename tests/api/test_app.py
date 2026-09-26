@@ -241,8 +241,9 @@ def test_forfeit_marks_the_game_over(client):
 
 def test_forfeit_always_reports_0_1(client):
     """Characterisation of a known defect: /forfeit hardcodes '0-1' regardless of
-    who resigned (app.py:253). Deferred - recorded here so a future fix is a
-    deliberate, visible change."""
+    who resigned. Deferred - recorded here so a future fix is a deliberate,
+    visible change. Harmless while the app only ever lets the engine play Black,
+    which it enforces. See docs/FINAL_QA_REPORT.md section 7."""
     body = client.post("/forfeit").get_json()
     assert body["result"]["result"] == "0-1"
     assert body["result"]["reason"] == "Resignation"

@@ -258,28 +258,50 @@ def test_tactical_bonus_treats_central_pawn_pushes_symmetrically(engine_mod):
 # Phase 2 does not fix them. strict xfail means that if Phase 4 fixes the bug,
 # these XPASS and fail the suite, forcing the marker to be removed deliberately.
 
-@pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4, C5): opening_center_bonus matches only White's UCI "
-           "strings ('e2e4','d2d4','c2c4'), so Black's mirrored central pushes get 0.",
-)
-def test_opening_center_bonus_should_be_colour_symmetric(engine_mod):
+# C5 FIXED IN C10. Was xfail(strict) since Phase 2.
+#
+# opening_center_bonus listed White's three pushes only; Black's mirrored pushes
+# scored 0. The old characterisation test
+# (test_opening_center_bonus_current_behaviour_is_white_only) asserted that
+# asymmetry as fact and has been REPLACED - not relaxed - by assertions on the
+# corrected behaviour. The magnitude is still pinned at exactly 0.3, now for both
+# colours, and non-central moves are still pinned at 0.
+
+def test_opening_center_bonus_is_colour_symmetric(engine_mod):
+    """The regression test for the C5 fix."""
     white = chess.Board()
     black = chess.Board()
     black.push_san("e4")
-    assert engine_mod.opening_center_bonus(white, chess.Move.from_uci("e2e4")) == \
-        engine_mod.opening_center_bonus(black, chess.Move.from_uci("e7e5"))
+    assert engine_mod.opening_center_bonus(white, chess.Move.from_uci("e2e4")) == (
+        engine_mod.opening_center_bonus(black, chess.Move.from_uci("e7e5")))
 
 
-def test_opening_center_bonus_current_behaviour_is_white_only(engine_mod):
-    """Characterisation test: records today's asymmetry as fact, so the pair of
-    tests together make the defect unambiguous rather than merely 'failing'."""
-    white = chess.Board()
-    black = chess.Board()
-    black.push_san("e4")
-    assert engine_mod.opening_center_bonus(white, chess.Move.from_uci("e2e4")) == 0.3
-    assert engine_mod.opening_center_bonus(black, chess.Move.from_uci("e7e5")) == 0
+@pytest.mark.parametrize("uci", ["e2e4", "d2d4", "c2c4", "e7e5", "d7d5", "c7c5"])
+def test_opening_center_bonus_is_exactly_0_3_for_every_central_push(engine_mod, uci):
+    """Pins the magnitude for both colours.
+
+    Pre-C10 this returned 0.3 for the three White pushes and 0 for the three
+    Black ones, so this test fails on the unfixed engine for exactly half its
+    cases.
+    """
+    board = chess.Board()
+    if uci[1] == "7":
+        board.push_san("Nf3")       # a waiting move: hands Black the turn and
+                                    # leaves all three Black pushes available
+    assert engine_mod.opening_center_bonus(board, chess.Move.from_uci(uci)) == 0.3
+
+
+@pytest.mark.parametrize("uci", ["g1f3", "b1c3", "a2a4", "h2h4", "b2b4", "f2f4"])
+def test_opening_center_bonus_is_zero_for_non_central_moves(engine_mod, uci):
+    """Guards against the fix over-reaching into a blanket bonus."""
+    assert engine_mod.opening_center_bonus(chess.Board(), chess.Move.from_uci(uci)) == 0
+
+
+def test_opening_center_bonus_and_tactical_bonus_share_one_push_list(engine_mod):
+    """Both helpers reward the same six pushes. The C10 fix made that a single
+    shared constant so the two lists cannot drift apart again."""
+    assert set(engine_mod.CENTRAL_PAWN_PUSHES) == {
+        "e2e4", "d2d4", "c2c4", "e7e5", "d7d5", "c7c5"}
 
 
 def test_bonuses_are_positive_regardless_of_side_to_move(engine_mod):
@@ -297,22 +319,76 @@ def test_bonuses_are_positive_regardless_of_side_to_move(engine_mod):
     assert white_bonus == black_bonus == 0.2
 
 
-@pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4, new): tactical_move_bonus and move_impact push "
-           "before validating. An illegal move from an EMPTY square raises "
-           "AssertionError after the push, so the pop never runs and the caller's "
-           "board is left mutated. Needs try/finally - a production change.",
-)
-@pytest.mark.parametrize("helper_name", ["tactical_move_bonus", "move_impact"])
-def test_helpers_should_not_corrupt_board_when_move_is_illegal(engine_mod, helper_name):
+# FIXED IN C10. Was xfail(strict) since Phase 2.
+#
+# chess.Board.push() appends to move_stack and _stack before it validates, then
+# asserts. The helpers popped unconditionally AFTER the push, so a move from an
+# empty square raised mid-push and the pop was skipped, leaving the caller's
+# board with an advanced halfmove clock and a bogus stack frame. engine._pushed
+# now unwinds in a finally.
+#
+# explain_move had the identical defect and is covered here too.
+
+CORRUPTION_PRONE_HELPERS = ["tactical_move_bonus", "move_impact", "explain_move"]
+
+
+def _call_helper(engine_mod, helper_name, board, move):
     helper = getattr(engine_mod, helper_name)
+    if helper_name == "explain_move":
+        return helper(board, move, {})
+    return helper(board, move)
+
+
+@pytest.mark.parametrize("helper_name", CORRUPTION_PRONE_HELPERS)
+def test_helpers_do_not_corrupt_board_when_move_is_illegal(engine_mod, helper_name):
+    """The regression test for the C10 fix.
+
+    a3a4 is not pseudo-legal from the start position (a3 is empty), so push()
+    raises. The helper must still propagate that exception AND leave the board
+    byte-identical - FEN, move stack depth and halfmove clock.
+    """
     board = chess.Board()
-    before = board.fen()
-    with pytest.raises(Exception):
-        helper(board, chess.Move.from_uci("a3a4"))  # no piece on a3
-    assert board.fen() == before, "board was left mutated after the exception"
+    before_fen = board.fen()
+    before_depth = len(board.move_stack)
+    before_clock = board.halfmove_clock
+
+    with pytest.raises(AssertionError):
+        _call_helper(engine_mod, helper_name, board, chess.Move.from_uci("a3a4"))
+
+    assert board.fen() == before_fen, "board was left mutated after the exception"
+    assert len(board.move_stack) == before_depth, "a stack frame was left behind"
+    assert board.halfmove_clock == before_clock, "the halfmove clock advanced"
+
+
+@pytest.mark.parametrize("helper_name", CORRUPTION_PRONE_HELPERS)
+def test_helpers_leave_a_pre_existing_move_stack_intact(engine_mod, helper_name):
+    """The fix must unwind to the depth it found, not empty the stack.
+
+    A naive `finally: board.pop()` would pass the test above but this one guards
+    the stronger property: helpers are called on boards that already have history
+    (rerank_moves pushes a candidate before scoring it).
+    """
+    board = chess.Board()
+    board.push_san("e4")
+    board.push_san("e5")
+    before_fen = board.fen()
+
+    with pytest.raises(AssertionError):
+        _call_helper(engine_mod, helper_name, board, chess.Move.from_uci("a3a4"))
+
+    assert board.fen() == before_fen
+    assert len(board.move_stack) == 2
+    assert [m.uci() for m in board.move_stack] == ["e2e4", "e7e5"]
+
+
+@pytest.mark.parametrize("helper_name", CORRUPTION_PRONE_HELPERS)
+def test_helpers_restore_the_board_on_the_success_path_too(engine_mod, helper_name):
+    """The fix must not change behaviour for a legal move."""
+    board = chess.Board()
+    before_fen = board.fen()
+    _call_helper(engine_mod, helper_name, board, chess.Move.from_uci("e2e4"))
+    assert board.fen() == before_fen
+    assert len(board.move_stack) == 0
 
 
 def test_helpers_tolerate_an_illegal_move_from_an_occupied_square(engine_mod):

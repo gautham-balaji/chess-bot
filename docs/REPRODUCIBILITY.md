@@ -300,20 +300,23 @@ python verification/compare_phase0_phase1.py \
 Phase 1 changed **no engine behaviour**. Verified: all 52 baseline positions
 return identical moves, identical top-3 orderings and identical scores.
 
-These known defects were therefore **not** fixed, because fixing them would
-change engine output:
+These known defects were therefore **not** fixed by Phase 1, because fixing them
+would change engine output. The table records the Phase 1 position **and** what
+has happened to each since, so this section stays usable as a current-state
+reference without rewriting the history.
 
-- Heuristic move bonuses are added with a fixed positive sign while the ranking
-  sort direction flips by side, so for Black the bonuses push good moves *down*
-  its own preference list. The engine only ever plays Black in the app.
-- The 1-ply lookahead takes `max` over opponent replies, selecting the reply most
-  favourable to the mover rather than the opponent's best.
-- The Ridge `intercept_` (15.0772) is never applied at inference.
-- `center` reported in each candidate dict is the pre-move value, while
-  `material` / `space` / `mobility` in the same dict are post-move.
-- `opening_center_bonus` matches only White's UCI strings.
-- `POST /move` with a non-JSON body returns 415 HTML instead of a JSON error.
-- `/engine_move` runs the engine twice per request.
-- `/forfeit` hardcodes the result `"0-1"`.
+| Defect (as Phase 1 found it) | Status now |
+|---|---|
+| Heuristic move bonuses are added with a fixed positive sign while the ranking sort direction flips by side, so for Black the bonuses push good moves *down* its own preference list. The engine only ever plays Black in the app | **Fixed — C1** (Phase 4A) |
+| The 1-ply lookahead takes `max` over opponent replies, selecting the reply most favourable to the mover rather than the opponent's best | **Fixed — C2** (Phase 4B). Phase 4B also found the original description incomplete: the extremum was wrong for White only, and a second, separate sign inversion affected both sides |
+| The Ridge `intercept_` (15.0772) is never applied at inference | **OPEN — C3.** Audited in C10 and deliberately retained: it is an order-preserving per-position constant on the ranking path (0/52 ordering changes, 0/52 selected-move changes) and `hybrid_score`, the function it distorts, has no caller. Scoped as a separate future change — see [`C10_FINAL_QA.md`](C10_FINAL_QA.md) §4.1 |
+| `center` reported in each candidate dict is the pre-move value, while `material` / `space` / `mobility` in the same dict are post-move | **Fixed — C4** (C10). Reporting only; no score or move changed |
+| `opening_center_bonus` matches only White's UCI strings | **Fixed — C5** (C10). Changed 5 recorded score values by ±0.300 and no selected move |
+| `POST /move` with a non-JSON body returns 415 HTML instead of a JSON error | **Fixed** (C10). Every rejected request now returns 400 + JSON. C10 also fixed a malformed-JSON body and an HTTP 500 on a non-string `uci` |
+| `/engine_move` runs the engine twice per request | **OPEN.** Still true (`app.py` calls `engine_move` once for Black's move and again to precompute White's top-3). A performance characteristic, not a correctness defect; roughly doubles per-request latency |
+| `/forfeit` hardcodes the result `"0-1"` | **OPEN.** Still true. Harmless while the engine only ever plays Black, which the app enforces, but it would be wrong if that ever changed |
 
-These are recorded in `docs/PHASE_1_REPORT.md` under remaining issues.
+The Phase 1 position is recorded in `docs/PHASE_1_REPORT.md` under remaining
+issues; the C10 audit of every deferred item is in
+[`C10_FINAL_QA.md`](C10_FINAL_QA.md), and the final repository state is in
+[`FINAL_QA_REPORT.md`](FINAL_QA_REPORT.md).

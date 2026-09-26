@@ -49,6 +49,49 @@ the score assertion was **updated rather than removed or weakened**.
 > coverage, Spearman correlation or mate statuses. They made the engine *right*,
 > not *stronger*. See `docs/PHASE_4A_REPORT.md` and `docs/PHASE_4B_REPORT.md`.
 
+## Why it was re-recorded again in C10
+
+Two C10 correctness fixes moved recorded output. Same shape as C1/C2: scores moved,
+choices did not.
+
+- **C5** (`opening_center_bonus` made colour-symmetric — it previously matched only
+  White's UCI strings) changed top-3 **score values** on **5 Black positions**
+  (`OP02`, `OP16`, `OP17`, `TC03`, `DF03`), by exactly **±0.300** each — the bonus
+  magnitude, applied with the C1 sign convention.
+- **C4** (candidate `center` now reports the *post*-move value, as
+  `material`/`space`/`mobility` already did) changed the recorded **`center`
+  field** on **46 of 52** positions. No test asserts that field, so this did not
+  cause a failure; it was re-recorded for accuracy.
+
+Verified directly before re-recording:
+
+| check | result |
+|---|---:|
+| selected-move changes | **0** |
+| top-3 ordering changes | **0** |
+| illegal moves returned | **0** |
+| boards mutated by the call | **0** |
+| positions with a score change | 5 |
+| max absolute score delta | **0.300** |
+| `material` / `space` / `mobility` / `cnn_cp` field diffs | **0** |
+| `explanation` diffs | **0** |
+| `ridge_coefficients`, `ridge_intercept` | **identical** |
+| legality / determinism / board-mutation summaries | **identical** |
+
+So again only the score expectations were stale, and again the score assertion was
+**updated rather than removed or weakened**. `baseline/` was left untouched
+(`engine_results.json`, `fens.json` and `api_results.json` are all byte-identical).
+
+> The pre-C10 `center` values were **identical for all three candidates** in a
+> position — the visible signature of the C4 defect, a per-position value
+> masquerading as a per-candidate one.
+
+One other field changed: `ridge_intercept_note` previously cited "engine.py lines
+131-132 and 162-163", which had drifted. The generator now names the two
+`w = weight_model.coef_` sites instead of line numbers.
+
+Full audit: [`docs/C10_FINAL_QA.md`](../docs/C10_FINAL_QA.md).
+
 ## Historical continuity is still asserted
 
 `test_selected_moves_and_ordering_still_match_original_phase0` compares the current

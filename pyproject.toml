@@ -15,7 +15,7 @@ addopts = [
 markers = [
     "slow: tests that run the full 52-position baseline suite (~40s). Deselect with -m 'not slow'.",
     "needs_stockfish: requires a resolvable Stockfish binary; skipped automatically when absent.",
-    "deferred: documents a known defect that Phase 4 is expected to fix.",
+    "deferred: documents a known, open defect that is deliberately NOT fixed. Paired with xfail(strict) so closing the defect fails the suite and forces the marker to be removed. Each is classified in docs/C10_FINAL_QA.md.",
 ]
 
 filterwarnings = [

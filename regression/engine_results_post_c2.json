@@ -2,7 +2,7 @@
   "schema_version": 1,
   "generated_by": "baseline/scripts/measure_engine.py",
   "engine_entry_point": "engine.engine_move(chess.Board(fen))",
-  "import_engine_seconds": 11.94,
+  "import_engine_seconds": 9.39,
   "ridge_coefficients": [
     330.90054907067594,
     32.38987190183733,
@@ -12,71 +12,71 @@
   ],
   "ridge_intercept": 15.077236450243632,
   "ridge_intercept_used_at_inference": false,
-  "ridge_intercept_note": "engine.py lines 131-132 and 162-163 use weight_model.coef_ only; weight_model.intercept_ is never added. Verified by reading the source.",
+  "ridge_intercept_note": "Both `w = weight_model.coef_` sites (hybrid_score and rerank_moves) use the coefficients only; weight_model.intercept_ is never added. Known open defect C3; audited and deliberately retained in C10 - it is an order-preserving per-position constant, so it changes no move. See docs/C10_FINAL_QA.md.",
   "position_count": 52,
   "latency_summary_pass1_ms": {
     "n": 52,
-    "min_ms": 340.6,
-    "median_ms": 1113.84,
-    "mean_ms": 2026.42,
-    "p95_ms": 3769.62,
-    "max_ms": 19159.05,
-    "total_s": 105.37
+    "min_ms": 243.24,
+    "median_ms": 576.19,
+    "mean_ms": 548.79,
+    "p95_ms": 872.76,
+    "max_ms": 911.56,
+    "total_s": 28.54
   },
   "latency_summary_pass2_ms": {
     "n": 52,
-    "min_ms": 336.19,
-    "median_ms": 1964.59,
-    "mean_ms": 2022.73,
-    "p95_ms": 3767.59,
-    "max_ms": 6610.29,
-    "total_s": 105.18
+    "min_ms": 256.25,
+    "median_ms": 574.46,
+    "mean_ms": 529.39,
+    "p95_ms": 758.02,
+    "max_ms": 876.69,
+    "total_s": 27.53
   },
   "latency_by_category_ms": {
     "defensive": {
       "n": 4,
-      "min_ms": 1846.56,
-      "median_ms": 2006.13,
-      "mean_ms": 2051.12,
-      "p95_ms": 2345.67,
-      "max_ms": 2345.67,
-      "total_s": 8.2
+      "min_ms": 303.59,
+      "median_ms": 427.47,
+      "mean_ms": 420.0,
+      "p95_ms": 521.49,
+      "max_ms": 521.49,
+      "total_s": 1.68
     },
     "endgame": {
       "n": 12,
-      "min_ms": 383.7,
-      "median_ms": 586.45,
-      "mean_ms": 823.6,
-      "p95_ms": 1746.62,
-      "max_ms": 1942.93,
-      "total_s": 9.88
+      "min_ms": 243.24,
+      "median_ms": 345.68,
+      "mean_ms": 334.89,
+      "p95_ms": 401.54,
+      "max_ms": 420.87,
+      "total_s": 4.02
     },
     "middlegame": {
       "n": 12,
-      "min_ms": 729.3,
-      "median_ms": 1523.02,
-      "mean_ms": 4129.05,
-      "p95_ms": 13781.75,
-      "max_ms": 19159.05,
-      "total_s": 49.55
+      "min_ms": 578.76,
+      "median_ms": 756.94,
+      "mean_ms": 738.37,
+      "p95_ms": 896.29,
+      "max_ms": 911.56,
+      "total_s": 8.86
     },
     "opening": {
       "n": 18,
-      "min_ms": 340.6,
-      "median_ms": 881.3,
-      "mean_ms": 1443.44,
-      "p95_ms": 3185.64,
-      "max_ms": 6843.86,
-      "total_s": 25.98
+      "min_ms": 511.04,
+      "median_ms": 598.35,
+      "mean_ms": 627.82,
+      "p95_ms": 872.76,
+      "max_ms": 882.73,
+      "total_s": 11.3
     },
     "tactical": {
       "n": 6,
-      "min_ms": 679.47,
-      "median_ms": 1503.58,
-      "mean_ms": 1959.33,
-      "p95_ms": 3769.62,
-      "max_ms": 3769.62,
-      "total_s": 11.76
+      "min_ms": 287.5,
+      "median_ms": 336.42,
+      "mean_ms": 446.17,
+      "p95_ms": 800.9,
+      "max_ms": 800.9,
+      "total_s": 2.68
     }
   },
   "legality": {
@@ -376,7 +376,7 @@
           "cnn_cp": 48.12,
           "material": 0,
           "space": 6,
-          "center": 0,
+          "center": 2,
           "mobility": -8
         },
         {
@@ -385,7 +385,7 @@
           "cnn_cp": 48.98,
           "material": 0,
           "space": 7,
-          "center": 0,
+          "center": 1,
           "mobility": -10
         },
         {
@@ -394,7 +394,7 @@
           "cnn_cp": 41.4,
           "material": 0,
           "space": 4,
-          "center": 0,
+          "center": 2,
           "mobility": -2
         }
       ],
@@ -403,7 +403,7 @@
         "expands space with a pawn advance",
         "increases board control by +6 squares"
       ],
-      "time_ms": 1029.36,
+      "time_ms": 882.73,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -415,24 +415,24 @@
       "engine_move_uci": "e7e5",
       "engine_move_san": "e5",
       "is_legal": true,
-      "engine_top_score": 55.7802,
+      "engine_top_score": 55.4802,
       "top_candidates": [
         {
           "uci": "e7e5",
-          "score": 55.7802,
+          "score": 55.4802,
           "cnn_cp": 34.09,
           "material": 0,
           "space": 0,
-          "center": 1,
+          "center": 0,
           "mobility": 0
         },
         {
           "uci": "c7c5",
-          "score": 60.7869,
+          "score": 60.4869,
           "cnn_cp": 35.07,
           "material": 0,
           "space": 4,
-          "center": 1,
+          "center": 0,
           "mobility": 8
         },
         {
@@ -441,7 +441,7 @@
           "cnn_cp": 41.47,
           "material": 0,
           "space": 0,
-          "center": 1,
+          "center": 0,
           "mobility": 0
         }
       ],
@@ -450,7 +450,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-7 squares)"
       ],
-      "time_ms": 340.6,
+      "time_ms": 511.04,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -470,7 +470,7 @@
           "cnn_cp": 71.83,
           "material": 0,
           "space": 6,
-          "center": 0,
+          "center": 2,
           "mobility": -8
         },
         {
@@ -479,7 +479,7 @@
           "cnn_cp": 63.63,
           "material": 0,
           "space": 3,
-          "center": 0,
+          "center": 1,
           "mobility": -13
         },
         {
@@ -488,7 +488,7 @@
           "cnn_cp": 57.62,
           "material": 0,
           "space": 2,
-          "center": 0,
+          "center": 2,
           "mobility": 2
         }
       ],
@@ -497,7 +497,7 @@
         "expands space with a pawn advance",
         "increases board control by +6 squares"
       ],
-      "time_ms": 430.45,
+      "time_ms": 598.75,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -517,7 +517,7 @@
           "cnn_cp": 130.06,
           "material": 0,
           "space": 8,
-          "center": 0,
+          "center": 1,
           "mobility": -18
         },
         {
@@ -526,7 +526,7 @@
           "cnn_cp": 84.06,
           "material": 0,
           "space": 10,
-          "center": 0,
+          "center": 2,
           "mobility": -16
         },
         {
@@ -535,7 +535,7 @@
           "cnn_cp": 81.87,
           "material": 0,
           "space": 8,
-          "center": 0,
+          "center": 1,
           "mobility": -23
         }
       ],
@@ -543,7 +543,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 367.36,
+      "time_ms": 512.48,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -563,7 +563,7 @@
           "cnn_cp": 99.58,
           "material": 0,
           "space": 5,
-          "center": 0,
+          "center": 1,
           "mobility": -17
         },
         {
@@ -572,7 +572,7 @@
           "cnn_cp": 88.63,
           "material": 0,
           "space": 3,
-          "center": 0,
+          "center": 1,
           "mobility": -9
         },
         {
@@ -581,14 +581,14 @@
           "cnn_cp": 75.65,
           "material": 0,
           "space": 2,
-          "center": 0,
+          "center": 2,
           "mobility": 2
         }
       ],
       "explanation": [
         "increases board control by +5 squares"
       ],
-      "time_ms": 475.94,
+      "time_ms": 616.87,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -608,7 +608,7 @@
           "cnn_cp": 106.2,
           "material": 0,
           "space": 8,
-          "center": 0,
+          "center": 1,
           "mobility": -19
         },
         {
@@ -617,7 +617,7 @@
           "cnn_cp": 87.66,
           "material": 0,
           "space": 10,
-          "center": 0,
+          "center": 2,
           "mobility": -17
         },
         {
@@ -626,7 +626,7 @@
           "cnn_cp": 68.88,
           "material": 0,
           "space": 9,
-          "center": 0,
+          "center": 1,
           "mobility": -26
         }
       ],
@@ -634,7 +634,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 386.59,
+      "time_ms": 534.56,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -663,7 +663,7 @@
           "cnn_cp": -3.13,
           "material": 0,
           "space": -1,
-          "center": 1,
+          "center": -1,
           "mobility": 1
         },
         {
@@ -672,7 +672,7 @@
           "cnn_cp": 18.64,
           "material": -1,
           "space": 0,
-          "center": 1,
+          "center": 0,
           "mobility": -1
         }
       ],
@@ -680,7 +680,7 @@
         "develops a minor piece",
         "trades space for other compensation (-1 squares)"
       ],
-      "time_ms": 445.0,
+      "time_ms": 630.03,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -709,7 +709,7 @@
           "cnn_cp": 90.24,
           "material": 0,
           "space": 2,
-          "center": 1,
+          "center": 2,
           "mobility": -4
         },
         {
@@ -729,7 +729,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 591.96,
+      "time_ms": 602.82,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -749,7 +749,7 @@
           "cnn_cp": 235.52,
           "material": 1,
           "space": 4,
-          "center": 0,
+          "center": -1,
           "mobility": -8
         },
         {
@@ -778,7 +778,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 680.7,
+      "time_ms": 579.53,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -798,7 +798,7 @@
           "cnn_cp": -81.5,
           "material": 0,
           "space": -3,
-          "center": 1,
+          "center": 2,
           "mobility": -2
         },
         {
@@ -816,7 +816,7 @@
           "cnn_cp": 30.58,
           "material": 0,
           "space": -2,
-          "center": 1,
+          "center": -1,
           "mobility": 4
         }
       ],
@@ -825,7 +825,7 @@
         "develops a minor piece",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 759.55,
+      "time_ms": 694.94,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -845,7 +845,7 @@
           "cnn_cp": 169.33,
           "material": 1,
           "space": 1,
-          "center": -1,
+          "center": -3,
           "mobility": -10
         },
         {
@@ -874,7 +874,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +3 squares"
       ],
-      "time_ms": 1478.48,
+      "time_ms": 702.48,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -894,7 +894,7 @@
           "cnn_cp": 217.88,
           "material": 1,
           "space": 5,
-          "center": 0,
+          "center": -2,
           "mobility": -6
         },
         {
@@ -923,7 +923,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +3 squares"
       ],
-      "time_ms": 3179.69,
+      "time_ms": 872.76,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -961,7 +961,7 @@
           "cnn_cp": 150.73,
           "material": 0,
           "space": 4,
-          "center": 2,
+          "center": 1,
           "mobility": -7
         }
       ],
@@ -971,7 +971,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 1003.06,
+      "time_ms": 597.95,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1018,7 +1018,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 6843.86,
+      "time_ms": 597.08,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1038,7 +1038,7 @@
           "cnn_cp": 6.15,
           "material": 0,
           "space": -5,
-          "center": 1,
+          "center": 0,
           "mobility": -6
         },
         {
@@ -1047,7 +1047,7 @@
           "cnn_cp": 10.3,
           "material": 0,
           "space": -5,
-          "center": 1,
+          "center": -1,
           "mobility": -2
         },
         {
@@ -1056,7 +1056,7 @@
           "cnn_cp": 5.13,
           "material": 0,
           "space": -3,
-          "center": 1,
+          "center": 2,
           "mobility": -5
         }
       ],
@@ -1064,7 +1064,7 @@
         "develops a minor piece",
         "trades space for other compensation (-2 squares)"
       ],
-      "time_ms": 2195.81,
+      "time_ms": 573.63,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1076,11 +1076,11 @@
       "engine_move_uci": "d7d5",
       "engine_move_san": "d5",
       "is_legal": true,
-      "engine_top_score": 12.4518,
+      "engine_top_score": 12.1518,
       "top_candidates": [
         {
           "uci": "d7d5",
-          "score": 12.4518,
+          "score": 12.1518,
           "cnn_cp": 3.5,
           "material": 0,
           "space": 2,
@@ -1102,7 +1102,7 @@
           "cnn_cp": 18.18,
           "material": 0,
           "space": 1,
-          "center": 1,
+          "center": -1,
           "mobility": 6
         }
       ],
@@ -1111,7 +1111,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 1114.59,
+      "time_ms": 532.22,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1123,15 +1123,15 @@
       "engine_move_uci": "e7e5",
       "engine_move_san": "e5",
       "is_legal": true,
-      "engine_top_score": 61.103,
+      "engine_top_score": 60.803,
       "top_candidates": [
         {
           "uci": "e7e5",
-          "score": 61.103,
+          "score": 60.803,
           "cnn_cp": 25.68,
           "material": 1,
           "space": -4,
-          "center": -1,
+          "center": -2,
           "mobility": -7
         },
         {
@@ -1140,7 +1140,7 @@
           "cnn_cp": 54.36,
           "material": 0,
           "space": -10,
-          "center": -1,
+          "center": -3,
           "mobility": -18
         },
         {
@@ -1158,7 +1158,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-7 squares)"
       ],
-      "time_ms": 3185.64,
+      "time_ms": 570.31,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1178,7 +1178,7 @@
           "cnn_cp": -11.76,
           "material": -1,
           "space": -2,
-          "center": 1,
+          "center": 2,
           "mobility": -1
         },
         {
@@ -1206,7 +1206,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-5 squares)"
       ],
-      "time_ms": 1473.23,
+      "time_ms": 690.61,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1235,7 +1235,7 @@
           "cnn_cp": 62.17,
           "material": 0,
           "space": -2,
-          "center": 0,
+          "center": -1,
           "mobility": -3
         },
         {
@@ -1244,7 +1244,7 @@
           "cnn_cp": 38.35,
           "material": 1,
           "space": 1,
-          "center": 0,
+          "center": -1,
           "mobility": -4
         }
       ],
@@ -1253,7 +1253,7 @@
         "develops a minor piece",
         "increases board control by +1 squares"
       ],
-      "time_ms": 1113.09,
+      "time_ms": 578.76,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1273,7 +1273,7 @@
           "cnn_cp": 162.04,
           "material": 1,
           "space": 15,
-          "center": -1,
+          "center": 1,
           "mobility": -28
         },
         {
@@ -1282,7 +1282,7 @@
           "cnn_cp": 69.51,
           "material": 0,
           "space": 8,
-          "center": -1,
+          "center": -2,
           "mobility": -19
         },
         {
@@ -1300,7 +1300,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +8 squares"
       ],
-      "time_ms": 1374.13,
+      "time_ms": 911.56,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1338,7 +1338,7 @@
           "cnn_cp": 107.08,
           "material": 1,
           "space": 4,
-          "center": 2,
+          "center": 1,
           "mobility": -4
         }
       ],
@@ -1348,7 +1348,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +3 squares"
       ],
-      "time_ms": 3208.25,
+      "time_ms": 748.13,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1368,7 +1368,7 @@
           "cnn_cp": 63.09,
           "material": 0,
           "space": 10,
-          "center": -1,
+          "center": 0,
           "mobility": -7
         },
         {
@@ -1377,7 +1377,7 @@
           "cnn_cp": 62.41,
           "material": 0,
           "space": 8,
-          "center": -1,
+          "center": 0,
           "mobility": -2
         },
         {
@@ -1394,7 +1394,7 @@
         "develops a minor piece",
         "increases board control by +3 squares"
       ],
-      "time_ms": 19159.05,
+      "time_ms": 621.14,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1414,7 +1414,7 @@
           "cnn_cp": 113.82,
           "material": 1,
           "space": 4,
-          "center": 0,
+          "center": -1,
           "mobility": 0
         },
         {
@@ -1443,7 +1443,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 13781.75,
+      "time_ms": 783.32,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1491,7 +1491,7 @@
         "captures an opponent piece",
         "increases board control by +5 squares"
       ],
-      "time_ms": 1251.12,
+      "time_ms": 606.11,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1520,7 +1520,7 @@
           "cnn_cp": 124.18,
           "material": 0,
           "space": 3,
-          "center": 0,
+          "center": -1,
           "mobility": -13
         },
         {
@@ -1539,7 +1539,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +5 squares"
       ],
-      "time_ms": 911.62,
+      "time_ms": 723.06,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1586,7 +1586,7 @@
         "delivers a check to the opponent king",
         "increases board control by +10 squares"
       ],
-      "time_ms": 1194.77,
+      "time_ms": 896.29,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1606,7 +1606,7 @@
           "cnn_cp": 14.31,
           "material": -1,
           "space": -6,
-          "center": 0,
+          "center": 2,
           "mobility": -5
         },
         {
@@ -1634,7 +1634,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-4 squares)"
       ],
-      "time_ms": 729.3,
+      "time_ms": 604.55,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1654,7 +1654,7 @@
           "cnn_cp": 3.58,
           "material": -1,
           "space": 1,
-          "center": -1,
+          "center": 1,
           "mobility": 9
         },
         {
@@ -1682,7 +1682,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-4 squares)"
       ],
-      "time_ms": 1671.91,
+      "time_ms": 822.24,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1711,7 +1711,7 @@
           "cnn_cp": 54.12,
           "material": 0,
           "space": 2,
-          "center": 2,
+          "center": 3,
           "mobility": 5
         },
         {
@@ -1720,7 +1720,7 @@
           "cnn_cp": 83.36,
           "material": 0,
           "space": -4,
-          "center": 2,
+          "center": 0,
           "mobility": -9
         }
       ],
@@ -1730,7 +1730,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-4 squares)"
       ],
-      "time_ms": 3341.06,
+      "time_ms": 799.53,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1750,7 +1750,7 @@
           "cnn_cp": -11.48,
           "material": -1,
           "space": -5,
-          "center": 0,
+          "center": 2,
           "mobility": -7
         },
         {
@@ -1778,7 +1778,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 1812.49,
+      "time_ms": 765.76,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1807,7 +1807,7 @@
           "cnn_cp": 373.0,
           "material": 1,
           "space": 1,
-          "center": -1,
+          "center": -3,
           "mobility": -1
         },
         {
@@ -1816,7 +1816,7 @@
           "cnn_cp": 314.18,
           "material": 1,
           "space": 2,
-          "center": -1,
+          "center": -2,
           "mobility": -1
         }
       ],
@@ -1824,7 +1824,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 458.45,
+      "time_ms": 253.66,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1853,7 +1853,7 @@
           "cnn_cp": 179.38,
           "material": 1,
           "space": 0,
-          "center": -1,
+          "center": 0,
           "mobility": -1
         },
         {
@@ -1862,7 +1862,7 @@
           "cnn_cp": 189.9,
           "material": 1,
           "space": 0,
-          "center": -1,
+          "center": 0,
           "mobility": -1
         }
       ],
@@ -1870,7 +1870,7 @@
         "strengthens control of the center",
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 383.7,
+      "time_ms": 243.24,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1890,7 +1890,7 @@
           "cnn_cp": 471.56,
           "material": 5,
           "space": 9,
-          "center": 0,
+          "center": 1,
           "mobility": -14
         },
         {
@@ -1899,7 +1899,7 @@
           "cnn_cp": 369.92,
           "material": 5,
           "space": 9,
-          "center": 0,
+          "center": 2,
           "mobility": -9
         },
         {
@@ -1908,7 +1908,7 @@
           "cnn_cp": 394.37,
           "material": 5,
           "space": 9,
-          "center": 0,
+          "center": 1,
           "mobility": -13
         }
       ],
@@ -1917,7 +1917,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +1 squares"
       ],
-      "time_ms": 421.57,
+      "time_ms": 285.09,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -1937,7 +1937,7 @@
           "cnn_cp": 137.42,
           "material": 9,
           "space": 13,
-          "center": 0,
+          "center": 2,
           "mobility": 15
         },
         {
@@ -1946,7 +1946,7 @@
           "cnn_cp": 234.98,
           "material": 9,
           "space": 13,
-          "center": 0,
+          "center": -1,
           "mobility": 15
         },
         {
@@ -1962,7 +1962,7 @@
       "explanation": [
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 1029.8,
+      "time_ms": 325.84,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2009,7 +2009,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +9 squares"
       ],
-      "time_ms": 1942.93,
+      "time_ms": 395.49,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2047,14 +2047,14 @@
           "cnn_cp": 37.05,
           "material": 0,
           "space": 1,
-          "center": 0,
+          "center": 1,
           "mobility": 1
         }
       ],
       "explanation": [
         "increases board control by +2 squares"
       ],
-      "time_ms": 1746.62,
+      "time_ms": 267.34,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2099,7 +2099,7 @@
       "explanation": [
         "increases board control by +4 squares"
       ],
-      "time_ms": 482.59,
+      "time_ms": 420.87,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2119,7 +2119,7 @@
           "cnn_cp": 239.76,
           "material": 3,
           "space": 1,
-          "center": 2,
+          "center": 0,
           "mobility": -2
         },
         {
@@ -2147,7 +2147,7 @@
         "neural evaluation indicates a positional improvement",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 738.45,
+      "time_ms": 401.54,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2167,7 +2167,7 @@
           "cnn_cp": 778.56,
           "material": 14,
           "space": 18,
-          "center": 1,
+          "center": 0,
           "mobility": 23
         },
         {
@@ -2185,7 +2185,7 @@
           "cnn_cp": 695.44,
           "material": 14,
           "space": 18,
-          "center": 1,
+          "center": 2,
           "mobility": 21
         }
       ],
@@ -2193,7 +2193,7 @@
         "strengthens control of the center",
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 451.17,
+      "time_ms": 365.53,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2239,7 +2239,7 @@
         "captures an opponent piece",
         "increases board control by +6 squares"
       ],
-      "time_ms": 677.01,
+      "time_ms": 380.53,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2268,7 +2268,7 @@
           "cnn_cp": -5.98,
           "material": 0,
           "space": -4,
-          "center": 0,
+          "center": -2,
           "mobility": -7
         },
         {
@@ -2285,7 +2285,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-14 squares)"
       ],
-      "time_ms": 1055.0,
+      "time_ms": 393.1,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2305,7 +2305,7 @@
           "cnn_cp": 242.89,
           "material": 5,
           "space": 8,
-          "center": 0,
+          "center": 2,
           "mobility": 8
         },
         {
@@ -2314,7 +2314,7 @@
           "cnn_cp": 285.61,
           "material": 5,
           "space": 8,
-          "center": 0,
+          "center": -1,
           "mobility": 8
         },
         {
@@ -2330,7 +2330,7 @@
       "explanation": [
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 495.89,
+      "time_ms": 286.42,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2350,7 +2350,7 @@
           "cnn_cp": 146.1,
           "material": 2,
           "space": 10,
-          "center": 0,
+          "center": 2,
           "mobility": -11
         },
         {
@@ -2376,7 +2376,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 679.47,
+      "time_ms": 287.5,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2396,7 +2396,7 @@
           "cnn_cp": 12.98,
           "material": -2,
           "space": -10,
-          "center": 0,
+          "center": -2,
           "mobility": -11
         },
         {
@@ -2405,7 +2405,7 @@
           "cnn_cp": 26.51,
           "material": -2,
           "space": -10,
-          "center": 0,
+          "center": -2,
           "mobility": -11
         },
         {
@@ -2421,7 +2421,7 @@
       "explanation": [
         "trades space for other compensation (-2 squares)"
       ],
-      "time_ms": 780.14,
+      "time_ms": 302.77,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2450,16 +2450,16 @@
           "cnn_cp": -148.63,
           "material": 0,
           "space": -3,
-          "center": 0,
+          "center": -2,
           "mobility": 12
         },
         {
           "uci": "d7d5",
-          "score": -215.8772,
+          "score": -216.1772,
           "cnn_cp": -139.18,
           "material": 0,
           "space": -8,
-          "center": 0,
+          "center": -2,
           "mobility": 1
         }
       ],
@@ -2467,7 +2467,7 @@
         "develops a minor piece",
         "trades space for other compensation (-1 squares)"
       ],
-      "time_ms": 3519.59,
+      "time_ms": 800.9,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2496,7 +2496,7 @@
           "cnn_cp": 117.32,
           "material": -2,
           "space": 1,
-          "center": -1,
+          "center": 0,
           "mobility": 0
         },
         {
@@ -2505,7 +2505,7 @@
           "cnn_cp": 113.88,
           "material": -2,
           "space": -3,
-          "center": -1,
+          "center": 0,
           "mobility": 4
         }
       ],
@@ -2515,7 +2515,7 @@
         "neural evaluation indicates a positional improvement",
         "trades space for other compensation (-5 squares)"
       ],
-      "time_ms": 1560.58,
+      "time_ms": 342.6,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2535,7 +2535,7 @@
           "cnn_cp": 300.54,
           "material": 9,
           "space": 20,
-          "center": 1,
+          "center": 3,
           "mobility": -23
         },
         {
@@ -2553,7 +2553,7 @@
           "cnn_cp": 242.75,
           "material": 9,
           "space": 23,
-          "center": 1,
+          "center": 2,
           "mobility": -24
         }
       ],
@@ -2561,7 +2561,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +1 squares"
       ],
-      "time_ms": 1446.58,
+      "time_ms": 330.23,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2581,7 +2581,7 @@
           "cnn_cp": 6.21,
           "material": -1,
           "space": -3,
-          "center": -1,
+          "center": 1,
           "mobility": -7
         },
         {
@@ -2590,7 +2590,7 @@
           "cnn_cp": 2.58,
           "material": 0,
           "space": -4,
-          "center": -1,
+          "center": 0,
           "mobility": -5
         },
         {
@@ -2609,7 +2609,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 3769.62,
+      "time_ms": 613.01,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2638,7 +2638,7 @@
           "cnn_cp": 88.21,
           "material": 5,
           "space": 11,
-          "center": 0,
+          "center": -1,
           "mobility": 12
         },
         {
@@ -2654,7 +2654,7 @@
       "explanation": [
         "increases board control by +2 squares"
       ],
-      "time_ms": 1913.6,
+      "time_ms": 303.59,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2683,7 +2683,7 @@
           "cnn_cp": -203.74,
           "material": -9,
           "space": -22,
-          "center": -2,
+          "center": -1,
           "mobility": 24
         },
         {
@@ -2699,7 +2699,7 @@
       "explanation": [
         "increases board control by +1 squares"
       ],
-      "time_ms": 2098.66,
+      "time_ms": 384.32,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2711,15 +2711,15 @@
       "engine_move_uci": "d7d5",
       "engine_move_san": "d5",
       "is_legal": true,
-      "engine_top_score": -285.4539,
+      "engine_top_score": -285.7539,
       "top_candidates": [
         {
           "uci": "d7d5",
-          "score": -285.4539,
+          "score": -285.7539,
           "cnn_cp": -225.35,
           "material": 0,
           "space": -8,
-          "center": 0,
+          "center": -2,
           "mobility": -17
         },
         {
@@ -2737,7 +2737,7 @@
           "cnn_cp": -206.98,
           "material": 0,
           "space": -5,
-          "center": 0,
+          "center": -1,
           "mobility": -12
         }
       ],
@@ -2746,7 +2746,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-5 squares)"
       ],
-      "time_ms": 2345.67,
+      "time_ms": 521.49,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2775,7 +2775,7 @@
           "cnn_cp": -37.05,
           "material": 0,
           "space": 5,
-          "center": 0,
+          "center": 2,
           "mobility": -7
         },
         {
@@ -2784,14 +2784,14 @@
           "cnn_cp": -38.09,
           "material": 0,
           "space": 5,
-          "center": 0,
+          "center": 2,
           "mobility": -8
         }
       ],
       "explanation": [
         "increases board control by +1 squares"
       ],
-      "time_ms": 1846.56,
+      "time_ms": 470.62,
       "error": null,
       "board_fen_preserved_after_call": true
     }
@@ -2813,7 +2813,7 @@
           "cnn_cp": 48.12,
           "material": 0,
           "space": 6,
-          "center": 0,
+          "center": 2,
           "mobility": -8
         },
         {
@@ -2822,7 +2822,7 @@
           "cnn_cp": 48.98,
           "material": 0,
           "space": 7,
-          "center": 0,
+          "center": 1,
           "mobility": -10
         },
         {
@@ -2831,7 +2831,7 @@
           "cnn_cp": 41.4,
           "material": 0,
           "space": 4,
-          "center": 0,
+          "center": 2,
           "mobility": -2
         }
       ],
@@ -2840,7 +2840,7 @@
         "expands space with a pawn advance",
         "increases board control by +6 squares"
       ],
-      "time_ms": 2194.58,
+      "time_ms": 395.21,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2852,24 +2852,24 @@
       "engine_move_uci": "e7e5",
       "engine_move_san": "e5",
       "is_legal": true,
-      "engine_top_score": 55.7802,
+      "engine_top_score": 55.4802,
       "top_candidates": [
         {
           "uci": "e7e5",
-          "score": 55.7802,
+          "score": 55.4802,
           "cnn_cp": 34.09,
           "material": 0,
           "space": 0,
-          "center": 1,
+          "center": 0,
           "mobility": 0
         },
         {
           "uci": "c7c5",
-          "score": 60.7869,
+          "score": 60.4869,
           "cnn_cp": 35.07,
           "material": 0,
           "space": 4,
-          "center": 1,
+          "center": 0,
           "mobility": 8
         },
         {
@@ -2878,7 +2878,7 @@
           "cnn_cp": 41.47,
           "material": 0,
           "space": 0,
-          "center": 1,
+          "center": 0,
           "mobility": 0
         }
       ],
@@ -2887,7 +2887,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-7 squares)"
       ],
-      "time_ms": 2289.3,
+      "time_ms": 509.42,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2907,7 +2907,7 @@
           "cnn_cp": 71.83,
           "material": 0,
           "space": 6,
-          "center": 0,
+          "center": 2,
           "mobility": -8
         },
         {
@@ -2916,7 +2916,7 @@
           "cnn_cp": 63.63,
           "material": 0,
           "space": 3,
-          "center": 0,
+          "center": 1,
           "mobility": -13
         },
         {
@@ -2925,7 +2925,7 @@
           "cnn_cp": 57.62,
           "material": 0,
           "space": 2,
-          "center": 0,
+          "center": 2,
           "mobility": 2
         }
       ],
@@ -2934,7 +2934,7 @@
         "expands space with a pawn advance",
         "increases board control by +6 squares"
       ],
-      "time_ms": 6610.29,
+      "time_ms": 660.79,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -2954,7 +2954,7 @@
           "cnn_cp": 130.06,
           "material": 0,
           "space": 8,
-          "center": 0,
+          "center": 1,
           "mobility": -18
         },
         {
@@ -2963,7 +2963,7 @@
           "cnn_cp": 84.06,
           "material": 0,
           "space": 10,
-          "center": 0,
+          "center": 2,
           "mobility": -16
         },
         {
@@ -2972,7 +2972,7 @@
           "cnn_cp": 81.87,
           "material": 0,
           "space": 8,
-          "center": 0,
+          "center": 1,
           "mobility": -23
         }
       ],
@@ -2980,7 +2980,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 2424.04,
+      "time_ms": 517.15,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3000,7 +3000,7 @@
           "cnn_cp": 99.58,
           "material": 0,
           "space": 5,
-          "center": 0,
+          "center": 1,
           "mobility": -17
         },
         {
@@ -3009,7 +3009,7 @@
           "cnn_cp": 88.63,
           "material": 0,
           "space": 3,
-          "center": 0,
+          "center": 1,
           "mobility": -9
         },
         {
@@ -3018,14 +3018,14 @@
           "cnn_cp": 75.65,
           "material": 0,
           "space": 2,
-          "center": 0,
+          "center": 2,
           "mobility": 2
         }
       ],
       "explanation": [
         "increases board control by +5 squares"
       ],
-      "time_ms": 372.89,
+      "time_ms": 614.38,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3045,7 +3045,7 @@
           "cnn_cp": 106.2,
           "material": 0,
           "space": 8,
-          "center": 0,
+          "center": 1,
           "mobility": -19
         },
         {
@@ -3054,7 +3054,7 @@
           "cnn_cp": 87.66,
           "material": 0,
           "space": 10,
-          "center": 0,
+          "center": 2,
           "mobility": -17
         },
         {
@@ -3063,7 +3063,7 @@
           "cnn_cp": 68.88,
           "material": 0,
           "space": 9,
-          "center": 0,
+          "center": 1,
           "mobility": -26
         }
       ],
@@ -3071,7 +3071,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 336.19,
+      "time_ms": 573.04,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3100,7 +3100,7 @@
           "cnn_cp": -3.13,
           "material": 0,
           "space": -1,
-          "center": 1,
+          "center": -1,
           "mobility": 1
         },
         {
@@ -3109,7 +3109,7 @@
           "cnn_cp": 18.64,
           "material": -1,
           "space": 0,
-          "center": 1,
+          "center": 0,
           "mobility": -1
         }
       ],
@@ -3117,7 +3117,7 @@
         "develops a minor piece",
         "trades space for other compensation (-1 squares)"
       ],
-      "time_ms": 745.86,
+      "time_ms": 590.51,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3146,7 +3146,7 @@
           "cnn_cp": 90.24,
           "material": 0,
           "space": 2,
-          "center": 1,
+          "center": 2,
           "mobility": -4
         },
         {
@@ -3166,7 +3166,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 961.14,
+      "time_ms": 593.74,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3186,7 +3186,7 @@
           "cnn_cp": 235.52,
           "material": 1,
           "space": 4,
-          "center": 0,
+          "center": -1,
           "mobility": -8
         },
         {
@@ -3215,7 +3215,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 3529.61,
+      "time_ms": 564.89,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3235,7 +3235,7 @@
           "cnn_cp": -81.5,
           "material": 0,
           "space": -3,
-          "center": 1,
+          "center": 2,
           "mobility": -2
         },
         {
@@ -3253,7 +3253,7 @@
           "cnn_cp": 30.58,
           "material": 0,
           "space": -2,
-          "center": 1,
+          "center": -1,
           "mobility": 4
         }
       ],
@@ -3262,7 +3262,7 @@
         "develops a minor piece",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 3608.45,
+      "time_ms": 625.66,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3282,7 +3282,7 @@
           "cnn_cp": 169.33,
           "material": 1,
           "space": 1,
-          "center": -1,
+          "center": -3,
           "mobility": -10
         },
         {
@@ -3311,7 +3311,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +3 squares"
       ],
-      "time_ms": 2037.04,
+      "time_ms": 628.28,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3331,7 +3331,7 @@
           "cnn_cp": 217.88,
           "material": 1,
           "space": 5,
-          "center": 0,
+          "center": -2,
           "mobility": -6
         },
         {
@@ -3360,7 +3360,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +3 squares"
       ],
-      "time_ms": 1915.04,
+      "time_ms": 752.56,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3398,7 +3398,7 @@
           "cnn_cp": 150.73,
           "material": 0,
           "space": 4,
-          "center": 2,
+          "center": 1,
           "mobility": -7
         }
       ],
@@ -3408,7 +3408,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 2622.14,
+      "time_ms": 591.52,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3455,7 +3455,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 4106.85,
+      "time_ms": 643.05,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3475,7 +3475,7 @@
           "cnn_cp": 6.15,
           "material": 0,
           "space": -5,
-          "center": 1,
+          "center": 0,
           "mobility": -6
         },
         {
@@ -3484,7 +3484,7 @@
           "cnn_cp": 10.3,
           "material": 0,
           "space": -5,
-          "center": 1,
+          "center": -1,
           "mobility": -2
         },
         {
@@ -3493,7 +3493,7 @@
           "cnn_cp": 5.13,
           "material": 0,
           "space": -3,
-          "center": 1,
+          "center": 2,
           "mobility": -5
         }
       ],
@@ -3501,7 +3501,7 @@
         "develops a minor piece",
         "trades space for other compensation (-2 squares)"
       ],
-      "time_ms": 3704.36,
+      "time_ms": 568.66,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3513,11 +3513,11 @@
       "engine_move_uci": "d7d5",
       "engine_move_san": "d5",
       "is_legal": true,
-      "engine_top_score": 12.4518,
+      "engine_top_score": 12.1518,
       "top_candidates": [
         {
           "uci": "d7d5",
-          "score": 12.4518,
+          "score": 12.1518,
           "cnn_cp": 3.5,
           "material": 0,
           "space": 2,
@@ -3539,7 +3539,7 @@
           "cnn_cp": 18.18,
           "material": 0,
           "space": 1,
-          "center": 1,
+          "center": -1,
           "mobility": 6
         }
       ],
@@ -3548,7 +3548,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 2014.14,
+      "time_ms": 510.42,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3560,15 +3560,15 @@
       "engine_move_uci": "e7e5",
       "engine_move_san": "e5",
       "is_legal": true,
-      "engine_top_score": 61.103,
+      "engine_top_score": 60.803,
       "top_candidates": [
         {
           "uci": "e7e5",
-          "score": 61.103,
+          "score": 60.803,
           "cnn_cp": 25.68,
           "material": 1,
           "space": -4,
-          "center": -1,
+          "center": -2,
           "mobility": -7
         },
         {
@@ -3577,7 +3577,7 @@
           "cnn_cp": 54.36,
           "material": 0,
           "space": -10,
-          "center": -1,
+          "center": -3,
           "mobility": -18
         },
         {
@@ -3595,7 +3595,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-7 squares)"
       ],
-      "time_ms": 3550.44,
+      "time_ms": 588.46,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3615,7 +3615,7 @@
           "cnn_cp": -11.76,
           "material": -1,
           "space": -2,
-          "center": 1,
+          "center": 2,
           "mobility": -1
         },
         {
@@ -3643,7 +3643,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-5 squares)"
       ],
-      "time_ms": 3997.07,
+      "time_ms": 711.1,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3672,7 +3672,7 @@
           "cnn_cp": 62.17,
           "material": 0,
           "space": -2,
-          "center": 0,
+          "center": -1,
           "mobility": -3
         },
         {
@@ -3681,7 +3681,7 @@
           "cnn_cp": 38.35,
           "material": 1,
           "space": 1,
-          "center": 0,
+          "center": -1,
           "mobility": -4
         }
       ],
@@ -3690,7 +3690,7 @@
         "develops a minor piece",
         "increases board control by +1 squares"
       ],
-      "time_ms": 2568.41,
+      "time_ms": 642.46,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3710,7 +3710,7 @@
           "cnn_cp": 162.04,
           "material": 1,
           "space": 15,
-          "center": -1,
+          "center": 1,
           "mobility": -28
         },
         {
@@ -3719,7 +3719,7 @@
           "cnn_cp": 69.51,
           "material": 0,
           "space": 8,
-          "center": -1,
+          "center": -2,
           "mobility": -19
         },
         {
@@ -3737,7 +3737,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +8 squares"
       ],
-      "time_ms": 3591.38,
+      "time_ms": 876.69,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3775,7 +3775,7 @@
           "cnn_cp": 107.08,
           "material": 1,
           "space": 4,
-          "center": 2,
+          "center": 1,
           "mobility": -4
         }
       ],
@@ -3785,7 +3785,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +3 squares"
       ],
-      "time_ms": 3337.64,
+      "time_ms": 789.31,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3805,7 +3805,7 @@
           "cnn_cp": 63.09,
           "material": 0,
           "space": 10,
-          "center": -1,
+          "center": 0,
           "mobility": -7
         },
         {
@@ -3814,7 +3814,7 @@
           "cnn_cp": 62.41,
           "material": 0,
           "space": 8,
-          "center": -1,
+          "center": 0,
           "mobility": -2
         },
         {
@@ -3831,7 +3831,7 @@
         "develops a minor piece",
         "increases board control by +3 squares"
       ],
-      "time_ms": 3767.59,
+      "time_ms": 596.13,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3851,7 +3851,7 @@
           "cnn_cp": 113.82,
           "material": 1,
           "space": 4,
-          "center": 0,
+          "center": -1,
           "mobility": 0
         },
         {
@@ -3880,7 +3880,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +4 squares"
       ],
-      "time_ms": 2808.58,
+      "time_ms": 758.02,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3928,7 +3928,7 @@
         "captures an opponent piece",
         "increases board control by +5 squares"
       ],
-      "time_ms": 2019.11,
+      "time_ms": 523.0,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -3957,7 +3957,7 @@
           "cnn_cp": 124.18,
           "material": 0,
           "space": 3,
-          "center": 0,
+          "center": -1,
           "mobility": -13
         },
         {
@@ -3976,7 +3976,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +5 squares"
       ],
-      "time_ms": 3474.11,
+      "time_ms": 590.5,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4023,7 +4023,7 @@
         "delivers a check to the opponent king",
         "increases board control by +10 squares"
       ],
-      "time_ms": 2251.48,
+      "time_ms": 771.09,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4043,7 +4043,7 @@
           "cnn_cp": 14.31,
           "material": -1,
           "space": -6,
-          "center": 0,
+          "center": 2,
           "mobility": -5
         },
         {
@@ -4071,7 +4071,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-4 squares)"
       ],
-      "time_ms": 1292.51,
+      "time_ms": 575.88,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4091,7 +4091,7 @@
           "cnn_cp": 3.58,
           "material": -1,
           "space": 1,
-          "center": -1,
+          "center": 1,
           "mobility": 9
         },
         {
@@ -4119,7 +4119,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-4 squares)"
       ],
-      "time_ms": 2983.53,
+      "time_ms": 707.51,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4148,7 +4148,7 @@
           "cnn_cp": 54.12,
           "material": 0,
           "space": 2,
-          "center": 2,
+          "center": 3,
           "mobility": 5
         },
         {
@@ -4157,7 +4157,7 @@
           "cnn_cp": 83.36,
           "material": 0,
           "space": -4,
-          "center": 2,
+          "center": 0,
           "mobility": -9
         }
       ],
@@ -4167,7 +4167,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-4 squares)"
       ],
-      "time_ms": 3482.66,
+      "time_ms": 746.96,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4187,7 +4187,7 @@
           "cnn_cp": -11.48,
           "material": -1,
           "space": -5,
-          "center": 0,
+          "center": 2,
           "mobility": -7
         },
         {
@@ -4215,7 +4215,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 2499.75,
+      "time_ms": 686.21,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4244,7 +4244,7 @@
           "cnn_cp": 373.0,
           "material": 1,
           "space": 1,
-          "center": -1,
+          "center": -3,
           "mobility": -1
         },
         {
@@ -4253,7 +4253,7 @@
           "cnn_cp": 314.18,
           "material": 1,
           "space": 2,
-          "center": -1,
+          "center": -2,
           "mobility": -1
         }
       ],
@@ -4261,7 +4261,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 1241.25,
+      "time_ms": 259.17,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4290,7 +4290,7 @@
           "cnn_cp": 179.38,
           "material": 1,
           "space": 0,
-          "center": -1,
+          "center": 0,
           "mobility": -1
         },
         {
@@ -4299,7 +4299,7 @@
           "cnn_cp": 189.9,
           "material": 1,
           "space": 0,
-          "center": -1,
+          "center": 0,
           "mobility": -1
         }
       ],
@@ -4307,7 +4307,7 @@
         "strengthens control of the center",
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 661.87,
+      "time_ms": 275.26,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4327,7 +4327,7 @@
           "cnn_cp": 471.56,
           "material": 5,
           "space": 9,
-          "center": 0,
+          "center": 1,
           "mobility": -14
         },
         {
@@ -4336,7 +4336,7 @@
           "cnn_cp": 369.92,
           "material": 5,
           "space": 9,
-          "center": 0,
+          "center": 2,
           "mobility": -9
         },
         {
@@ -4345,7 +4345,7 @@
           "cnn_cp": 394.37,
           "material": 5,
           "space": 9,
-          "center": 0,
+          "center": 1,
           "mobility": -13
         }
       ],
@@ -4354,7 +4354,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +1 squares"
       ],
-      "time_ms": 768.62,
+      "time_ms": 348.56,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4374,7 +4374,7 @@
           "cnn_cp": 137.42,
           "material": 9,
           "space": 13,
-          "center": 0,
+          "center": 2,
           "mobility": 15
         },
         {
@@ -4383,7 +4383,7 @@
           "cnn_cp": 234.98,
           "material": 9,
           "space": 13,
-          "center": 0,
+          "center": -1,
           "mobility": 15
         },
         {
@@ -4399,7 +4399,7 @@
       "explanation": [
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 600.71,
+      "time_ms": 405.43,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4446,7 +4446,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +9 squares"
       ],
-      "time_ms": 645.6,
+      "time_ms": 378.75,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4484,14 +4484,14 @@
           "cnn_cp": 37.05,
           "material": 0,
           "space": 1,
-          "center": 0,
+          "center": 1,
           "mobility": 1
         }
       ],
       "explanation": [
         "increases board control by +2 squares"
       ],
-      "time_ms": 1695.06,
+      "time_ms": 276.91,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4536,7 +4536,7 @@
       "explanation": [
         "increases board control by +4 squares"
       ],
-      "time_ms": 1036.8,
+      "time_ms": 321.94,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4556,7 +4556,7 @@
           "cnn_cp": 239.76,
           "material": 3,
           "space": 1,
-          "center": 2,
+          "center": 0,
           "mobility": -2
         },
         {
@@ -4584,7 +4584,7 @@
         "neural evaluation indicates a positional improvement",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 1398.8,
+      "time_ms": 345.13,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4604,7 +4604,7 @@
           "cnn_cp": 778.56,
           "material": 14,
           "space": 18,
-          "center": 1,
+          "center": 0,
           "mobility": 23
         },
         {
@@ -4622,7 +4622,7 @@
           "cnn_cp": 695.44,
           "material": 14,
           "space": 18,
-          "center": 1,
+          "center": 2,
           "mobility": 21
         }
       ],
@@ -4630,7 +4630,7 @@
         "strengthens control of the center",
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 891.41,
+      "time_ms": 308.02,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4676,7 +4676,7 @@
         "captures an opponent piece",
         "increases board control by +6 squares"
       ],
-      "time_ms": 1344.3,
+      "time_ms": 337.07,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4705,7 +4705,7 @@
           "cnn_cp": -5.98,
           "material": 0,
           "space": -4,
-          "center": 0,
+          "center": -2,
           "mobility": -7
         },
         {
@@ -4722,7 +4722,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-14 squares)"
       ],
-      "time_ms": 2352.75,
+      "time_ms": 396.87,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4742,7 +4742,7 @@
           "cnn_cp": 242.89,
           "material": 5,
           "space": 8,
-          "center": 0,
+          "center": 2,
           "mobility": 8
         },
         {
@@ -4751,7 +4751,7 @@
           "cnn_cp": 285.61,
           "material": 5,
           "space": 8,
-          "center": 0,
+          "center": -1,
           "mobility": 8
         },
         {
@@ -4767,7 +4767,7 @@
       "explanation": [
         "neural evaluation indicates a positional improvement"
       ],
-      "time_ms": 1045.25,
+      "time_ms": 317.04,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4787,7 +4787,7 @@
           "cnn_cp": 146.1,
           "material": 2,
           "space": 10,
-          "center": 0,
+          "center": 2,
           "mobility": -11
         },
         {
@@ -4813,7 +4813,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +2 squares"
       ],
-      "time_ms": 1003.38,
+      "time_ms": 278.02,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4833,7 +4833,7 @@
           "cnn_cp": 12.98,
           "material": -2,
           "space": -10,
-          "center": 0,
+          "center": -2,
           "mobility": -11
         },
         {
@@ -4842,7 +4842,7 @@
           "cnn_cp": 26.51,
           "material": -2,
           "space": -10,
-          "center": 0,
+          "center": -2,
           "mobility": -11
         },
         {
@@ -4858,7 +4858,7 @@
       "explanation": [
         "trades space for other compensation (-2 squares)"
       ],
-      "time_ms": 921.86,
+      "time_ms": 256.25,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4887,16 +4887,16 @@
           "cnn_cp": -148.63,
           "material": 0,
           "space": -3,
-          "center": 0,
+          "center": -2,
           "mobility": 12
         },
         {
           "uci": "d7d5",
-          "score": -215.8772,
+          "score": -216.1772,
           "cnn_cp": -139.18,
           "material": 0,
           "space": -8,
-          "center": 0,
+          "center": -2,
           "mobility": 1
         }
       ],
@@ -4904,7 +4904,7 @@
         "develops a minor piece",
         "trades space for other compensation (-1 squares)"
       ],
-      "time_ms": 3591.23,
+      "time_ms": 735.39,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4933,7 +4933,7 @@
           "cnn_cp": 117.32,
           "material": -2,
           "space": 1,
-          "center": -1,
+          "center": 0,
           "mobility": 0
         },
         {
@@ -4942,7 +4942,7 @@
           "cnn_cp": 113.88,
           "material": -2,
           "space": -3,
-          "center": -1,
+          "center": 0,
           "mobility": 4
         }
       ],
@@ -4952,7 +4952,7 @@
         "neural evaluation indicates a positional improvement",
         "trades space for other compensation (-5 squares)"
       ],
-      "time_ms": 801.34,
+      "time_ms": 360.84,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -4972,7 +4972,7 @@
           "cnn_cp": 300.54,
           "material": 9,
           "space": 20,
-          "center": 1,
+          "center": 3,
           "mobility": -23
         },
         {
@@ -4990,7 +4990,7 @@
           "cnn_cp": 242.75,
           "material": 9,
           "space": 23,
-          "center": 1,
+          "center": 2,
           "mobility": -24
         }
       ],
@@ -4998,7 +4998,7 @@
         "neural evaluation indicates a positional improvement",
         "increases board control by +1 squares"
       ],
-      "time_ms": 447.21,
+      "time_ms": 301.04,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -5018,7 +5018,7 @@
           "cnn_cp": 6.21,
           "material": -1,
           "space": -3,
-          "center": -1,
+          "center": 1,
           "mobility": -7
         },
         {
@@ -5027,7 +5027,7 @@
           "cnn_cp": 2.58,
           "material": 0,
           "space": -4,
-          "center": -1,
+          "center": 0,
           "mobility": -5
         },
         {
@@ -5046,7 +5046,7 @@
         "captures an opponent piece",
         "trades space for other compensation (-3 squares)"
       ],
-      "time_ms": 962.16,
+      "time_ms": 611.08,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -5075,7 +5075,7 @@
           "cnn_cp": 88.21,
           "material": 5,
           "space": 11,
-          "center": 0,
+          "center": -1,
           "mobility": 12
         },
         {
@@ -5091,7 +5091,7 @@
       "explanation": [
         "increases board control by +2 squares"
       ],
-      "time_ms": 493.97,
+      "time_ms": 305.82,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -5120,7 +5120,7 @@
           "cnn_cp": -203.74,
           "material": -9,
           "space": -22,
-          "center": -2,
+          "center": -1,
           "mobility": 24
         },
         {
@@ -5136,7 +5136,7 @@
       "explanation": [
         "increases board control by +1 squares"
       ],
-      "time_ms": 652.11,
+      "time_ms": 313.92,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -5148,15 +5148,15 @@
       "engine_move_uci": "d7d5",
       "engine_move_san": "d5",
       "is_legal": true,
-      "engine_top_score": -285.4539,
+      "engine_top_score": -285.7539,
       "top_candidates": [
         {
           "uci": "d7d5",
-          "score": -285.4539,
+          "score": -285.7539,
           "cnn_cp": -225.35,
           "material": 0,
           "space": -8,
-          "center": 0,
+          "center": -2,
           "mobility": -17
         },
         {
@@ -5174,7 +5174,7 @@
           "cnn_cp": -206.98,
           "material": 0,
           "space": -5,
-          "center": 0,
+          "center": -1,
           "mobility": -12
         }
       ],
@@ -5183,7 +5183,7 @@
         "expands space with a pawn advance",
         "trades space for other compensation (-5 squares)"
       ],
-      "time_ms": 891.55,
+      "time_ms": 735.91,
       "error": null,
       "board_fen_preserved_after_call": true
     },
@@ -5212,7 +5212,7 @@
           "cnn_cp": -37.05,
           "material": 0,
           "space": 5,
-          "center": 0,
+          "center": 2,
           "mobility": -7
         },
         {
@@ -5221,14 +5221,14 @@
           "cnn_cp": -38.09,
           "material": 0,
           "space": 5,
-          "center": 0,
+          "center": 2,
           "mobility": -8
         }
       ],
       "explanation": [
         "increases board control by +1 squares"
       ],
-      "time_ms": 638.71,
+      "time_ms": 757.1,
       "error": null,
       "board_fen_preserved_after_call": true
     }

@@ -147,24 +147,66 @@ def test_encoding_does_not_mutate_the_board(engine_mod, start_board):
     assert start_board.fen() == before
 
 
-# ------------------------------------------------------------------ known gaps
+# ================================ C6: STILL DEFERRED AFTER C10 (open, evidenced)
 #
-# The encoding carries piece placement ONLY. Side to move, castling rights and
-# en-passant state are absent. This is a real representational limitation: the
+# `board_to_planes` carries piece placement ONLY. Side to move, castling rights
+# and en-passant state are absent. That is a real representational limitation: the
 # engine evaluates post-move positions where it is the opponent's turn, and the
 # CNN cannot tell those apart from the same placement with the other side to move.
 #
-# Phase 2 does not change the representation. These tests state the contract that
-# Phase 4 would have to satisfy, and are marked xfail(strict) so that if the
-# representation is ever extended, they XPASS loudly and force this file to be
-# revisited rather than quietly drifting.
+# These three tests were written in Phase 2 as "DEFERRED (Phase 4)", i.e. a gap
+# expected to be closed. C10 re-audited them and reclassified the deferral as
+# EVIDENCE-BASED rather than pending, on two independent grounds:
+#
+#   1. ARCHITECTURALLY LOCKED. models/cnn_model.keras has input shape
+#      (None, 8, 8, 12) and 2,360,129 parameters. A 13th plane cannot be added
+#      without retraining the CNN, which C10's brief forbids and which no
+#      correctness argument justifies on its own.
+#
+#   2. MEASURED AS HARMFUL. C6-A3 built exactly the encoding these three tests
+#      demand - 18 planes, side-to-move + castling + en-passant, the layout the
+#      C6 audit specified - and it was the worst arm in the programme:
+#      Pearson 0.631-0.656 against A2's 0.733-0.745 (no overlap), and mean regret
+#      +46.5 cp on `extended` across all three paired seeds against an A0
+#      seed-noise band of 19.7 cp. C6-A13 (castling only, 16 planes) reproduced
+#      most of it: +32.6 cp. See docs/C6_A3_REPORT.md and docs/C6_A13_REPORT.md.
+#      C6-A3 also found an 18-plane model is not loadable by the shipped engine.
+#
+# So the gap is documented, not scheduled. The assertions below are UNCHANGED and
+# strict=True is retained: if the production representation is ever extended,
+# these XPASS and fail the suite, forcing this file to be revisited rather than
+# letting a stale note linger. See docs/C10_FINAL_QA.md.
+#
+# tests/unit/test_training_representation18.py covers the 18-plane research
+# encoder, which does distinguish all three - the limitation is production's, not
+# the repository's.
+
+_C6_DEFERRAL = (
+    "OPEN, EVIDENCE-BASED DEFERRAL (C6; re-audited in C10): production "
+    "board_to_planes is 12-plane and models/cnn_model.keras takes "
+    "(None, 8, 8, 12), so this cannot be closed without retraining the CNN. "
+    "C6-A3 built exactly this encoding (18 planes) and regressed the engine by "
+    "+46.5 cp mean regret on `extended` across all three paired seeds against a "
+    "19.7 cp noise band; C6-A13 (castling only) regressed +32.6 cp. Documented, "
+    "not scheduled. See docs/C6_A3_REPORT.md, docs/C6_A13_REPORT.md, "
+    "docs/C10_FINAL_QA.md. Specifically: "
+)
+
+
+def test_production_cnn_input_is_twelve_planes(engine_mod):
+    """Pins ground 1 of the C6 deferral: the encoding is locked by the model.
+
+    If the production CNN is ever replaced by one taking more planes, this fails
+    and the three deferrals below must be re-decided rather than inherited.
+    """
+    assert engine_mod.cnn_model.input_shape == (None, 8, 8, 12)
+    assert engine_mod.board_to_planes(chess.Board()).shape == (8, 8, 12)
+
 
 @pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4): board_to_planes has no side-to-move plane, so "
-           "identical placements with opposite sides to move are indistinguishable.",
-)
+@pytest.mark.xfail(strict=True, reason=_C6_DEFERRAL +
+                   "board_to_planes has no side-to-move plane, so identical "
+                   "placements with opposite sides to move are indistinguishable.")
 def test_side_to_move_should_be_representable(engine_mod):
     white_to_move = chess.Board("4k3/8/8/8/8/8/8/4K3 w - - 0 1")
     black_to_move = chess.Board("4k3/8/8/8/8/8/8/4K3 b - - 0 1")
@@ -175,10 +217,8 @@ def test_side_to_move_should_be_representable(engine_mod):
 
 
 @pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4): castling rights are not encoded.",
-)
+@pytest.mark.xfail(strict=True, reason=_C6_DEFERRAL +
+                   "castling rights are not encoded.")
 def test_castling_rights_should_be_representable(engine_mod):
     with_rights = chess.Board("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1")
     without_rights = chess.Board("r3k2r/8/8/8/8/8/8/R3K2R w - - 0 1")
@@ -189,10 +229,8 @@ def test_castling_rights_should_be_representable(engine_mod):
 
 
 @pytest.mark.deferred
-@pytest.mark.xfail(
-    strict=True,
-    reason="DEFERRED (Phase 4): en-passant state is not encoded.",
-)
+@pytest.mark.xfail(strict=True, reason=_C6_DEFERRAL +
+                   "en-passant state is not encoded.")
 def test_en_passant_should_be_representable(engine_mod):
     with_ep = chess.Board("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 2")
     without_ep = chess.Board("4k3/8/8/3pP3/8/8/8/4K3 w - - 0 2")
@@ -200,3 +238,26 @@ def test_en_passant_should_be_representable(engine_mod):
         engine_mod.board_to_planes(with_ep),
         engine_mod.board_to_planes(without_ep),
     )
+
+
+# The counterpart characterisation tests: these three states ARE currently
+# collapsed, which is the fact the deferrals above record.
+
+@pytest.mark.parametrize(
+    "fen_a,fen_b,what",
+    [
+        ("4k3/8/8/8/8/8/8/4K3 w - - 0 1",
+         "4k3/8/8/8/8/8/8/4K3 b - - 0 1", "side to move"),
+        ("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1",
+         "r3k2r/8/8/8/8/8/8/R3K2R w - - 0 1", "castling rights"),
+        ("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 2",
+         "4k3/8/8/3pP3/8/8/8/4K3 w - - 0 2", "en-passant square"),
+    ],
+)
+def test_production_encoding_collapses_these_states(engine_mod, fen_a, fen_b, what):
+    """Characterisation: pins the current limitation as fact, so the suite never
+    silently blesses it as intended and never silently loses it either."""
+    a = engine_mod.board_to_planes(chess.Board(fen_a))
+    b = engine_mod.board_to_planes(chess.Board(fen_b))
+    assert np.array_equal(a, b), (
+        f"{what} is now encoded - the C6 deferrals must be re-decided")

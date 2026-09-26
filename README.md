@@ -186,7 +186,7 @@ On top of this base score, four **heuristic bonuses** are added per-move (not pe
 
 | Bonus / Penalty | Value | Trigger |
 |---|---|---|
-| Opening center bonus | +0.30 | e4, d4, or c4 in the opening |
+| Opening center bonus | +0.30 | A central pawn push by either side: `e2e4`/`d2d4`/`c2c4` for White, `e7e5`/`d7d5`/`c7c5` for Black |
 | Development bonus | +0.20 | Moving a Knight or Bishop |
 | Tactical bonus | +0.10 to +0.50 | Captures (scaled by piece value), checks (+0.20), promotions (+0.40) |
 | Pawn push penalty | −0.20 | Early pawn push from rank 2 |
@@ -203,8 +203,15 @@ Rather than evaluating one position at a time, the engine uses **batched inferen
 2. Run all tensors through the CNN in a single `model.predict(batch)` call.
 3. Compute the hybrid score for each resulting position.
 4. Apply heuristic bonuses.
-5. **1-ply look-ahead:** for each candidate move, batch-predict the opponent's best response and subtract a penalty (`0.5 × tanh(best_opp_score / 200)`). This gives the engine a basic sense of not walking into immediate refutations.
+5. **1-ply look-ahead (minimax):** for each candidate move, batch-predict every opponent reply and take the one that is best *for the opponent* on the CNN's White-positive scale — the minimum when the opponent is Black, the maximum when the opponent is White. The term `0.5 × tanh(best_opp_score / 200)` is then **added**, because the sort in step 6 already encodes direction. This gives the engine a basic sense of not walking into immediate refutations.
 6. Sort by score (descending for White, ascending for Black) and return the ranked list.
+7. **Heuristic bonus sign:** the bonuses from step 4 are applied in the direction that is better for the side to move (negated for Black), because the score scale is White-positive while Black's sort is ascending.
+
+> Steps 5 and 7 are the **C2** and **C1** correctness fixes. Before them the
+> look-ahead always took the maximum and *subtracted* it, and the bonuses were
+> always added positively — which pushed Black's good moves *down* Black's own
+> preference list. See [`docs/PHASE_4A_REPORT.md`](docs/PHASE_4A_REPORT.md) and
+> [`docs/PHASE_4B_REPORT.md`](docs/PHASE_4B_REPORT.md).
 
 ---
 
@@ -334,10 +341,19 @@ chess-bot/
 ├── templates/index.html        # Single-page frontend (vanilla JS, no framework)
 ├── static/                     # logo.png, titlelogo.png
 │
-├── docs/
+├── docs/                       # 31 documents; the entry points are:
 │   ├── REPRODUCIBILITY.md       # Setup, environment, known limitations
-│   └── PHASE_1_REPORT.md        # What the integrity pass changed
+│   ├── TESTING.md               # The pytest suite: layout, markers, how to run
+│   ├── EVALUATION.md            # The Stockfish evaluation harness + metric definitions
+│   ├── FINAL_QA_REPORT.md       # Final state of the repository (C10)
+│   ├── C10_FINAL_QA.md          # Per-defect audit of every deferred test
+│   ├── PHASE_1..4B_REPORT.md    # Integrity, tests, evaluation, C1/C2 fixes
+│   └── C6_*, C7_*, C8*_, C9_*   # The training/representation/dataset/fusion experiments
 │
+├── tests/                      # pytest suite (unit / integration / api)
+├── evaluation/                 # Stockfish evaluation harness + position suites
+├── training/                   # Dataset builders, controlled training harness, experiments
+├── regression/                 # Current accepted engine expectations (generated)
 ├── baseline/                   # Measured "before" reference (BASELINE.md + JSON)
 ├── verification/               # Behaviour-preservation checks
 └── archive/                    # Preserved invalid benchmark artifacts + why
@@ -450,9 +466,18 @@ All endpoints are served by Flask on port 5000.
 > clients share one board and requests are order-dependent. This is a known limitation,
 > not a design feature.
 
-> **Known API quirk:** a `POST /move` with a non-JSON body returns **415 with an HTML
-> body**, unlike every other error path which returns `{"error": ...}` as JSON. Confirmed
-> in [`baseline/api_results.json`](baseline/api_results.json); not yet fixed.
+> **Error contract:** every rejected request returns HTTP **400** with a JSON
+> `{"error": ...}` body, and no input shape returns a 500.
+>
+> This was **not** true before C10: `POST /move` read `request.json`, which raises
+> before the handler's own validation, so a non-JSON body returned **415 with an HTML
+> body** and a malformed JSON body returned 400 with an HTML body. A non-string `uci`
+> (e.g. `{"uci": null}`) returned **500**. All three were fixed in C10 — see
+> [`docs/C10_FINAL_QA.md`](docs/C10_FINAL_QA.md).
+>
+> [`baseline/api_results.json`](baseline/api_results.json) records the original
+> pre-fix behaviour and is frozen historical evidence; it is deliberately not
+> re-recorded.
 
 **Example — make a move:**
 
@@ -497,6 +522,10 @@ curl -X POST http://127.0.0.1:5000/move \
 All figures below come from a reproducible measurement run. Method, raw data and
 caveats: [`baseline/BASELINE.md`](baseline/BASELINE.md).
 
+> These are the **Phase 0** figures, captured before the C1/C2 (Phase 4A/4B) and
+> C4/C5 (C10) correctness fixes. They are a historical reference point, not the
+> current measurement — see [`docs/EVALUATION.md`](docs/EVALUATION.md) for that.
+
 **Reference:** Stockfish 17.1 at depth 8 (Threads=1, Hash=16).
 **Suite:** 52 fixed FEN positions ([`baseline/fens.json`](baseline/fens.json)) spanning
 opening / middlegame / endgame / tactical / defensive, 30 White to move and 22 Black to move.
@@ -538,9 +567,18 @@ optimised C++ with alpha-beta pruning.
 | Random Forest | Space-control prediction at move 20 | R² **0.5146**, RMSE **5.03** (notebook cell 6). **Not used by the engine at runtime** |
 | MLP | Game-outcome classification | Accuracy **0.7228** (notebook cell 8); never predicts the draw class (f1 = 0.00). **Not used by the engine at runtime** |
 
-> **What is not yet measured.** There is no move-quality (centipawn-loss) metric, no MAE,
-> no Elo estimate, and no playing-strength result. Building a proper evaluation harness is
-> planned work. Until it exists, this README does not report those numbers.
+> **Move-quality measurement lives elsewhere.** The figures in this section are the
+> **Phase 0** capture and predate the C1, C2, C4 and C5 correctness fixes; they are kept
+> because `baseline/BASELINE.md` documents their method and raw data.
+>
+> A full evaluation harness — per-move centipawn regret, blunder rate, Spearman
+> correlation, top-1/top-3 agreement and mate statuses over two suites (52 and 160
+> positions) — was built in Phase 3 and is documented in
+> [`docs/EVALUATION.md`](docs/EVALUATION.md), which carries the current numbers and their
+> caveats. Read them there rather than inferring them from this table.
+>
+> There is still **no Elo estimate and no playing-strength result**, and none of the
+> C6–C9 experimental arms produced a change to the shipped engine.
 
 ### A note on the Ridge weights
 

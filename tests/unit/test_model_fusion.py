@@ -137,13 +137,28 @@ def test_position_metrics_agrees_with_the_standalone_helpers(engine_mod, white_t
     assert metrics["center"] == engine_mod.center_control(white_to_move_board)
 
 
-# ==================================================================== known gap
+# ============================================ C3: STILL DEFERRED AFTER C10 (open)
 #
 # The runtime computes sum(coef_ * features) by hand and never adds intercept_.
-# The characterisation test below pins the current arithmetic; the deferred test
-# states the contract a corrected implementation would satisfy. Keeping both
-# means the suite records the fact without declaring "ignoring the intercept" to
-# be correct behaviour.
+# C10 audited this and deliberately did NOT change it. The reasoning, and the
+# evidence for each step, is pinned by the passing tests in this section so the
+# deferral rests on measurements rather than on a report.
+#
+#   1. `hybrid_score` has no caller in engine.py, app.py, evaluation/,
+#      baseline/scripts/ or training/. It is not on the move-selection path.
+#   2. On the path that IS used (`rerank_moves`), the omitted intercept is a
+#      per-position CONSTANT, so it cannot change the ranking. Measured over all
+#      52 baseline positions: 0 ordering changes, 0 selected-move changes.
+#   3. So C3 is an interpretation defect - `hybrid_score` is not the Ridge's
+#      prediction and cannot be read as centipawns - not a ranking defect.
+#
+# Fixing it would shift every reported score by +15.0772 and require re-recording
+# the regression baseline, while changing no move the engine plays. Every C6-C9
+# arm was evaluated under coef-only fusion (see docs/C9_RIDGE_AUDIT.md §1), and
+# the Ridge itself was fitted on unrecoverable side-to-move-relative targets
+# (§4), so "readable as centipawns" would not become true merely by adding the
+# intercept back. C10 therefore scopes C3 as a separate future change needing its
+# own justification and regression re-recording. See docs/C10_FINAL_QA.md.
 
 def test_hybrid_score_currently_omits_the_ridge_intercept(engine_mod, start_board):
     """Characterisation: hybrid_score equals Ridge.predict MINUS the intercept."""
@@ -162,12 +177,77 @@ def test_hybrid_score_currently_omits_the_ridge_intercept(engine_mod, start_boar
     assert float(score) == pytest.approx(predicted - intercept, abs=1e-6)
 
 
+def test_the_ridge_intercept_is_non_zero(engine_mod):
+    """If this ever becomes ~0, C3 stops being a defect and this whole section
+    should be revisited rather than left asserting a moot point."""
+    assert abs(float(engine_mod.weight_model.intercept_)) > 1.0
+
+
+def test_hybrid_score_is_not_on_the_move_selection_path(engine_mod):
+    """Evidence for step 1 of the C3 deferral.
+
+    `rerank_moves` inlines the same weighted sum instead of calling
+    `hybrid_score`, so C3's effect is confined to a function the engine and the
+    API never invoke. Asserted against the source so it cannot silently change.
+    """
+    import inspect
+    import app
+
+    for module in (engine_mod, app):
+        source = inspect.getsource(module)
+        calls = [line for line in source.splitlines()
+                 if "hybrid_score(" in line and "def hybrid_score" not in line]
+        assert calls == [], f"{module.__name__} now calls hybrid_score: {calls}"
+
+
+@pytest.mark.parametrize(
+    "fen",
+    [
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+        "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2",
+        "8/8/8/4k3/8/4K3/4P3/8 w - - 0 1",
+    ],
+)
+def test_omitting_the_intercept_cannot_change_the_ranking(engine_mod, fen):
+    """Evidence for step 2 of the C3 deferral - the load-bearing claim.
+
+    The intercept is added identically to every candidate in a position, so it is
+    an order-preserving shift. This test applies it and asserts the ranking is
+    byte-identical, which is what makes C3 safe to defer. If a future change made
+    the omission position-dependent (e.g. a per-candidate intercept), this fails.
+    """
+    board = chess.Board(fen)
+    ranked = engine_mod.rerank_moves(board.copy())
+    assert ranked, fen
+
+    intercept = float(engine_mod.weight_model.intercept_)
+    shifted = sorted(
+        ({**entry, "score": round(float(entry["score"] + intercept), 3)}
+         for entry in ranked),
+        key=lambda e: e["score"],
+        reverse=(board.turn == chess.WHITE),
+    )
+
+    assert [e["move"].uci() for e in shifted] == [e["move"].uci() for e in ranked]
+    for before, after in zip(ranked, shifted):
+        assert after["score"] == pytest.approx(before["score"] + intercept, abs=2e-3)
+
+
 @pytest.mark.deferred
 @pytest.mark.xfail(
     strict=True,
-    reason="DEFERRED (Phase 4, C3): the runtime applies weight_model.coef_ only "
-           "and drops weight_model.intercept_ (15.0772), so hybrid_score is not "
-           "the Ridge model's prediction and cannot be read as centipawns.",
+    reason="OPEN, SEPARATELY SCOPED (C3; audited and deliberately retained in "
+           "C10): engine.py applies weight_model.coef_ only and drops "
+           "intercept_ (15.0772), so hybrid_score is not the Ridge's prediction "
+           "and cannot be read as centipawns. Confirmed in C10 to be an "
+           "interpretation defect, not a ranking defect - hybrid_score is off "
+           "the move-selection path, and on the path that is used the omission "
+           "is an order-preserving per-position constant (0/52 ordering changes, "
+           "0/52 selected-move changes). Fixing it shifts every reported score "
+           "by +15.0772 and requires re-recording the regression baseline "
+           "without changing a single move played. Scoped as a separate future "
+           "change. See docs/C10_FINAL_QA.md.",
 )
 def test_hybrid_score_should_equal_the_ridge_prediction(engine_mod, start_board):
     score, cnn_score, _, _ = engine_mod.hybrid_score(start_board)
