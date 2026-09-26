@@ -281,7 +281,7 @@ def test_stage2_writes_only_under_the_a1r_directory():
 def test_a2_is_registered_with_the_white_perspective_policy():
     from training import dataset as D
     assert RR.ARM_POLICIES["A2"] == D.LABEL_POLICY_CORRECTED_MATE_WHITE
-    assert set(RR.ARM_POLICIES) == {"A0", "A1", "A2"}
+    assert set(RR.ARM_POLICIES) == {"A0", "A1", "A2", "C8a"}
 
 
 def test_default_arm_set_is_still_the_a1r_pair():
@@ -292,8 +292,19 @@ def test_default_arm_set_is_still_the_a1r_pair():
     assert RR.OUT_DIR.name == "A1R"
 
 
-def test_every_registered_arm_has_a_distinct_label_policy():
-    assert len(set(RR.ARM_POLICIES.values())) == len(RR.ARM_POLICIES)
+def test_each_c6_arm_has_its_own_distinct_label_policy():
+    """A0, A1 and A2 differ from each other in label policy - that is what makes
+    them separate C6 arms."""
+    c6 = {a: RR.ARM_POLICIES[a] for a in ("A0", "A1", "A2")}
+    assert len(set(c6.values())) == len(c6)
+
+
+def test_c8a_deliberately_shares_a2s_label_policy():
+    """C9's C8a arm is NOT a label experiment. It reuses A2's label policy
+    exactly; what differs is the DATASET its CNN was trained on, and hence the
+    CNN output distribution the Ridge must be fitted to. Sharing the policy here
+    is the control, not a collision."""
+    assert RR.ARM_POLICIES["C8a"] == RR.ARM_POLICIES["A2"]
 
 
 # ---------------------------------------------------------------- direction

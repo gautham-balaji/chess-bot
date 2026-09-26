@@ -71,6 +71,9 @@ ARM_POLICIES = {
     "A0": D.LABEL_POLICY_LEGACY,
     "A1": D.LABEL_POLICY_CORRECTED_MATE,
     "A2": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
+    # C9: the C8a CNN. Same label policy as A2; its fit population is
+    # dataset_v2's test split, selected with --dataset-prefix.
+    "C8a": D.LABEL_POLICY_CORRECTED_MATE_WHITE,
 }
 ARMS = {"A0": D.LABEL_POLICY_LEGACY, "A1": D.LABEL_POLICY_CORRECTED_MATE}
 SEEDS = (0, 1, 2)
@@ -119,11 +122,17 @@ def r_squared(y_true, y_pred) -> float:
     return float("nan") if ss_tot == 0 else 1.0 - ss_res / ss_tot
 
 
-def board_features(board: chess.Board, cnn_score: float) -> list:
-    """The five Ridge features, in the order notebook cell 31 used."""
+def board_features(board: chess.Board, cnn_score: float,
+                   tanh_scale: float = TANH_SCALE) -> list:
+    """The five Ridge features, in the order notebook cell 31 used.
+
+    `tanh_scale` defaults to the production 200.0, so every existing caller is
+    unaffected. C9's divisor sweep varies it to measure how much signal the fixed
+    squash discards; that sweep is a MEASUREMENT and changes no production file.
+    """
     import engine as E  # read-only use of the identical helpers
     return [
-        float(np.tanh(cnn_score / TANH_SCALE)),
+        float(np.tanh(cnn_score / tanh_scale)),
         float(E.material_balance(board)),
         float(E.space_control(board)),
         float(E.center_control(board)),
@@ -145,6 +154,45 @@ def load_test_split():
     D.validate_records(records)
     split = D.make_split(records)
     return [records[i] for i in split.test_index], records, split, digest
+
+
+def load_fit_population(prefix=None):
+    """The positions the Ridge is fitted on.
+
+    `prefix=None` is the A1R/A2R default and delegates to `load_test_split()`
+    unchanged - dataset_v1's 1,933-record test split.
+
+    A prefix such as `training/artifacts/dataset_v2` instead loads that dataset's
+    ALREADY-MATERIALISED test split (`<prefix>.test.jsonl`), verified against its
+    manifest. That split is game-level separated from its own train split and was
+    scrubbed of evaluation-suite placements when it was built, so it is a strictly
+    cleaner fit population than dataset_v1's. No split is re-derived here.
+    """
+    if prefix is None:
+        return load_test_split()
+
+    import hashlib
+    prefix = Path(prefix)
+    manifest_path = Path(f"{prefix}.manifest.json")
+    test_path = Path(f"{prefix}.test.jsonl")
+    for path in (manifest_path, test_path):
+        if not path.is_file():
+            raise SystemExit(f"ERROR: missing {path}")
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    digest = hashlib.sha256(test_path.read_bytes()).hexdigest()
+    if digest != manifest["artifact"]["test_sha256"]:
+        raise SystemExit(
+            f"ERROR: {test_path.name} does not match its manifest: "
+            f"file {digest} vs manifest "
+            + manifest['artifact']['test_sha256'])
+
+    records = D.load_records(test_path)
+    declared = manifest["final"]["test"]["records"]
+    if len(records) != declared:
+        raise SystemExit(f"ERROR: {test_path.name} holds {len(records)} records, "
+                         f"manifest says {declared}")
+    return records, records, manifest, digest
 
 
 def load_model_for(arm: str, seed: int):
@@ -174,7 +222,8 @@ def inner_split_indices(n: int, seed: int = INNER_SPLIT_SEED,
 
 # ============================================================ ranking spread
 
-def ranking_spread(coef, cnn_by_position, features_by_position) -> dict:
+def ranking_spread(coef, cnn_by_position, features_by_position,
+                   tanh_scale: float = TANH_SCALE) -> dict:
     """Median across positions of each weighted term's spread ACROSS candidates.
 
     This is the quantity that decides move ORDER. Absolute output scale does not
@@ -184,7 +233,7 @@ def ranking_spread(coef, cnn_by_position, features_by_position) -> dict:
     per_term = {name: [] for name in FEATURE_NAMES}
     for fen, cnn in cnn_by_position.items():
         board_feats = features_by_position[fen]          # (n_candidates, 4)
-        cnn_norm = np.tanh(np.asarray(cnn, float) / TANH_SCALE)
+        cnn_norm = np.tanh(np.asarray(cnn, float) / tanh_scale)
         terms = np.column_stack([coef[0] * cnn_norm] +
                                 [coef[i + 1] * board_feats[:, i] for i in range(4)])
         for i, name in enumerate(FEATURE_NAMES):
@@ -312,6 +361,9 @@ def main(argv=None) -> int:
     ap.add_argument("--out-dir", type=Path, default=OUT_DIR,
                     help="output directory (default: the A1R directory)")
     ap.add_argument("--stage", default=STAGE, help="stage label recorded in the artifact")
+    ap.add_argument("--dataset-prefix", default=None,
+                    help="fit-population prefix, e.g. training/artifacts/dataset_v2. "
+                         "Default None = dataset_v1 test split (the A1R behaviour)")
     args = ap.parse_args(argv)
 
     arms = {a: ARM_POLICIES[a] for a in args.arms}
